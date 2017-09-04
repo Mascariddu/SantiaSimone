@@ -3,16 +3,16 @@ package it.polito.tdp.timetable.model;
 public class School {
 	private String schoolID;
 	private String name;
-	private String Adress;
+	private String address;
 	private int startLessons;
 	private int endLessons;
 	private int workDays;
 	
-	public School(String schoolID, String name, String adress, int startLessons, int endLessons, int workDays) {
+	public School(String schoolID, String name, String address, int startLessons, int endLessons, int workDays) {
 		super();
 		this.schoolID = schoolID;
 		this.name = name;
-		Adress = adress;
+		this.address = address;
 		this.startLessons = startLessons;
 		this.endLessons = endLessons;
 		this.workDays = workDays;
@@ -27,7 +27,7 @@ public class School {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -35,11 +35,11 @@ public class School {
 	}
 
 	public String getAdress() {
-		return Adress;
+		return this.address;
 	}
 
 	public void setAdress(String adress) {
-		Adress = adress;
+		this.address = adress;
 	}
 
 	public int getStartLessons() {
@@ -64,6 +64,11 @@ public class School {
 
 	public void setWorkDays(int workDays) {
 		this.workDays = workDays;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + schoolID + "] " + name + " - " + address;
 	}
 	
 	

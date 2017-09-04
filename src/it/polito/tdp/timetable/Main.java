@@ -12,10 +12,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Timetable.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Start.fxml"));
 			BorderPane root = (BorderPane)loader.load();
 			
-			TimetableController controller = loader.getController();
+			StartController controller = loader.getController();
 			Model model = new Model();
 			
 			controller.setModel(model);
@@ -23,6 +23,8 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Timetable School Creator");
+			Launcher.setStage(primaryStage);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

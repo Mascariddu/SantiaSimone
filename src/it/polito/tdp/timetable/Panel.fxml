@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.PanelController">
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Generali">
+               <content>
+                  <HBox style="-: ;">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label text="Informazioni sulla scuola">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <HBox style="-fx-border-color: black;">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" maxHeight="165.0" minHeight="0.0" HBox.hgrow="SOMETIMES">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label text="Matricola" />
+                                                <Label fx:id="txtID" text="####################">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets left="44.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label text="Nome" />
+                                                <Label fx:id="txtName" text="####################">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets left="60.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label text="Indirizzo" />
+                                                <Label fx:id="txtAddress" text="####################">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets left="49.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="15.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="150.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox alignment="CENTER" HBox.hgrow="SOMETIMES">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label text="Le lezioni si tengono dalle " />
+                                                <Label fx:id="txtStart" text="##:##">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label text=" alle " />
+                                                <Label fx:id="txtEnd" text="##:##" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label text="per " />
+                                                <Label fx:id="txtDays" text="#">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label text=" giorni a settimana" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="15.0" top="15.0" />
+                     </padding>
+                  </HBox>
+               </content>
+            </Tab>
+          <Tab text="Indirizzi Scolastici" />
+            <Tab text="Materie" />
+            <Tab text="Professori" />
+            <Tab text="Classi" />
+        </tabs>
+      </TabPane>
+   </center>
+   <right>
+      <ImageView fitHeight="600.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../../../image/panel.jpg" />
+         </image>
+      </ImageView>
+   </right>
+</BorderPane>
