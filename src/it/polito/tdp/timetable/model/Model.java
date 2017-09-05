@@ -1,5 +1,6 @@
 package it.polito.tdp.timetable.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.polito.tdp.timetable.db.TimetableDAO;
@@ -13,12 +14,25 @@ public class Model {
 	
 	public Model() {
 		super();
+		this.subjects = new ArrayList<>();
 	}
 	
 	public List<Subject> getAllSubjects() {
-		this.dao = new TimetableDAO();
-		this.subjects = dao.getAllSubjects();
+		if(subjects.isEmpty()) {
+			this.dao = new TimetableDAO();
+			this.subjects = dao.getAllSubjects(school.getSchoolID());
+		}
 		return subjects;
+	}
+	
+	public Subject addNewSubject(String name, int hoursWeek, int hoursLab, String typeLab) {
+		this.dao = new TimetableDAO();
+		int num = this.subjects.size() + 1;
+		
+		Subject s = new Subject("SJB00"+num, name, hoursWeek, hoursLab, typeLab);
+		dao.addSubject(s,school.getSchoolID());
+		subjects.add(s);
+		return s;
 	}
 	
 	public void setSchool(School school) {

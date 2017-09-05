@@ -5,23 +5,23 @@ import java.util.List;
 
 public class Teacher {
 	
-	private final static int DAYS = 3; // Numero dei giorni possibili da specificare per giorno di riposo
-	
 	private String teacherID;
 	private String name;
 	private String surname;
 	private int hoursWeek;
-	private int[] preferencesDay;
+	private int hoursWork;
+	private int freeDay;
 	private List<Subject> enablingSub;
 	
-	public Teacher(String teacherID, String name, String surname, int hoursWeek, int[] preferencesDay,
+	public Teacher(String teacherID, String name, String surname, int hoursWeek, int freeDay,
 			List<Subject> enablingSub) {
 		super();
 		this.teacherID = teacherID;
 		this.name = name;
 		this.surname = surname;
 		this.hoursWeek = hoursWeek;
-		this.preferencesDay = new int[DAYS];
+		this.hoursWork = 0;
+		this.freeDay = freeDay;
 		this.enablingSub = new ArrayList<Subject>();
 	}
 
@@ -56,13 +56,21 @@ public class Teacher {
 	public void setHoursWeek(int hoursWeek) {
 		this.hoursWeek = hoursWeek;
 	}
-
-	public int[] getPreferencesDay() {
-		return preferencesDay;
+	
+	public int getHoursWork() {
+		return hoursWork;
 	}
 
-	public void setPreferencesDay(int[] preferencesDay) {
-		this.preferencesDay = preferencesDay;
+	public void setHoursWork(int hoursWork) {
+		this.hoursWork = hoursWork;
+	}
+
+	public int getFreeDay() {
+		return freeDay;
+	}
+
+	public void setPreferencesDay(int freeDay) {
+		this.freeDay = freeDay;
 	}
 
 	public List<Subject> getEnablingSub() {

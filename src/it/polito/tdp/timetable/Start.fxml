@@ -36,7 +36,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnNext" alignment="CENTER" mnemonicParsing="false" onAction="#openDB" prefWidth="100.0" text="Avanti" />
+                  <Button fx:id="btnNext" alignment="CENTER" mnemonicParsing="false" onAction="#openDB" prefWidth="100.0" text="Apri" />
                </children>
                <VBox.margin>
                   <Insets top="25.0" />

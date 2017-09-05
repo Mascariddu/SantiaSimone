@@ -65,9 +65,9 @@ public void addSchool(School s) {
 	
 }
 
-public List<Subject> getAllSubjects() {
+public List<Subject> getAllSubjects(String schoolID) {
 	
-	String sql = "SELECT subjectID, name, hoursWeek, hoursLab, typeLab FROM subject WHERE schoolID = 'SCH001'" ;
+	String sql = "SELECT subjectID, name, hoursWeek, hoursLab, typeLab FROM subject WHERE schoolID = '" + schoolID + "'" ;
 	
 	try {
 		Connection conn = DBConnect.getConnection() ;
@@ -89,6 +89,33 @@ public List<Subject> getAllSubjects() {
 		e.printStackTrace();
 		return null ;
 	}
+}
+
+public void addSubject(Subject s, String schoolID) {
+	Connection conn = DBConnect.getConnection();
+
+	String sql = "INSERT INTO subject (schoolID ,subjectID, name, hoursWeek, hoursLab, typeLab) VALUES (?, ?, ?, ?, ?, ?);";
+
+	PreparedStatement st;
+	try {
+		st = conn.prepareStatement(sql);
+
+		st.setString(1, schoolID);
+		st.setString(2, s.getSubjectID());
+		st.setString(3, s.getName());
+		st.setInt(4, s.getHoursWeek());
+		st.setInt(5, s.getHoursLab());
+		st.setString(6, s.getTypeLab());
+
+
+		st.executeUpdate();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+	
 }
 
 }
