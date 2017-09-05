@@ -8,9 +8,17 @@ public class Model {
 
 	private TimetableDAO dao;
 	private School school;
+	private List<Subject> subjects;
+	
 	
 	public Model() {
 		super();
+	}
+	
+	public List<Subject> getAllSubjects() {
+		this.dao = new TimetableDAO();
+		this.subjects = dao.getAllSubjects();
+		return subjects;
 	}
 	
 	public void setSchool(School school) {

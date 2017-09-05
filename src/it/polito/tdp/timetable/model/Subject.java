@@ -1,20 +1,33 @@
 package it.polito.tdp.timetable.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Subject {
 	
 	private String subjectID;
 	private String name;
 	private int hoursWeek;
 	private int hoursLab;
-	private int typeLab;
+	private String typeLab;
+	private List<Teacher> teachers;
 	
-	public Subject(String subjectID, String name, int hoursWeek, int hoursLab, int typeLab) {
+	public Subject(String subjectID, String name, int hoursWeek, int hoursLab, String typeLab) {
 		super();
 		this.subjectID = subjectID;
 		this.name = name;
 		this.hoursWeek = hoursWeek;
 		this.hoursLab = hoursLab;
 		this.typeLab = typeLab;
+		this.teachers = new ArrayList<Teacher>();
+	}
+	
+	public void addTeacher(Teacher t) {
+		teachers.add(t);
+	}
+	
+	public List<Teacher> getTeachers() {
+		return teachers;
 	}
 
 	public String getSubjectID() {
@@ -49,11 +62,11 @@ public class Subject {
 		this.hoursLab = hoursLab;
 	}
 
-	public int getTypeLab() {
+	public String getTypeLab() {
 		return typeLab;
 	}
 
-	public void setTypeLab(int typeLab) {
+	public void setTypeLab(String typeLab) {
 		this.typeLab = typeLab;
 	}
 
@@ -80,6 +93,11 @@ public class Subject {
 		} else if (!subjectID.equals(other.subjectID))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + subjectID + "] " + name;
 	}
 	
 	

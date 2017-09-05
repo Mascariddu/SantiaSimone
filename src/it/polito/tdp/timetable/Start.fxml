@@ -9,12 +9,21 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.StartController">
    <center>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <Label text="Selezionare un database presente">
+            <Label text="Benvenuto su Timetable School Creator!">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label text="Per procedere selezionare uno dei database presenti ">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
@@ -27,7 +36,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnNext" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#openDB" prefWidth="100.0" text="Avanti" />
+                  <Button fx:id="btnNext" alignment="CENTER" mnemonicParsing="false" onAction="#openDB" prefWidth="100.0" text="Avanti" />
                </children>
                <VBox.margin>
                   <Insets top="25.0" />

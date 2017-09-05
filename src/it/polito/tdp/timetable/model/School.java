@@ -27,7 +27,7 @@ public class School {
 	}
 
 	public String getName() {
-		return this.name;
+		return this.name.toUpperCase();
 	}
 
 	public void setName(String name) {
@@ -35,7 +35,7 @@ public class School {
 	}
 
 	public String getAdress() {
-		return this.address;
+		return this.address.toUpperCase();
 	}
 
 	public void setAdress(String adress) {
@@ -68,7 +68,7 @@ public class School {
 
 	@Override
 	public String toString() {
-		return "[" + schoolID + "] " + name + " - " + address;
+		return "[" + schoolID + "] " + name.toUpperCase() + " - " + address.toUpperCase();
 	}
 	
 	

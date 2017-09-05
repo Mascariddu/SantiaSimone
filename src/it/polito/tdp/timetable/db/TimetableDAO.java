@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polito.tdp.timetable.model.School;
+import it.polito.tdp.timetable.model.Subject;
 
 public class TimetableDAO {
 	
@@ -62,6 +63,32 @@ public void addSchool(School s) {
 	}
 
 	
+}
+
+public List<Subject> getAllSubjects() {
+	
+	String sql = "SELECT subjectID, name, hoursWeek, hoursLab, typeLab FROM subject WHERE schoolID = 'SCH001'" ;
+	
+	try {
+		Connection conn = DBConnect.getConnection() ;
+
+		PreparedStatement st = conn.prepareStatement(sql) ;
+		
+		ResultSet rs = st.executeQuery() ;
+		
+		List<Subject> list = new ArrayList<>() ;
+		while(rs.next()) {
+			list.add(new Subject(rs.getString("subjectID"), rs.getString("name"), rs.getInt("hoursWeek"), rs.getInt("hoursLab"),
+					rs.getString("typeLab"))) ;
+		}
+		
+		conn.close();
+		return list ;
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return null ;
+	}
 }
 
 }

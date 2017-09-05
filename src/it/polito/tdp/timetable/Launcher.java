@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 
 public class Launcher {
 	
-	private static Rectangle2D definizione = Screen.getPrimary().getVisualBounds();
 	private static Stage stage;
 	
 	public static void setStage(Stage primaryStage) {

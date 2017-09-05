@@ -1,6 +1,7 @@
 package it.polito.tdp.timetable;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.timetable.model.Model;
@@ -48,13 +49,14 @@ public class StartController {
 	
 	public void setModel(Model model) {
 		this.model = model ;
-		boxDB.getItems().addAll(model.getAllSchools());
+		List<School> schools = model.getAllSchools();
 		
-		if(boxDB.getItems().isEmpty()) 
+		if(schools.isEmpty()) 
 			boxDB.setDisable(true);
-		else
-			btnNext.setDisable(false);
-		
+		else {
+			boxDB.getItems().addAll(schools);
+			boxDB.setValue(schools.get(0));
+		}
 	}
 	
 }
