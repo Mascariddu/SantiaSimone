@@ -3,15 +3,14 @@ package it.polito.tdp.timetable;
 import it.polito.tdp.timetable.model.Model;
 import it.polito.tdp.timetable.model.School;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Launcher {
 	
 	private static Stage stage;
+	private static Model model;
 	
 	public static void setStage(Stage primaryStage) {
 		stage = primaryStage;
@@ -23,7 +22,7 @@ public class Launcher {
 			BorderPane root = (BorderPane)loader.load();
 			
 			CreateSchoolController controller = loader.getController() ;
-			Model model = new Model();
+			model = new Model();
 			controller.setModel(model);
 			
 			Scene scene = new Scene(root);
@@ -42,7 +41,7 @@ public class Launcher {
 			BorderPane root = (BorderPane)loader.load();
 			
 			StartController controller = loader.getController() ;
-			Model model = new Model();
+			model = new Model();
 			controller.setModel(model);
 			
 			Scene scene = new Scene(root);
@@ -57,11 +56,11 @@ public class Launcher {
     
     public static final void openDB(School school) {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Panel.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelGeneral.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelController controller = loader.getController() ;
-			Model model = new Model();
+			PanelGeneralController controller = loader.getController() ;
+			model = new Model();
 			model.setSchool(school);
 			controller.setModel(model);
 			
@@ -71,6 +70,120 @@ public class Launcher {
 			
 			stage = new Stage();
 			stage.setTitle("Timetable School Creator - " + school.getName());
+			stage.setScene(scene);
+			stage.show();
+    	} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static final void openTabSubject() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelSubject.fxml")) ;
+			BorderPane root = (BorderPane)loader.load();
+			
+			PanelSubjectController controller = loader.getController() ;
+			
+			controller.setModel(model);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
+
+			stage.setScene(scene);
+			stage.show();
+    	} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static final void openTabTeacher() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelTeacher.fxml")) ;
+			BorderPane root = (BorderPane)loader.load();
+			
+			PanelTeacherController controller = loader.getController() ;
+			
+			controller.setModel(model);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
+
+			stage.setScene(scene);
+			stage.show();
+    	} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static final void openTabClass() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelClass.fxml")) ;
+			BorderPane root = (BorderPane)loader.load();
+			
+			PanelClassController controller = loader.getController() ;
+			
+			controller.setModel(model);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
+
+			stage.setScene(scene);
+			stage.show();
+    	} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static final void openTabCourse() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelCourse.fxml")) ;
+			BorderPane root = (BorderPane)loader.load();
+			
+			PanelCourseController controller = loader.getController() ;
+			
+			controller.setModel(model);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
+
+			stage.setScene(scene);
+			stage.show();
+    	} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static final void openTabLab() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelLab.fxml")) ;
+			BorderPane root = (BorderPane)loader.load();
+			
+			PanelLabController controller = loader.getController() ;
+			
+			controller.setModel(model);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
+
+			stage.setScene(scene);
+			stage.show();
+    	} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static final void openTabGeneral() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelGeneral.fxml")) ;
+			BorderPane root = (BorderPane)loader.load();
+			
+			PanelGeneralController controller = loader.getController() ;
+			
+			controller.setModel(model);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
+
 			stage.setScene(scene);
 			stage.show();
     	} catch(Exception e) {

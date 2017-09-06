@@ -8,6 +8,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polito.tdp.timetable.model.Course;
 import it.polito.tdp.timetable.model.School;
 import it.polito.tdp.timetable.model.Subject;
 
@@ -116,6 +117,79 @@ public void addSubject(Subject s, String schoolID) {
 	}
 
 	
+}
+
+public void addNewCourse(Course c, String schoolID) {
+	Connection conn = DBConnect.getConnection();
+
+	String sql = "INSERT INTO course (schoolID ,courseID, name, hoursWeek) VALUES (?, ?, ?, ?);";
+
+	PreparedStatement st;
+	try {
+		st = conn.prepareStatement(sql);
+
+		st.setString(1, schoolID);
+		st.setString(2, c.getCourseID());
+		st.setString(3, c.getName());
+		st.setInt(4, c.getHoursWeek());
+
+		st.executeUpdate();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+
+public List<Course> getAllCourses(String schoolID) {
+	
+	String sql = "SELECT courseID, name, hoursWeek FROM course WHERE schoolID = '" + schoolID + "'" ;
+	
+	try {
+		Connection conn = DBConnect.getConnection() ;
+
+		PreparedStatement st = conn.prepareStatement(sql) ;
+		
+		ResultSet rs = st.executeQuery() ;
+		
+		List<Course> list = new ArrayList<>() ;
+		while(rs.next()) {
+			list.add(new Course(rs.getString("courseID"), rs.getString("name"), rs.getInt("hoursWeek"))) ;
+		}
+		
+		conn.close();
+		return list ;
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return null ;
+	}
+}
+
+public void updateSubject(Subject s, String schoolID) {
+	Connection conn = DBConnect.getConnection();
+
+	String sql = "UPDATE `timetable`.`subject` SET `name`= ?, `hoursWeek`= ?, `hoursLab`= ? , `typeLab`= ? WHERE  `subjectID`= ? AND `schoolID`= ?";
+
+	PreparedStatement st;
+	try {
+		st = conn.prepareStatement(sql);
+
+		st.setString(1, s.getName());
+		st.setInt(2, s.getHoursWeek());
+		st.setInt(3, s.getHoursLab());
+		st.setString(4, s.getTypeLab());
+		st.setString(5, s.getSubjectID());
+		st.setString(6, schoolID);
+
+
+		st.executeUpdate();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 
 }

@@ -1,21 +1,21 @@
 package it.polito.tdp.timetable.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Course {
 
 	private String courseID;
 	private String name;
 	private int hoursWeek;
-	private Map<Integer, Subject> listSubject;
+	private List<Subject> listSubject;
 	
-	public Course(String courseID, String name, int hoursWeek, Map<Integer, Subject> listSubject) {
+	public Course(String courseID, String name, int hoursWeek) {
 		super();
 		this.courseID = courseID;
 		this.name = name;
 		this.hoursWeek = hoursWeek;
-		this.listSubject = new HashMap<>();
+		this.listSubject = new ArrayList<Subject>();
 	}
 
 	public String getCourseID() {
@@ -42,11 +42,11 @@ public class Course {
 		this.hoursWeek = hoursWeek;
 	}
 
-	public Map<Integer, Subject> getListSubject() {
+	public List<Subject> getListSubject() {
 		return listSubject;
 	}
 
-	public void setListSubject(Map<Integer, Subject> listSubject) {
+	public void setListSubject(List<Subject> listSubject) {
 		this.listSubject = listSubject;
 	}
 
@@ -73,6 +73,11 @@ public class Course {
 		} else if (!courseID.equals(other.courseID))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + courseID + "] - " + name;
 	}
 	
 	

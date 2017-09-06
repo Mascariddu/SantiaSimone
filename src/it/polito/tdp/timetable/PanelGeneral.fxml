@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.PanelGeneralController">
+   <right>
+      <ImageView fitHeight="600.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../../../image/panel.jpg" />
+         </image>
+      </ImageView>
+   </right>
+   <left>
+      <VBox alignment="TOP_CENTER" cacheShape="false" BorderPane.alignment="CENTER">
+         <children>
+            <Button disable="true" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" style="-fx-border-radius: 150px;" text="Generali">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#openTabSubject" prefHeight="50.0" prefWidth="160.0" text="Materie">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#openTabCourse" prefHeight="50.0" prefWidth="160.0" text="Indirizzi Scolastici">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="50.0" prefWidth="160.0" text="Professori">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#openTabClass" prefHeight="50.0" prefWidth="160.0" text="Classi">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#openTabLab" prefHeight="50.0" prefWidth="160.0" text="Laboratori">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <HBox style="-: ;" BorderPane.alignment="CENTER">
+         <children>
+            <VBox>
+               <children>
+                  <HBox>
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label text="Informazioni scuola">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <VBox alignment="CENTER_LEFT" minHeight="170.0" style="-fx-border-color: black;">
+                                 <children>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Label text="Identificativo">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label text="Nome">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label text="Indirizzo" />
+                                             </children>
+                                          </VBox>
+                                          <VBox>
+                                             <children>
+                                                <Label fx:id="txtIdSchool" text="####################">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label fx:id="txtNameSchool" text="####################">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label fx:id="txtAddressSchool" text="####################" />
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="40.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label text="Le lezioni si tengono dalle " />
+                                          <Label fx:id="txtStartSchool" text="##:##">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label text=" alle " />
+                                          <Label fx:id="txtEndSchool" text="##:##" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <Label text="per ">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="txtDaysSchool" text="#">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label text=" giorni a settimana" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets right="25.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label text="Statistiche Database">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <VBox alignment="CENTER_LEFT" minHeight="170.0" minWidth="270.0" style="-fx-border-color: black;">
+                                 <children>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Label text="Indirizzi Scolastici">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label text="Professori">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label text="Materie">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label text="Classi" />
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </VBox>
+                                          <VBox alignment="CENTER_RIGHT" HBox.hgrow="SOMETIMES">
+                                             <children>
+                                                <Label fx:id="txtNumCourses" text="?????">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="txtNumTeachers" text="?????">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="txtNumSubjects" text="?????">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="txtNumClasses" text="?????" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Label alignment="CENTER" contentDisplay="CENTER" text="Il database è completo al " />
+                                          <Label fx:id="txtPercDB" text="??%" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <ProgressBar fx:id="pgbCompleteDB" prefWidth="240.0" progress="0.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="25.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <Label text="Genera Timetable">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox style="-fx-border-right-color: black;" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <VBox alignment="CENTER" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <HBox fx:id="hbxAllertTimetable">
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../../image/error.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="3.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label text="ATTENZIONE! Al momento non è possibile generare il Timetable. Completare la creazione del database.">
+                                       <HBox.margin>
+                                          <Insets top="7.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER" disable="true" VBox.vgrow="SOMETIMES">
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <Label text="Tempo impiegato">
+                                                         <padding>
+                                                            <Insets bottom="10.0" />
+                                                         </padding>
+                                                      </Label>
+                                                      <Label text="Richieste soddisfatte" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox>
+                                                   <children>
+                                                      <Label fx:id="txtTimeProcess">
+                                                         <padding>
+                                                            <Insets bottom="10.0" />
+                                                         </padding>
+                                                      </Label>
+                                                      <Label fx:id="txtPercSuccess" />
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets left="50.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="btnViewTimetable" alignment="TOP_RIGHT" disable="true" HBox.hgrow="SOMETIMES">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#viewTimetableClass" prefWidth="170.0" text="Visualizza per Classe">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#viewTimetableTeacher" prefWidth="170.0" text="Visualizza per Professore">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                          <Button mnemonicParsing="false" onAction="#viewTimetableLab" prefWidth="170.0" text="Visualizza per Laboratorio" />
+                                       </children>
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" VBox.vgrow="SOMETIMES">
+                                 <children>
+                                    <Button fx:id="btnGenera" alignment="CENTER" contentDisplay="CENTER" minWidth="500.0" mnemonicParsing="false" onAction="#doGeneraTimetable" text="Genera Timetable" visible="false">
+                                       <HBox.margin>
+                                          <Insets top="25.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox fx:id="hbxProgressTime" alignment="BOTTOM_LEFT" visible="false" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <ProgressBar fx:id="prgCreateTime" prefWidth="100.0" progress="0.0">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ProgressBar>
+                        <Label text="Creazione del timetable. Attendere..." />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="15.0" top="15.0" />
+         </padding>
+      </HBox>
+   </center>
+</BorderPane>
