@@ -4,12 +4,14 @@ public class Class {
 	
 	private String classID;
 	private int grade;
+	private String section;
 	private String courseID;
 	
-	public Class(String classID, int grade, String courseID) {
+	public Class(String classID, int grade, String section, String courseID) {
 		super();
 		this.classID = classID;
 		this.grade = grade;
+		this.section = section;
 		this.courseID = courseID;
 	}
 
@@ -28,6 +30,14 @@ public class Class {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}	
+
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
 
 	public String getCourseID() {
 		return courseID;

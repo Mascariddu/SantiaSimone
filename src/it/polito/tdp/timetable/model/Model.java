@@ -2,6 +2,7 @@ package it.polito.tdp.timetable.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import it.polito.tdp.timetable.db.TimetableDAO;
 import javafx.collections.ObservableList;
@@ -38,28 +39,28 @@ public class Model {
 			this.dao = new TimetableDAO();
 			this.courses = dao.getAllCourses(school.getSchoolID());
 			for(Course c : courses)
-				c.setListSubject(dao.getAllSubjectByCourse(school.getSchoolID(),c.getCourseID(),subjects));
+				c.setMapSubject(dao.getAllSubjectByCourse(school.getSchoolID(),c.getCourseID()));
 			
 		return courses;
 	}
 	
-	public Course addNewCourse(String name, int hoursWeek, List<Subject> items) {
+	public Course addNewCourse(String name, int grade, Map<String, Integer> items) {
 		this.dao = new TimetableDAO();
 		int num = this.courses.size() + 1;
 		
-		Course c = new Course("CRS00"+num, name, hoursWeek, items);
+		Course c = new Course("CRS00"+num, grade, name, items);
 		dao.addNewCourse(c,school.getSchoolID());
-		dao.addSubjectsToCourse(school.getSchoolID(),c.getCourseID(),c.getListSubject());
+		dao.addSubjectsToCourse(school.getSchoolID(),c.getCourseID(),c.getMapSubject());
 		courses.add(c);
 		return c;
-		
+
 	}
 	
-	public Subject addNewSubject(String name, int hoursWeek, int hoursLab, String typeLab) {
+	public Subject addNewSubject(String name) {
 		this.dao = new TimetableDAO();
 		int num = this.subjects.size() + 1;
 		
-		Subject s = new Subject("SJB00"+num, name, hoursWeek, hoursLab, typeLab);
+		Subject s = new Subject("SJB00"+num, name);
 		dao.addSubject(s,school.getSchoolID());
 		subjects.add(s);
 		return s;
@@ -128,11 +129,12 @@ public class Model {
 	public void updateCourse(Course c, Course old) {
 		this.dao = new TimetableDAO();
 		dao.updateCourse(c, school.getSchoolID());
+		
 		dao.removeSubjectsToCourse(school.getSchoolID(),old.getCourseID(),old.getListSubject());
-		dao.addSubjectsToCourse(school.getSchoolID(), c.getCourseID(), c.getListSubject());
+		dao.addSubjectsToCourse(school.getSchoolID(), c.getCourseID(), c.getMapSubject());
+		
 		courses.remove(old);
 		courses.add(c);
-		
 	}
 
 	public void updateLab(Lab l) {
@@ -149,26 +151,42 @@ public class Model {
 		this.teachers = dao.getAllTeachers(school.getSchoolID());
 		
 		for(Teacher t : teachers)
-			t.setEnablingSub(dao.getAllSubjectByTeacher(school.getSchoolID(),t.getTeacherID(),subjects));
+			t.setEnablingSub(dao.getAllSubjectByTeacher(school.getSchoolID(),t.getTeacherID()));
 		
 		return teachers;
 	}
 
 	public List<Class> getAllClasses() {
 		this.dao = new TimetableDAO();
-		// this.classes = dao.getAllClasses(school.getSchoolID());
+		this.classes = dao.getAllClasses(school.getSchoolID());
 		return classes;
 	}
 
 	public Teacher addNewTeacher(String name, String surname, Integer hoursWeek, Integer freeDay, List<Subject> items) {
 		this.dao = new TimetableDAO();
 		int num = this.teachers.size() + 1;
+		List<String> subjectIDList = new ArrayList<>();
 		
-		Teacher t = new Teacher("THC00"+num, name, surname, hoursWeek, 0, items);
+		for(Subject s : items)
+			subjectIDList.add(s.getSubjectID());
+		
+		Teacher t = new Teacher("THC00"+num, name, surname, hoursWeek, 0, subjectIDList);
 		dao.addNewTeacher(t,school.getSchoolID());
-		dao.addSubjectsToTeacher(school.getSchoolID(),t.getTeacherID(),t.getEnablingSub());
+		dao.addSubjectsToTeacher(school.getSchoolID(),t.getTeacherID(),subjectIDList);
 		teachers.add(t);
 		return t;
+	}
+
+	public void updateTeacher(Teacher c, Teacher old) {
+		this.dao = new TimetableDAO();
+		dao.updateTeacher(c, school.getSchoolID());
+		
+		dao.removeSubjectsToTeacher(school.getSchoolID(),old.getTeacherID(),old.getEnablingSub());
+		dao.addSubjectsToTeacher(school.getSchoolID(), c.getTeacherID(), c.getEnablingSub());
+		
+		teachers.remove(old);
+		teachers.add(c);
+		
 	}
 
 }

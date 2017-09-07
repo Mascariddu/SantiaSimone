@@ -1,27 +1,29 @@
 package it.polito.tdp.timetable.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Course {
 
 	private String courseID;
 	private String name;
-	private int hoursWeek;
-	private List<Subject> listSubject;
+	private int grade;
+	private Map<String, Integer> mapSubject;
 	
-	public Course(String courseID, String name, int hoursWeek) {
+	public Course(String courseID, int grade, String name) {
 		super();
 		this.courseID = courseID;
+		this.grade = grade;
 		this.name = name;
-		this.hoursWeek = hoursWeek;
 	}
 
-	public Course(String courseID, String name, int hoursWeek, List<Subject> listSubject) {
+	public Course(String courseID, int grade, String name, Map<String, Integer> mapSubject) {
 		super();
 		this.courseID = courseID;
 		this.name = name;
-		this.hoursWeek = hoursWeek;
-		this.listSubject = listSubject;
+		this.grade = grade;
+		this.mapSubject = mapSubject;
 	}
 
 	public String getCourseID() {
@@ -40,20 +42,24 @@ public class Course {
 		this.name = name;
 	}
 
-	public int getHoursWeek() {
-		return hoursWeek;
+	public int getGrade() {
+		return grade;
 	}
 
-	public void setHoursWeek(int hoursWeek) {
-		this.hoursWeek = hoursWeek;
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 
-	public List<Subject> getListSubject() {
-		return listSubject;
+	public Map<String, Integer> getMapSubject() {
+		return mapSubject;
 	}
 
-	public void setListSubject(List<Subject> listSubject) {
-		this.listSubject = listSubject;
+	public void setMapSubject(Map<String, Integer> mapSubject) {
+		this.mapSubject = mapSubject;
+	}
+
+	public List<String> getListSubject() {
+		return new ArrayList<String>(mapSubject.keySet());
 	}
 
 	@Override
@@ -83,7 +89,7 @@ public class Course {
 
 	@Override
 	public String toString() {
-		return "[" + courseID + "] - " + name;
+		return grade + " - " + name;
 	}
 	
 	

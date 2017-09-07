@@ -43,21 +43,6 @@ public class PanelSubjectController {
     @FXML // fx:id="txtNameSub"
     private TextField txtNameSub; // Value injected by FXMLLoader
 
-    @FXML // fx:id="txtHoursSub"
-    private TextField txtHoursSub; // Value injected by FXMLLoader
-
-    @FXML // fx:id="checkLab"
-    private CheckBox checkLab; // Value injected by FXMLLoader
-
-    @FXML // fx:id="vbxLab"
-    private VBox vbxLab; // Value injected by FXMLLoader
-
-    @FXML // fx:id="txtHoursLab"
-    private TextField txtHoursLab; // Value injected by FXMLLoader
-
-    @FXML // fx:id="cmbLabSub"
-    private ComboBox<String> cmbLabSub; // Value injected by FXMLLoader
-
     @FXML // fx:id="listTeachersSub"
     private ListView<Teacher> listTeachersSub; // Value injected by FXMLLoader
 
@@ -72,22 +57,12 @@ public class PanelSubjectController {
 
     @FXML
     void addNewSub(ActionEvent event) {
-    	if(txtNameSub.getText().isEmpty() || txtHoursSub.getText().isEmpty() 
-    			|| (checkLab.isSelected() && (txtHoursLab.getText().isEmpty() || cmbLabSub.getItems().isEmpty()))
-    			|| (Integer.valueOf(txtHoursLab.getText()) > Integer.valueOf(txtHoursSub.getText()))) {
+    	if(txtNameSub.getText().isEmpty() ) {
     		hbxAllertSub.setVisible(true);
     		return;
     	}
     	
-    	Subject s;
-    	
-    	if(checkLab.isSelected())
-    		s = model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), Integer.valueOf(txtHoursLab.getText()), cmbLabSub.getValue());
-    	else {
-    		s = model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), 0, null);
-    		cmbLabSub.getSelectionModel().clearSelection();
-    		txtHoursLab.clear();
-    	}
+    	Subject s = model.addNewSubject(txtNameSub.getText());
 
     	listSubject.getItems().add(s);
     	
@@ -100,10 +75,7 @@ public class PanelSubjectController {
     void clearSub(ActionEvent event) {
     	txtIdSub.clear();
     	txtNameSub.clear();
-    	txtHoursSub.clear();
-    	txtHoursLab.clear();
     	hbxAllertSub.setVisible(false);
-    	cmbLabSub.getSelectionModel().clearSelection();
     	
     	btnUpdateSub.setDisable(true);
     	btnAddNewSub.setDisable(false);
@@ -111,41 +83,19 @@ public class PanelSubjectController {
 
     @FXML
     void doUpdateSub(ActionEvent event) {
-    	if(txtNameSub.getText().isEmpty() || txtHoursSub.getText().isEmpty() 
-    			|| (checkLab.isSelected() && (txtHoursLab.getText().isEmpty() || cmbLabSub.getItems().isEmpty()))) {
+    	if(txtNameSub.getText().isEmpty()) {
     		hbxAllertSub.setVisible(true);
     		return;
     	}
     	
-    	Subject s;
-    	
-    	if(checkLab.isSelected()) {
-    		s = new Subject(txtIdSub.getText(), 
-    					txtNameSub.getText(), 
-    					Integer.valueOf(txtHoursSub.getText()), 
-    					Integer.valueOf(txtHoursLab.getText()), 
-    					cmbLabSub.getSelectionModel().getSelectedItem());
-    	} else {
-    		s = new Subject(txtIdSub.getText(), 
-					txtNameSub.getText(), 
-					Integer.valueOf(txtHoursSub.getText()), 
-					0, 
-					null);
-    	}
+    	Subject s = new Subject(txtIdSub.getText(), 
+    					txtNameSub.getText());
     		
     	model.updateSubject(s);
     	
     	listSubject.getItems().clear();
     	listSubject.getItems().addAll(model.getAllSubjects());
 
-    }
-
-    @FXML
-    void doVisibleLab(ActionEvent event) {
-    	if(checkLab.isSelected())
-    		vbxLab.setDisable(false);
-    	else 
-    		vbxLab.setDisable(true);
     }
 
     @FXML
@@ -181,20 +131,11 @@ public class PanelSubjectController {
     	Subject s = (Subject) listSubject.getSelectionModel().getSelectedItem();
     	txtIdSub.setText(s.getSubjectID());
     	txtNameSub.setText(s.getName());
-    	txtHoursSub.setText(String.valueOf(s.getHoursWeek()));
-    	listTeachersSub.getItems().addAll(s.getTeachers());
     	
-    	if(s.getHoursLab() != 0 ) {
-    		vbxLab.setDisable(false);
-    		checkLab.setSelected(true);
-    		txtHoursLab.setText(String.valueOf(s.getHoursLab()));
-    		cmbLabSub.setValue(s.getTypeLab());
-    	} else {
-    		vbxLab.setDisable(true);
-    		checkLab.setSelected(false);
-    		txtHoursLab.clear();
-    		cmbLabSub.getSelectionModel().clearSelection();
-    	}
+    	listTeachersSub.getItems().clear();
+    	for(Teacher t : model.getAllTeachers())
+    		if(t.getEnablingSub().contains(s.getSubjectID()))
+    			listTeachersSub.getItems().add(t);
     	
     	btnUpdateSub.setDisable(false);
     	btnAddNewSub.setDisable(true);
@@ -206,11 +147,6 @@ public class PanelSubjectController {
         assert hbxAllertSub != null : "fx:id=\"hbxAllertSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
         assert txtIdSub != null : "fx:id=\"txtIdSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
         assert txtNameSub != null : "fx:id=\"txtNameSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
-        assert txtHoursSub != null : "fx:id=\"txtHoursSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
-        assert checkLab != null : "fx:id=\"checkLab\" was not injected: check your FXML file 'PanelSubject.fxml'.";
-        assert vbxLab != null : "fx:id=\"vbxLab\" was not injected: check your FXML file 'PanelSubject.fxml'.";
-        assert txtHoursLab != null : "fx:id=\"txtHoursLab\" was not injected: check your FXML file 'PanelSubject.fxml'.";
-        assert cmbLabSub != null : "fx:id=\"cmbLabSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
         assert listTeachersSub != null : "fx:id=\"listTeachersSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
         assert btnUpdateSub != null : "fx:id=\"btnUpdateSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
         assert btnClearSub != null : "fx:id=\"btnClearSub\" was not injected: check your FXML file 'PanelSubject.fxml'.";
@@ -222,9 +158,7 @@ public class PanelSubjectController {
 		this.model = model ;
 		
 		// Materie
-		listSubject.getItems().addAll(model.getAllSubjects());
-		cmbLabSub.getItems().addAll(model.getAllTypeLaib());
-		
+		listSubject.getItems().addAll(model.getAllSubjects());		
 		
 	}
 }

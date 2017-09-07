@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.polito.tdp.timetable.model.Class;
 import it.polito.tdp.timetable.model.Course;
@@ -71,7 +73,7 @@ public void addSchool(School s) {
 
 public List<Subject> getAllSubjects(String schoolID) {
 	
-	String sql = "SELECT subjectID, name, hoursWeek, hoursLab, typeLab FROM subject WHERE schoolID = '" + schoolID + "'" ;
+	String sql = "SELECT subjectID, name FROM subject WHERE schoolID = '" + schoolID + "'" ;
 	
 	try {
 		Connection conn = DBConnect.getConnection() ;
@@ -82,8 +84,7 @@ public List<Subject> getAllSubjects(String schoolID) {
 		
 		List<Subject> list = new ArrayList<>() ;
 		while(rs.next()) {
-			list.add(new Subject(rs.getString("subjectID"), rs.getString("name"), rs.getInt("hoursWeek"), rs.getInt("hoursLab"),
-					rs.getString("typeLab"))) ;
+			list.add(new Subject(rs.getString("subjectID"), rs.getString("name")));
 		}
 		
 		conn.close();
@@ -98,7 +99,7 @@ public List<Subject> getAllSubjects(String schoolID) {
 public void addSubject(Subject s, String schoolID) {
 	Connection conn = DBConnect.getConnection();
 
-	String sql = "INSERT INTO subject (schoolID ,subjectID, name, hoursWeek, hoursLab, typeLab) VALUES (?, ?, ?, ?, ?, ?);";
+	String sql = "INSERT INTO subject (schoolID ,subjectID, name) VALUES (?, ?, ?);";
 
 	PreparedStatement st;
 	try {
@@ -107,10 +108,6 @@ public void addSubject(Subject s, String schoolID) {
 		st.setString(1, schoolID);
 		st.setString(2, s.getSubjectID());
 		st.setString(3, s.getName());
-		st.setInt(4, s.getHoursWeek());
-		st.setInt(5, s.getHoursLab());
-		st.setString(6, s.getTypeLab());
-
 
 		st.executeUpdate();
 
@@ -125,7 +122,7 @@ public void addSubject(Subject s, String schoolID) {
 public void addNewCourse(Course c, String schoolID) {
 	Connection conn = DBConnect.getConnection();
 
-	String sql = "INSERT INTO course (schoolID ,courseID, name, hoursWeek) VALUES (?, ?, ?, ?);";
+	String sql = "INSERT INTO course (schoolID ,courseID, grade, name) VALUES (?, ?, ?, ?);";
 
 	PreparedStatement st;
 	try {
@@ -133,8 +130,8 @@ public void addNewCourse(Course c, String schoolID) {
 
 		st.setString(1, schoolID);
 		st.setString(2, c.getCourseID());
-		st.setString(3, c.getName());
-		st.setInt(4, c.getHoursWeek());
+		st.setInt(3, c.getGrade());
+		st.setString(4, c.getName());
 
 		st.executeUpdate();
 
@@ -147,7 +144,7 @@ public void addNewCourse(Course c, String schoolID) {
 
 public List<Course> getAllCourses(String schoolID) {
 	
-	String sql = "SELECT courseID, name, hoursWeek FROM course WHERE schoolID = '" + schoolID + "'" ;
+	String sql = "SELECT courseID, name, grade FROM course WHERE schoolID = '" + schoolID + "'" ;
 	
 	try {
 		Connection conn = DBConnect.getConnection() ;
@@ -158,7 +155,7 @@ public List<Course> getAllCourses(String schoolID) {
 		
 		List<Course> list = new ArrayList<>() ;
 		while(rs.next()) {
-			list.add(new Course(rs.getString("courseID"), rs.getString("name"), rs.getInt("hoursWeek"))) ;
+			list.add(new Course(rs.getString("courseID"), rs.getInt("grade"),rs.getString("name"))) ;
 		}
 		
 		conn.close();
@@ -170,8 +167,8 @@ public List<Course> getAllCourses(String schoolID) {
 	}
 }
 
-public List<Subject> getAllSubjectByCourse(String schoolID, String courseID, List<Subject> subjectList) {
-	String sql = "SELECT subjectID FROM study_plan WHERE schoolID = '" + schoolID + "' AND courseID = '" + courseID + "'" ;
+public Map<String, Integer> getAllSubjectByCourse(String schoolID, String courseID) {
+	String sql = "SELECT subjectID, hoursweek FROM study_plan WHERE schoolID = '" + schoolID + "' AND courseID = '" + courseID + "'" ;
 	
 	try {
 		Connection conn = DBConnect.getConnection() ;
@@ -180,13 +177,13 @@ public List<Subject> getAllSubjectByCourse(String schoolID, String courseID, Lis
 		
 		ResultSet rs = st.executeQuery() ;
 		
-		List<Subject> list = new ArrayList<>() ;
+		Map<String, Integer> map = new HashMap<>() ;
 		while(rs.next()) {
-			list.add(subjectList.get(subjectList.indexOf(new Subject(rs.getString("subjectID")))));
+			map.put(rs.getString("subjectID"), rs.getInt("hoursweek"));
 		}
 		
 		conn.close();
-		return list ;
+		return map ;
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -199,18 +196,15 @@ public List<Subject> getAllSubjectByCourse(String schoolID, String courseID, Lis
 public void updateSubject(Subject s, String schoolID) {
 	Connection conn = DBConnect.getConnection();
 
-	String sql = "UPDATE `timetable`.`subject` SET `name`= ?, `hoursWeek`= ?, `hoursLab`= ? , `typeLab`= ? WHERE  `subjectID`= ? AND `schoolID`= ?";
+	String sql = "UPDATE `timetable`.`subject` SET `name`= ? WHERE  `subjectID`= ? AND `schoolID`= ?";
 
 	PreparedStatement st;
 	try {
 		st = conn.prepareStatement(sql);
 
 		st.setString(1, s.getName());
-		st.setInt(2, s.getHoursWeek());
-		st.setInt(3, s.getHoursLab());
-		st.setString(4, s.getTypeLab());
-		st.setString(5, s.getSubjectID());
-		st.setString(6, schoolID);
+		st.setString(2, s.getSubjectID());
+		st.setString(3, schoolID);
 
 
 		st.executeUpdate();
@@ -221,20 +215,20 @@ public void updateSubject(Subject s, String schoolID) {
 	}
 }
 
-public void addSubjectsToCourse(String schoolID, String courseID, List<Subject> listSubject) {
-	Connection conn = DBConnect.getConnection();
+public void addSubjectsToCourse(String schoolID, String courseID, Map<String, Integer> listSubject) {
+	Connection conn = DBConnect.getConnection(); 
 
-	for(Subject s :listSubject) {
-		String sql = "INSERT INTO study_plan (grade, subjectID, courseID, schoolID ) VALUES (?, ?, ?, ?);";
+	for( String subjectID : listSubject.keySet() ) {
+		String sql = "INSERT INTO study_plan (subjectID, courseID, schoolID, hoursweek ) VALUES (?, ?, ?, ?);";
 	
 		PreparedStatement st;
 		try {
 			st = conn.prepareStatement(sql);
 	
-			st.setInt(1, 0);
-			st.setString(2, s.getSubjectID());
-			st.setString(3, courseID);
-			st.setString(4, schoolID);
+			st.setString(1, subjectID);
+			st.setString(2, courseID);
+			st.setString(3, schoolID);
+			st.setInt(4, listSubject.get(subjectID));
 	
 			st.executeUpdate();
 	
@@ -296,14 +290,14 @@ public void addNewLab(Lab l, String schoolID) {
 public void updateCourse(Course c, String schoolID) {
 	Connection conn = DBConnect.getConnection();
 
-	String sql = "UPDATE `timetable`.`course` SET `name`= ?, `hoursWeek`= ? WHERE  `courseID`= ? AND `schoolID`= ?";
+	String sql = "UPDATE `timetable`.`course` SET `name`= ?, `grade`= ? WHERE  `courseID`= ? AND `schoolID`= ?";
 
 	PreparedStatement st;
 	try {
 		st = conn.prepareStatement(sql);
 
 		st.setString(1, c.getName());
-		st.setInt(2, c.getHoursWeek());
+		st.setInt(2, c.getGrade());
 		st.setString(3, c.getCourseID());
 		st.setString(4, schoolID);
 
@@ -316,21 +310,20 @@ public void updateCourse(Course c, String schoolID) {
 	}
 }
 
-public void removeSubjectsToCourse(String schoolID, String courseID, List<Subject> listSubject) {
+public void removeSubjectsToCourse(String schoolID, String courseID, List<String> listSubject) {
 	Connection conn = DBConnect.getConnection();
 
-	for(Subject s :listSubject) {
+	for(String subjectID :listSubject) {
 		String sql = "DELETE FROM `timetable`.`study_plan` "
-				+ "WHERE  `grade`= ? AND `subjectID`= ? AND `courseID`= ? AND `schoolID`= ?;";
+				+ "WHERE `subjectID`= ? AND `courseID`= ? AND `schoolID`= ?;";
 	
 		PreparedStatement st;
 		try {
 			st = conn.prepareStatement(sql);
 	
-			st.setInt(1, 0);
-			st.setString(2, s.getSubjectID());
-			st.setString(3, courseID);
-			st.setString(4, schoolID);
+			st.setString(1, subjectID);
+			st.setString(2, courseID);
+			st.setString(3, schoolID);
 	
 			st.executeUpdate();
 	
@@ -418,10 +411,10 @@ public void addNewTeacher(Teacher t, String schoolID) {
 	
 }
 
-public void addSubjectsToTeacher(String schoolID, String teacherID, List<Subject> enablingSub) {
+public void addSubjectsToTeacher(String schoolID, String teacherID, List<String> enablingSub) {
 	Connection conn = DBConnect.getConnection();
 
-	for(Subject s : enablingSub) {
+	for(String subjectID : enablingSub) {
 		String sql = "INSERT INTO enabling (schoolID, subjectID, teacherID ) VALUES (?, ?, ?);";
 	
 		PreparedStatement st;
@@ -429,7 +422,7 @@ public void addSubjectsToTeacher(String schoolID, String teacherID, List<Subject
 			st = conn.prepareStatement(sql);
 	
 			st.setString(1, schoolID);
-			st.setString(2, s.getSubjectID());
+			st.setString(2, subjectID);
 			st.setString(3, teacherID);
 	
 			st.executeUpdate();
@@ -442,7 +435,7 @@ public void addSubjectsToTeacher(String schoolID, String teacherID, List<Subject
 	
 }
 
-public List<Subject> getAllSubjectByTeacher(String schoolID, String teacherID, List<Subject> subjectList) {
+public List<String> getAllSubjectByTeacher(String schoolID, String teacherID) {
 	String sql = "SELECT subjectID FROM enabling WHERE schoolID = '" + schoolID + "' AND teacherID = '" + teacherID + "'" ;
 	
 	try {
@@ -452,9 +445,9 @@ public List<Subject> getAllSubjectByTeacher(String schoolID, String teacherID, L
 		
 		ResultSet rs = st.executeQuery() ;
 		
-		List<Subject> list = new ArrayList<>() ;
+		List<String> list = new ArrayList<>() ;
 		while(rs.next()) {
-			list.add(subjectList.get(subjectList.indexOf(new Subject(rs.getString("subjectID")))));
+			list.add(rs.getString("subjectID"));
 		}
 		
 		conn.close();
@@ -466,8 +459,60 @@ public List<Subject> getAllSubjectByTeacher(String schoolID, String teacherID, L
 	}
 }
 
-/*public List<Class> getAllClasses(String schoolID) {
-	String sql = "SELECT classID, grade, surname, hoursWeek, freeDay FROM teacher WHERE schoolID = '" + schoolID + "'" ;
+public void removeSubjectsToTeacher(String schoolID, String teacherID, List<String> enablingSub) {
+	Connection conn = DBConnect.getConnection();
+
+	for(String subjectID : enablingSub) {
+		String sql = "DELETE FROM `timetable`.`enabling` "
+				+ "WHERE `subjectID`= ? AND `teacherID`= ? AND `schoolID`= ?;";
+	
+		PreparedStatement st;
+		try {
+			st = conn.prepareStatement(sql);
+	
+			st.setString(1, subjectID);
+			st.setString(2, teacherID);
+			st.setString(3, schoolID);
+	
+			st.executeUpdate();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+}
+
+public void updateTeacher(Teacher c, String schoolID) {
+	Connection conn = DBConnect.getConnection();
+
+	String sql = "UPDATE `timetable`.`teacher` SET `name`= ?, `surname`= ? , `hoursWeek`= ?, `freeDay`= ?"
+			+ " WHERE  `teacherID`= ? AND `schoolID`= ?";
+
+	PreparedStatement st;
+	try {
+		st = conn.prepareStatement(sql);
+
+		st.setString(1, c.getName());
+		st.setString(2, c.getSurname());
+		st.setInt(3, c.getHoursWeek());
+		st.setInt(4, c.getFreeDay());
+		st.setString(5, c.getTeacherID());
+		st.setString(6, schoolID);
+
+
+		st.executeUpdate();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+
+public List<Class> getAllClasses(String schoolID) {
+	String sql = "SELECT classID, grade, section, courseID FROM class WHERE schoolID = '" + schoolID + "'" ;
 	
 	try {
 		Connection conn = DBConnect.getConnection() ;
@@ -478,11 +523,10 @@ public List<Subject> getAllSubjectByTeacher(String schoolID, String teacherID, L
 		
 		List<Class> list = new ArrayList<>() ;
 		while(rs.next()) {
-			list.add(new Teacher(rs.getString("teacherID"), 
-					rs.getString("name"), 
-					rs.getString("surname"),
-					rs.getInt("hoursWeek"), 
-					rs.getInt("freeday"))) ;
+			list.add(new Class(rs.getString("classID"), 
+					rs.getInt("grade"),
+					rs.getString("section"), 
+					rs.getString("courseID")));
 		}
 		
 		conn.close();
@@ -492,6 +536,6 @@ public List<Subject> getAllSubjectByTeacher(String schoolID, String teacherID, L
 		e.printStackTrace();
 		return null ;
 	}
-}*/
+}
 
 }

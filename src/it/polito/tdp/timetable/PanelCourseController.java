@@ -5,6 +5,8 @@
 package it.polito.tdp.timetable;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.timetable.model.Course;
@@ -16,13 +18,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 public class PanelCourseController {
 	
 	private Model model;
-	private int hoursDisponible;
-	private int hoursNotUsed;
+	private List<Subject> subjectsList;
+	private int numSubjectSelected;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -36,14 +39,14 @@ public class PanelCourseController {
     @FXML // fx:id="txtIdCourse"
     private TextField txtIdCourse; // Value injected by FXMLLoader
 
+    @FXML // fx:id="cmbGrade"
+    private ComboBox<Integer> cmbGrade; // Value injected by FXMLLoader
+
     @FXML // fx:id="txtNameCourse"
     private TextField txtNameCourse; // Value injected by FXMLLoader
 
-    @FXML // fx:id="txtHoursCourse"
-    private TextField txtHoursCourse; // Value injected by FXMLLoader
-
-    @FXML // fx:id="txtHouresCourseUnemployed"
-    private TextField txtHouresCourseUnemployed; // Value injected by FXMLLoader
+    @FXML // fx:id="txtSubjectCount"
+    private TextField txtSubjectCount; // Value injected by FXMLLoader
 
     @FXML // fx:id="hbxAllertCourse"
     private HBox hbxAllertCourse; // Value injected by FXMLLoader
@@ -62,21 +65,29 @@ public class PanelCourseController {
 
     @FXML // fx:id="btnNewCourse"
     private Button btnNewCourse; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="bpCourse"
+    private BorderPane bpCourse; // Value injected by FXMLLoader
 
     @FXML
     void addNewCourse(ActionEvent event) {
-    	if(txtNameCourse.getText().isEmpty() || txtHoursCourse.getText().isEmpty() || hoursNotUsed>0) {
+    	
+    	if(txtNameCourse.getText().isEmpty() || cmbGrade.getSelectionModel().isEmpty()) {
     		hbxAllertCourse.setVisible(true);
     		return;
     	}
-    	
-    	Course c = model.addNewCourse(txtNameCourse.getText(),Integer.valueOf(txtHoursCourse.getText()),listSubCourseCheck.getItems());
+    	/*
+    	Course c = model.addNewCourse(txtNameCourse.getText().toUpperCase(),
+    			cmbGrade.getSelectionModel().getSelectedItem(),listSubCourseCheck.getItems());
     	cmbCourse.getItems().clear();
     	cmbCourse.getItems().addAll(model.getAllCourses());
     	txtIdCourse.setText(c.getCourseID());
     	
     	btnUpdateCourse.setDisable(false);
     	btnNewCourse.setDisable(true);
+    	*/
+    	bpCourse.setDisable(true);
+    	Launcher.openCreateNewCourse(txtNameCourse.getText(), cmbGrade.getSelectionModel().getSelectedItem(), listSubCourseCheck.getItems());
     }
 
     @FXML
@@ -85,14 +96,13 @@ public class PanelCourseController {
     	cmbCourse.getSelectionModel().clearSelection();
     	txtIdCourse.clear();
     	txtNameCourse.clear();
-    	txtHoursCourse.setText(String.valueOf(hoursDisponible));;
     	
-    	hoursNotUsed = hoursDisponible;
-    	txtHouresCourseUnemployed.setText(String.valueOf(hoursDisponible));
+    	numSubjectSelected = 0;
+    	txtSubjectCount.setText(String.valueOf(numSubjectSelected));
     	
     	listSubCourseCheck.getItems().clear();
     	listSubCourse.getItems().clear();
-    	listSubCourse.getItems().addAll(model.getAllSubjects());
+    	listSubCourse.getItems().addAll(subjectsList);
     	hbxAllertCourse.setVisible(false);
     	
     	btnUpdateCourse.setDisable(true);
@@ -102,33 +112,20 @@ public class PanelCourseController {
 
     @FXML
     void doUpdateCourse(ActionEvent event) {
-    	if(txtNameCourse.getText().isEmpty() || txtHoursCourse.getText().isEmpty() || hoursNotUsed>0) {
-    		hbxAllertCourse.setVisible(true);
-    		return;
-    	}
-    	
-    	Course c = new Course(txtIdCourse.getText(), 
-    					txtNameCourse.getText(), 
-    					Integer.valueOf(txtHoursCourse.getText()), 
-    					listSubCourseCheck.getItems());
-    		
-    	model.updateCourse(c, cmbCourse.getSelectionModel().getSelectedItem());
-    	
-    	cmbCourse.getItems().clear();
-    	cmbCourse.getItems().addAll(model.getAllCourses());
+    	Launcher.openUpdateCourse(cmbCourse.getSelectionModel().getSelectedItem(), listSubCourseCheck.getItems());
     }
 
     @FXML
     void moveSubLeft(ActionEvent event) {
     	
-    	if(listSubCourseCheck.getSelectionModel().isEmpty())
+    	if(listSubCourseCheck.getSelectionModel().isEmpty() || listSubCourseCheck.getItems().isEmpty())
     		return; 
     	
     	Subject s = listSubCourseCheck.getSelectionModel().getSelectedItem();
     	
-    	hoursNotUsed += s.getHoursWeek();
-    	txtHouresCourseUnemployed.setText(String.valueOf(hoursNotUsed));
-    	 		
+    	numSubjectSelected--;
+    	txtSubjectCount.setText(String.valueOf(numSubjectSelected));
+    	
     	listSubCourseCheck.getItems().remove(s);
     	listSubCourse.getItems().add(s);
     }
@@ -136,20 +133,16 @@ public class PanelCourseController {
     @FXML
     void moveSubRight(ActionEvent event) {
     	 
-    	if(hoursNotUsed == 0 && listSubCourseCheck.getItems().isEmpty()) {
-    		hoursNotUsed = Integer.valueOf(txtHoursCourse.getText());
+    	if(numSubjectSelected == model.getHoursWeekSchool() || listSubCourse.getSelectionModel().isEmpty() || 
+    			listSubCourse.getItems().isEmpty()) {
+    		return;
     	}
-    	
-    	if(listSubCourse.getSelectionModel().isEmpty())
-    		return; 
     	
     	Subject s = listSubCourse.getSelectionModel().getSelectedItem();
     	
-    	if(s.getHoursWeek()>hoursNotUsed || hoursNotUsed == 0)
-    		return;
+    	numSubjectSelected++;
+    	txtSubjectCount.setText(String.valueOf(numSubjectSelected));
     	
-    	hoursNotUsed -= s.getHoursWeek();
-    	txtHouresCourseUnemployed.setText(String.valueOf(hoursNotUsed));
     	listSubCourse.getItems().remove(s);
     	listSubCourseCheck.getItems().add(s);
     }
@@ -182,23 +175,25 @@ public class PanelCourseController {
     @FXML
     void viewCourse(ActionEvent event) {
     	
-    	if(cmbCourse.getItems().isEmpty())
+    	if(cmbCourse.getItems().isEmpty() || cmbCourse.getSelectionModel().isEmpty())
     		return;
     	
     	Course c = cmbCourse.getSelectionModel().getSelectedItem();
     	txtIdCourse.setText(c.getCourseID());
     	txtNameCourse.setText(c.getName());
-    	txtHoursCourse.setText(String.valueOf(c.getHoursWeek()));
+    	cmbGrade.setValue(c.getGrade());
+    	
+    	numSubjectSelected = c.getListSubject().size();
+    	txtSubjectCount.setText(String.valueOf(numSubjectSelected));
     	
     	listSubCourseCheck.getItems().clear();
-    	listSubCourseCheck.getItems().addAll(c.getListSubject());
+    	listSubCourse.getItems().clear();
+    	listSubCourse.getItems().addAll(subjectsList);
     	
-    	for(Subject s : c.getListSubject())
-    		listSubCourse.getItems().remove(s);
-    	
-    	hoursNotUsed = 0;
-    	
-    	txtHouresCourseUnemployed.setText(String.valueOf(hoursNotUsed));
+    	for(String subjectID : c.getListSubject()) {
+    		listSubCourseCheck.getItems().add(subjectsList.get(subjectsList.indexOf(new Subject(subjectID))));
+    		listSubCourse.getItems().remove(new Subject(subjectID));
+    	}
     	
     	btnUpdateCourse.setDisable(false);
     	btnNewCourse.setDisable(true);
@@ -206,11 +201,11 @@ public class PanelCourseController {
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
+        assert bpCourse != null : "fx:id=\"bpCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert cmbCourse != null : "fx:id=\"cmbCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert txtIdCourse != null : "fx:id=\"txtIdCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert txtNameCourse != null : "fx:id=\"txtNameCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
-        assert txtHoursCourse != null : "fx:id=\"txtHoursCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
-        assert txtHouresCourseUnemployed != null : "fx:id=\"txtHouresCourseUnemployed\" was not injected: check your FXML file 'PanelCourse.fxml'.";
+        assert txtSubjectCount != null : "fx:id=\"txtSubjectCount\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert hbxAllertCourse != null : "fx:id=\"hbxAllertCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert listSubCourse != null : "fx:id=\"listSubCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert listSubCourseCheck != null : "fx:id=\"listSubCourseCheck\" was not injected: check your FXML file 'PanelCourse.fxml'.";
@@ -221,15 +216,15 @@ public class PanelCourseController {
     }
     
     public void setModel(Model model) {
-		this.model = model ;		
+		this.model = model ;
+		this.subjectsList = model.getAllSubjects();
 		
-		listSubCourse.getItems().addAll(model.getAllSubjects());
+		listSubCourse.getItems().addAll(subjectsList);
 		cmbCourse.getItems().addAll(model.getAllCourses());
+		cmbGrade.getItems().addAll(1,2,3,4,5,6,7);
 		
-		hoursDisponible = model.getHoursWeekSchool();
-		hoursNotUsed = hoursDisponible;
-		txtHouresCourseUnemployed.setText(String.valueOf(hoursNotUsed));
-		txtHoursCourse.setText(String.valueOf(hoursDisponible));;
+		numSubjectSelected = 0;
+		txtSubjectCount.setText(String.valueOf(numSubjectSelected));;
 		
 	}
 }

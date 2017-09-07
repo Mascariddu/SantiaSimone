@@ -7,18 +7,12 @@ public class Subject {
 	
 	private String subjectID;
 	private String name;
-	private int hoursWeek;
-	private int hoursLab;
-	private String typeLab;
 	private List<Teacher> teachers;
 	
-	public Subject(String subjectID, String name, int hoursWeek, int hoursLab, String typeLab) {
+	public Subject(String subjectID, String name) {
 		super();
 		this.subjectID = subjectID;
 		this.name = name;
-		this.hoursWeek = hoursWeek;
-		this.hoursLab = hoursLab;
-		this.typeLab = typeLab;
 		this.teachers = new ArrayList<Teacher>();
 	}
 	
@@ -48,30 +42,6 @@ public class Subject {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getHoursWeek() {
-		return hoursWeek;
-	}
-
-	public void setHoursWeek(int hoursWeek) {
-		this.hoursWeek = hoursWeek;
-	}
-
-	public int getHoursLab() {
-		return hoursLab;
-	}
-
-	public void setHoursLab(int hoursLab) {
-		this.hoursLab = hoursLab;
-	}
-
-	public String getTypeLab() {
-		return typeLab;
-	}
-
-	public void setTypeLab(String typeLab) {
-		this.typeLab = typeLab;
 	}
 
 	@Override

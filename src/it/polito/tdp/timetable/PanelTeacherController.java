@@ -5,9 +5,10 @@
 package it.polito.tdp.timetable;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import it.polito.tdp.timetable.model.Course;
 import it.polito.tdp.timetable.model.Model;
 import it.polito.tdp.timetable.model.Subject;
 import it.polito.tdp.timetable.model.Teacher;
@@ -23,6 +24,7 @@ import javafx.scene.layout.HBox;
 public class PanelTeacherController {
 	
 	private Model model;
+	private List<Subject> subjectsList;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -49,7 +51,7 @@ public class PanelTeacherController {
     private TextField txtHoursTeacher; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmdFreeDayTeacher"
-    private ComboBox<Integer> cmdFreeDayTeacher; // Value injected by FXMLLoader
+    private ComboBox<String> cmdFreeDayTeacher; // Value injected by FXMLLoader
 
     @FXML // fx:id="listSubTeacher"
     private ListView<Subject> listSubTeacher; // Value injected by FXMLLoader
@@ -76,7 +78,7 @@ public class PanelTeacherController {
     	}
     	
     	Teacher t = model.addNewTeacher(txtNameTeacher.getText(), txtSurnameTeacher.getText(),
-    			Integer.valueOf(txtHoursTeacher.getText()),cmdFreeDayTeacher.getSelectionModel().getSelectedItem(), listSubTeacher.getItems());
+    			Integer.valueOf(txtHoursTeacher.getText()),cmdFreeDayTeacher.getSelectionModel().getSelectedIndex(), listSubTeacher.getItems());
     	listTeachers.getItems().clear();
     	listTeachers.getItems().addAll(model.getAllTeachers());
     	txtIdTeacher.setText(t.getTeacherID());
@@ -92,9 +94,13 @@ public class PanelTeacherController {
     	listTeachers.getSelectionModel().clearSelection();
     	txtIdTeacher.clear();
     	txtNameTeacher.clear();
+    	txtSurnameTeacher.clear();
     	txtHoursTeacher.clear();
     	
     	listSubTeacher.getItems().clear();
+    	listSub.getItems().clear();
+    	listSub.getItems().addAll(subjectsList);
+    	
     	hbxAllertTeacher.setVisible(false);
     	
     	btnUpdateTeacher.setDisable(true);
@@ -104,6 +110,29 @@ public class PanelTeacherController {
 
     @FXML
     void doUpdateTeacher(ActionEvent event) {
+    	
+    	if(txtNameTeacher.getText().isEmpty() || txtSurnameTeacher.getText().isEmpty() ||  
+    			txtHoursTeacher.getText().isEmpty() || listSubTeacher.getItems().isEmpty()) {
+    		hbxAllertTeacher.setVisible(true);
+    		return;
+    	}
+    	
+    	List<String> subjectIDList = new ArrayList<>();
+    	
+    	for(Subject s : listSubTeacher.getItems())
+    		subjectIDList.add(s.getSubjectID());
+    	
+    	Teacher c = new Teacher(txtIdTeacher.getText(), 
+    					txtNameTeacher.getText(),
+    					txtSurnameTeacher.getText(),
+    					Integer.valueOf(txtHoursTeacher.getText()), 
+    					cmdFreeDayTeacher.getSelectionModel().getSelectedIndex(),
+    					subjectIDList);
+    		
+    	model.updateTeacher(c, listTeachers.getSelectionModel().getSelectedItem());
+    	
+    	listTeachers.getItems().clear();
+    	listTeachers.getItems().addAll(model.getAllTeachers());
 
     }
 
@@ -166,12 +195,15 @@ public class PanelTeacherController {
     	txtNameTeacher.setText(t.getName());
     	txtSurnameTeacher.setText(t.getSurname());
     	txtHoursTeacher.setText(String.valueOf(t.getHoursWeek()));
+    	cmdFreeDayTeacher.getSelectionModel().select(t.getFreeDay());
     	
     	listSubTeacher.getItems().clear();
-    	listSubTeacher.getItems().addAll(t.getEnablingSub());
-    	
-    	for(Subject s : t.getEnablingSub())
-    		listSub.getItems().remove(s);
+    	listSub.getItems().clear();
+    	listSub.getItems().addAll(subjectsList);
+    	for(String subjectID : t.getEnablingSub()) {
+    		listSubTeacher.getItems().add(subjectsList.get(subjectsList.indexOf(new Subject(subjectID))));
+    		listSub.getItems().remove(new Subject(subjectID));
+    	}
     	
     	btnUpdateTeacher.setDisable(false);
     	btnAddNewTeacher.setDisable(true);
@@ -197,9 +229,11 @@ public class PanelTeacherController {
     
     public void setModel(Model model) {
 		this.model = model ;	
+		this.subjectsList = model.getAllSubjects();
 		
 		listTeachers.getItems().addAll(model.getAllTeachers());
-		listSub.getItems().addAll(model.getAllSubjects());
+		listSub.getItems().addAll(subjectsList);
+		cmdFreeDayTeacher.getItems().addAll("Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato","Domenica");
 	}
 }
 
