@@ -42,7 +42,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button disable="true" mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="50.0" prefWidth="160.0" text="Professori">
+            <Button disable="true" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Professori">
                <font>
                   <Font size="14.0" />
                </font>
@@ -159,21 +159,44 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Label text="Materie abilitato per l'insegnamento">
+                  <Label text="Materie abilitato ">
                      <VBox.margin>
-                        <Insets bottom="5.0" top="30.0" />
+                        <Insets left="10.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <ListView fx:id="listSubTeacher" maxHeight="100.0">
+                  <ListView fx:id="listSubTeacher" maxHeight="125.0" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#moveUpSub" prefHeight="10.0" prefWidth="125.0" text="^">
+                           <font>
+                              <Font name="System Bold" size="10.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#moveSubDown" prefHeight="10.0" prefWidth="125.0" text="v">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
+                           </padding>
+                        </Button>
+                     </children>
                      <VBox.margin>
-                        <Insets right="5.0" />
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </VBox.margin>
-                  </ListView>
-                  <Button fx:id="btnAddSubTeacher" alignment="CENTER_RIGHT" disable="true" mnemonicParsing="false" onAction="#addSubTeacher" text="Aggiungi nuove materie">
+                  </HBox>
+                  <ListView fx:id="listSub" maxHeight="125.0" />
+                  <Label maxWidth="1.7976931348623157E308" text="Materie disponibili">
                      <VBox.margin>
-                        <Insets top="6.0" />
+                        <Insets left="10.0" />
                      </VBox.margin>
-                  </Button>
+                  </Label>
                   <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="SOMETIMES">
                      <children>
                         <Button fx:id="btnUpdateTeacher" disable="true" mnemonicParsing="false" onAction="#doUpdateTeacher" text="Modifica">
@@ -186,11 +209,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnAddNewTeacher" mnemonicParsing="false" onAction="#addNewTeacher" text="Aggiungi Professore">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </Button>
+                        <Button fx:id="btnAddNewTeacher" mnemonicParsing="false" onAction="#addNewTeacher" text="Aggiungi Professore" />
                      </children>
                      <VBox.margin>
                         <Insets />

@@ -57,6 +57,9 @@ public class PanelGeneralController {
 
     @FXML // fx:id="txtNumClasses"
     private Label txtNumClasses; // Value injected by FXMLLoader
+    
+    @FXML
+    private Label txtNumLabs;
 
     @FXML // fx:id="txtPercDB"
     private Label txtPercDB; // Value injected by FXMLLoader
@@ -142,6 +145,7 @@ public class PanelGeneralController {
         assert txtNumTeachers != null : "fx:id=\"txtNumTeachers\" was not injected: check your FXML file 'PanelGeneral.fxml'.";
         assert txtNumSubjects != null : "fx:id=\"txtNumSubjects\" was not injected: check your FXML file 'PanelGeneral.fxml'.";
         assert txtNumClasses != null : "fx:id=\"txtNumClasses\" was not injected: check your FXML file 'PanelGeneral.fxml'.";
+        assert txtNumLabs != null : "fx:id=\"txtNumLabs\" was not injected: check your FXML file 'PanelGeneral.fxml'.";
         assert txtPercDB != null : "fx:id=\"txtPercDB\" was not injected: check your FXML file 'PanelGeneral.fxml'.";
         assert pgbCompleteDB != null : "fx:id=\"pgbCompleteDB\" was not injected: check your FXML file 'PanelGeneral.fxml'.";
         assert hbxAllertTimetable != null : "fx:id=\"hbxAllertTimetable\" was not injected: check your FXML file 'PanelGeneral.fxml'.";
@@ -165,6 +169,12 @@ public class PanelGeneralController {
 		txtStartSchool.setText(school.getStartLessons() + ":00");
 		txtEndSchool.setText(school.getEndLessons() + ":00");
 		txtDaysSchool.setText(String.valueOf(school.getWorkDays()));
+		
+		txtNumClasses.setText(String.valueOf(model.getAllClasses().size()));
+		txtNumLabs.setText(String.valueOf(model.getAllLab().size()));
+		txtNumSubjects.setText(String.valueOf(model.getAllSubjects().size()));
+		txtNumCourses.setText(String.valueOf(model.getAllCourses().size()));
+		txtNumTeachers.setText(String.valueOf(model.getAllTeachers().size()));
 		
 	}
 }

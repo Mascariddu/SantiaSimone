@@ -1,6 +1,5 @@
 package it.polito.tdp.timetable.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
@@ -15,7 +14,14 @@ public class Course {
 		this.courseID = courseID;
 		this.name = name;
 		this.hoursWeek = hoursWeek;
-		this.listSubject = new ArrayList<Subject>();
+	}
+
+	public Course(String courseID, String name, int hoursWeek, List<Subject> listSubject) {
+		super();
+		this.courseID = courseID;
+		this.name = name;
+		this.hoursWeek = hoursWeek;
+		this.listSubject = listSubject;
 	}
 
 	public String getCourseID() {

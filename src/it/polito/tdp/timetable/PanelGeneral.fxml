@@ -75,7 +75,7 @@
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <VBox alignment="CENTER_LEFT" minHeight="170.0" style="-fx-border-color: black;">
+                              <VBox alignment="CENTER_LEFT" minHeight="195.0" style="-fx-border-color: black;">
                                  <children>
                                     <HBox>
                                        <VBox.margin>
@@ -188,7 +188,18 @@
                                                       <Insets bottom="5.0" />
                                                    </padding>
                                                 </Label>
-                                                <Label text="Classi" />
+                                                <Label text="Classi">
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding></Label>
+                                                <Label text="Laboratori">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </Label>
                                              </children>
                                              <HBox.margin>
                                                 <Insets />
@@ -211,7 +222,11 @@
                                                       <Insets bottom="5.0" />
                                                    </padding>
                                                 </Label>
-                                                <Label fx:id="txtNumClasses" text="?????" />
+                                                <Label fx:id="txtNumClasses" text="?????">
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding></Label>
+                                                <Label fx:id="txtNumLabs" text="?????" />
                                              </children>
                                           </VBox>
                                        </children>

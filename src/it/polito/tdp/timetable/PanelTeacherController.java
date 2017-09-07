@@ -7,7 +7,10 @@ package it.polito.tdp.timetable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.timetable.model.Course;
 import it.polito.tdp.timetable.model.Model;
+import it.polito.tdp.timetable.model.Subject;
+import it.polito.tdp.timetable.model.Teacher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,7 +31,7 @@ public class PanelTeacherController {
     private URL location;
 
     @FXML // fx:id="listTeachers"
-    private ListView<?> listTeachers; // Value injected by FXMLLoader
+    private ListView<Teacher> listTeachers; // Value injected by FXMLLoader
 
     @FXML // fx:id="hbxAllertTeacher"
     private HBox hbxAllertTeacher; // Value injected by FXMLLoader
@@ -46,13 +49,13 @@ public class PanelTeacherController {
     private TextField txtHoursTeacher; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmdFreeDayTeacher"
-    private ComboBox<?> cmdFreeDayTeacher; // Value injected by FXMLLoader
+    private ComboBox<Integer> cmdFreeDayTeacher; // Value injected by FXMLLoader
 
     @FXML // fx:id="listSubTeacher"
-    private ListView<?> listSubTeacher; // Value injected by FXMLLoader
+    private ListView<Subject> listSubTeacher; // Value injected by FXMLLoader
 
-    @FXML // fx:id="btnAddSubTeacher"
-    private Button btnAddSubTeacher; // Value injected by FXMLLoader
+    @FXML // fx:id="listSub"
+    private ListView<Subject> listSub; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnUpdateTeacher"
     private Button btnUpdateTeacher; // Value injected by FXMLLoader
@@ -65,22 +68,67 @@ public class PanelTeacherController {
 
     @FXML
     void addNewTeacher(ActionEvent event) {
-
-    }
-
-    @FXML
-    void addSubTeacher(ActionEvent event) {
-
+    	
+    	if(txtNameTeacher.getText().isEmpty() || txtSurnameTeacher.getText().isEmpty() ||  
+    			txtHoursTeacher.getText().isEmpty() || listSubTeacher.getItems().isEmpty()) {
+    		hbxAllertTeacher.setVisible(true);
+    		return;
+    	}
+    	
+    	Teacher t = model.addNewTeacher(txtNameTeacher.getText(), txtSurnameTeacher.getText(),
+    			Integer.valueOf(txtHoursTeacher.getText()),cmdFreeDayTeacher.getSelectionModel().getSelectedItem(), listSubTeacher.getItems());
+    	listTeachers.getItems().clear();
+    	listTeachers.getItems().addAll(model.getAllTeachers());
+    	txtIdTeacher.setText(t.getTeacherID());
+    	
+    	btnUpdateTeacher.setDisable(false);
+    	btnAddNewTeacher.setDisable(true);
+    	
     }
 
     @FXML
     void doClearTeacher(ActionEvent event) {
+    	
+    	listTeachers.getSelectionModel().clearSelection();
+    	txtIdTeacher.clear();
+    	txtNameTeacher.clear();
+    	txtHoursTeacher.clear();
+    	
+    	listSubTeacher.getItems().clear();
+    	hbxAllertTeacher.setVisible(false);
+    	
+    	btnUpdateTeacher.setDisable(true);
+    	btnAddNewTeacher.setDisable(false);
 
     }
 
     @FXML
     void doUpdateTeacher(ActionEvent event) {
 
+    }
+
+    @FXML
+    void moveSubDown(ActionEvent event) {
+
+    	if(listSubTeacher.getSelectionModel().isEmpty())
+    		return; 
+    	
+    	Subject s = listSubTeacher.getSelectionModel().getSelectedItem();
+    	 		
+    	listSubTeacher.getItems().remove(s);
+    	listSub.getItems().add(s);
+    }
+
+    @FXML
+    void moveUpSub(ActionEvent event) {
+    	
+    	if(listSub.getSelectionModel().isEmpty())
+    		return; 
+    	
+    	Subject s = listSub.getSelectionModel().getSelectedItem();
+
+    	listSub.getItems().remove(s);
+    	listSubTeacher.getItems().add(s);
     }
 
     @FXML
@@ -109,12 +157,24 @@ public class PanelTeacherController {
     }
 
     @FXML
-    void openTabTeacher(ActionEvent event) {
-    	Launcher.openTabTeacher();
-    }
-
-    @FXML
     void viewTeacher(MouseEvent event) {
+    	if(listTeachers.getItems().isEmpty())
+    		return;
+    	
+    	Teacher t = listTeachers.getSelectionModel().getSelectedItem();
+    	txtIdTeacher.setText(t.getTeacherID());
+    	txtNameTeacher.setText(t.getName());
+    	txtSurnameTeacher.setText(t.getSurname());
+    	txtHoursTeacher.setText(String.valueOf(t.getHoursWeek()));
+    	
+    	listSubTeacher.getItems().clear();
+    	listSubTeacher.getItems().addAll(t.getEnablingSub());
+    	
+    	for(Subject s : t.getEnablingSub())
+    		listSub.getItems().remove(s);
+    	
+    	btnUpdateTeacher.setDisable(false);
+    	btnAddNewTeacher.setDisable(true);
 
     }
 
@@ -128,7 +188,7 @@ public class PanelTeacherController {
         assert txtHoursTeacher != null : "fx:id=\"txtHoursTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert cmdFreeDayTeacher != null : "fx:id=\"cmdFreeDayTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert listSubTeacher != null : "fx:id=\"listSubTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
-        assert btnAddSubTeacher != null : "fx:id=\"btnAddSubTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
+        assert listSub != null : "fx:id=\"listSub\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert btnUpdateTeacher != null : "fx:id=\"btnUpdateTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert btnClearTeacher != null : "fx:id=\"btnClearTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert btnAddNewTeacher != null : "fx:id=\"btnAddNewTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
@@ -136,7 +196,10 @@ public class PanelTeacherController {
     }
     
     public void setModel(Model model) {
-		this.model = model ;		
+		this.model = model ;	
+		
+		listTeachers.getItems().addAll(model.getAllTeachers());
+		listSub.getItems().addAll(model.getAllSubjects());
 	}
 }
 

@@ -29,14 +29,21 @@
                </VBox.margin>
             </Label>
             <ComboBox fx:id="boxDB" prefWidth="400.0" />
+            <HBox alignment="CENTER_RIGHT">
+               <children>
+                  <Button fx:id="btnNext" alignment="CENTER" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#openDB" prefWidth="100.0" text="Apri" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
             <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="SOMETIMES">
                <children>
                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#doNewDB" prefWidth="150.0" text="Crea un nuovo database">
                      <HBox.margin>
-                        <Insets right="20.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnNext" alignment="CENTER" mnemonicParsing="false" onAction="#openDB" prefWidth="100.0" text="Apri" />
                </children>
                <VBox.margin>
                   <Insets top="25.0" />

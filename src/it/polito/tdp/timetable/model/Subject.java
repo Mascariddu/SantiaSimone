@@ -22,6 +22,10 @@ public class Subject {
 		this.teachers = new ArrayList<Teacher>();
 	}
 	
+	public Subject(String subjectID) {
+		this.subjectID = subjectID;
+	}
+	
 	public void addTeacher(Teacher t) {
 		teachers.add(t);
 	}

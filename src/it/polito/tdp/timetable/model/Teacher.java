@@ -11,10 +11,10 @@ public class Teacher {
 	private int hoursWeek;
 	private int hoursWork;
 	private int freeDay;
-	private List<Subject> enablingSub;
+	private List<String> enablingSub;
 	
 	public Teacher(String teacherID, String name, String surname, int hoursWeek, int freeDay,
-			List<Subject> enablingSub) {
+			List<String> enablingSub) {
 		super();
 		this.teacherID = teacherID;
 		this.name = name;
@@ -22,7 +22,16 @@ public class Teacher {
 		this.hoursWeek = hoursWeek;
 		this.hoursWork = 0;
 		this.freeDay = freeDay;
-		this.enablingSub = new ArrayList<Subject>();
+		this.enablingSub = enablingSub;
+	}
+	
+	public Teacher(String teacherID, String name, String surname, int hoursWeek, int freeDay) {
+		this.teacherID = teacherID;
+		this.name = name;
+		this.surname = surname;
+		this.hoursWeek = hoursWeek;
+		this.hoursWork = 0;
+		this.freeDay = freeDay;
 	}
 
 	public String getTeacherID() {
@@ -73,11 +82,11 @@ public class Teacher {
 		this.freeDay = freeDay;
 	}
 
-	public List<Subject> getEnablingSub() {
+	public List<String> getEnablingSub() {
 		return enablingSub;
 	}
 
-	public void setEnablingSub(List<Subject> enablingSub) {
+	public void setEnablingSub(List<String> enablingSub) {
 		this.enablingSub = enablingSub;
 	}
 
@@ -104,6 +113,11 @@ public class Teacher {
 		} else if (!teacherID.equals(other.teacherID))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + teacherID + "] " + name + " " + surname;
 	}
 	
 	

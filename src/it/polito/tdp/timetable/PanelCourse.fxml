@@ -112,7 +112,7 @@
                                     <Insets top="3.0" />
                                  </padding>
                               </Label>
-                              <TextField fx:id="txtHoursCourse" alignment="CENTER" prefWidth="30.0" text="0">
+                              <TextField fx:id="txtHoursCourse" alignment="CENTER" editable="false" prefWidth="30.0" text="0">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>

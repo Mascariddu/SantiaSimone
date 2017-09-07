@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.timetable.model.Model;
 import it.polito.tdp.timetable.model.Subject;
+import it.polito.tdp.timetable.model.Teacher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -58,7 +59,7 @@ public class PanelSubjectController {
     private ComboBox<String> cmbLabSub; // Value injected by FXMLLoader
 
     @FXML // fx:id="listTeachersSub"
-    private ListView<?> listTeachersSub; // Value injected by FXMLLoader
+    private ListView<Teacher> listTeachersSub; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnUpdateSub"
     private Button btnUpdateSub; // Value injected by FXMLLoader
@@ -72,16 +73,27 @@ public class PanelSubjectController {
     @FXML
     void addNewSub(ActionEvent event) {
     	if(txtNameSub.getText().isEmpty() || txtHoursSub.getText().isEmpty() 
-    			|| (checkLab.isSelected() && (txtHoursLab.getText().isEmpty() || cmbLabSub.getItems().isEmpty()))) {
+    			|| (checkLab.isSelected() && (txtHoursLab.getText().isEmpty() || cmbLabSub.getItems().isEmpty()))
+    			|| (Integer.valueOf(txtHoursLab.getText()) > Integer.valueOf(txtHoursSub.getText()))) {
     		hbxAllertSub.setVisible(true);
     		return;
     	}
     	
+    	Subject s;
+    	
     	if(checkLab.isSelected())
-    		listSubject.getItems().add(model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), Integer.valueOf(txtHoursLab.getText()), cmbLabSub.getValue()));
-    	else 
-    		listSubject.getItems().add(model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), 0, null));
+    		s = model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), Integer.valueOf(txtHoursLab.getText()), cmbLabSub.getValue());
+    	else {
+    		s = model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), 0, null);
+    		cmbLabSub.getSelectionModel().clearSelection();
+    		txtHoursLab.clear();
+    	}
 
+    	listSubject.getItems().add(s);
+    	
+    	txtIdSub.setText(s.getSubjectID());
+    	btnAddNewSub.setDisable(true);
+    	btnUpdateSub.setDisable(false);
     }
 
     @FXML
@@ -91,6 +103,7 @@ public class PanelSubjectController {
     	txtHoursSub.clear();
     	txtHoursLab.clear();
     	hbxAllertSub.setVisible(false);
+    	cmbLabSub.getSelectionModel().clearSelection();
     	
     	btnUpdateSub.setDisable(true);
     	btnAddNewSub.setDisable(false);
@@ -111,7 +124,7 @@ public class PanelSubjectController {
     					txtNameSub.getText(), 
     					Integer.valueOf(txtHoursSub.getText()), 
     					Integer.valueOf(txtHoursLab.getText()), 
-    					cmbLabSub.getItems().toString());
+    					cmbLabSub.getSelectionModel().getSelectedItem());
     	} else {
     		s = new Subject(txtIdSub.getText(), 
 					txtNameSub.getText(), 
@@ -162,21 +175,25 @@ public class PanelSubjectController {
 
     @FXML
     void viewSubject(MouseEvent event) {
+    	if(listSubject.getItems().isEmpty())
+    		return;
+    	
     	Subject s = (Subject) listSubject.getSelectionModel().getSelectedItem();
     	txtIdSub.setText(s.getSubjectID());
     	txtNameSub.setText(s.getName());
     	txtHoursSub.setText(String.valueOf(s.getHoursWeek()));
+    	listTeachersSub.getItems().addAll(s.getTeachers());
     	
     	if(s.getHoursLab() != 0 ) {
     		vbxLab.setDisable(false);
     		checkLab.setSelected(true);
     		txtHoursLab.setText(String.valueOf(s.getHoursLab()));
-    		// cmbLabSub.getItems().add(s.getTypeLab());
+    		cmbLabSub.setValue(s.getTypeLab());
     	} else {
     		vbxLab.setDisable(true);
     		checkLab.setSelected(false);
     		txtHoursLab.clear();
-    		cmbLabSub.getItems().clear();
+    		cmbLabSub.getSelectionModel().clearSelection();
     	}
     	
     	btnUpdateSub.setDisable(false);
@@ -206,6 +223,7 @@ public class PanelSubjectController {
 		
 		// Materie
 		listSubject.getItems().addAll(model.getAllSubjects());
+		cmbLabSub.getItems().addAll(model.getAllTypeLaib());
 		
 		
 	}

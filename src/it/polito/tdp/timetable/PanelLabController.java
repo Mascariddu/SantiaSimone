@@ -7,7 +7,9 @@ package it.polito.tdp.timetable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.timetable.model.Lab;
 import it.polito.tdp.timetable.model.Model;
+import it.polito.tdp.timetable.model.Subject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,7 +29,7 @@ public class PanelLabController {
     private URL location;
 
     @FXML // fx:id="listLab"
-    private ListView<?> listLab; // Value injected by FXMLLoader
+    private ListView<Lab> listLab; // Value injected by FXMLLoader
 
     @FXML // fx:id="hbxAllertLab"
     private HBox hbxAllertLab; // Value injected by FXMLLoader
@@ -52,16 +54,46 @@ public class PanelLabController {
 
     @FXML
     void addNewLab(ActionEvent event) {
-
+    	if(txtNameLab.getText().isEmpty() || txtTypeLab.getText().isEmpty()) {
+    		hbxAllertLab.setVisible(true);
+    		return;
+    	}
+    	
+    	Lab l = model.addNewLab(txtNameLab.getText(),  txtTypeLab.getText());
+    	listLab.getItems().add(l);
+    	
+    	txtIdLab.setText(l.getName());
+    	btnAddNewLab.setDisable(true);
+    	btnUpdateLab.setDisable(false);
     }
 
     @FXML
     void doCleanLab(ActionEvent event) {
-
+    	txtIdLab.clear();
+    	txtNameLab.clear();
+    	txtTypeLab.clear();
+    	
+    	hbxAllertLab.setVisible(false);
+    	
+    	btnUpdateLab.setDisable(true);
+    	btnAddNewLab.setDisable(false);
     }
 
     @FXML
     void doUpdateLab(ActionEvent event) {
+    	if(txtNameLab.getText().isEmpty() || txtTypeLab.getText().isEmpty()) {
+    		hbxAllertLab.setVisible(true);
+    		return;
+    	}
+    	
+    	Lab l = new Lab(txtIdLab.getText(), 
+    					txtNameLab.getText(), 
+    					txtTypeLab.getText());
+    		
+    	model.updateLab(l);
+    	
+    	listLab.getItems().clear();
+    	listLab.getItems().addAll(model.getAllLab());
 
     }
 
@@ -92,7 +124,18 @@ public class PanelLabController {
 
     @FXML
     void viewLab(MouseEvent event) {
-
+    	
+    	if(listLab.getItems().isEmpty())
+    		return;
+    	
+    	Lab l = listLab.getSelectionModel().getSelectedItem();
+    	txtIdLab.setText(l.getLabID());
+    	txtNameLab.setText(l.getName());
+    	txtTypeLab.setText(l.getType());
+    	
+    	btnUpdateLab.setDisable(false);
+    	btnAddNewLab.setDisable(true);
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -110,5 +153,8 @@ public class PanelLabController {
     
     public void setModel(Model model) {
 		this.model = model ;
+		
+		listLab.getItems().addAll(model.getAllLab());
+		
     }
 }

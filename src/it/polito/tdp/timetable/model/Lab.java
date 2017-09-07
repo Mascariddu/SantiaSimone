@@ -36,6 +36,37 @@ public class Lab {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	@Override
+	public String toString() {
+		return "[" + labID + "] " + name;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((labID == null) ? 0 : labID.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Lab other = (Lab) obj;
+		if (labID == null) {
+			if (other.labID != null)
+				return false;
+		} else if (!labID.equals(other.labID))
+			return false;
+		return true;
+	}
+	
 	
 	
 
