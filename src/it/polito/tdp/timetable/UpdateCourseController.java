@@ -205,7 +205,8 @@ public class UpdateCourseController {
 		for(Integer i : mapSubject.values())
 			this.numHoursAssigned+=i;
 		
-		btnAddNewCourse.setDisable(true);
+		if(numHoursAssigned != model.getHoursWeekSchool())
+			btnAddNewCourse.setDisable(true);
 		
 		// Materie
 		listSubjectChecked.getItems().addAll(subjectList);

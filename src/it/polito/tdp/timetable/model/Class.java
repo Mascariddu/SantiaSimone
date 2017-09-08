@@ -1,11 +1,24 @@
 package it.polito.tdp.timetable.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Class {
 	
 	private String classID;
 	private int grade;
 	private String section;
 	private String courseID;
+	private Map<String,String> mapSubjectTeacher;
+	
+	public Class(String classID, int grade, String section, String courseID, Map<String,String> mapSubjectTeacher) {
+		super();
+		this.classID = classID;
+		this.grade = grade;
+		this.section = section;
+		this.courseID = courseID;
+		this.mapSubjectTeacher = mapSubjectTeacher;
+	}
 	
 	public Class(String classID, int grade, String section, String courseID) {
 		super();
@@ -13,6 +26,7 @@ public class Class {
 		this.grade = grade;
 		this.section = section;
 		this.courseID = courseID;
+		this.mapSubjectTeacher = new HashMap<>();
 	}
 
 	public String getClassID() {
@@ -47,6 +61,14 @@ public class Class {
 		this.courseID = courseID;
 	}
 
+	public Map<String, String> getMapSubjectTeacher() {
+		return mapSubjectTeacher;
+	}
+
+	public void setMapSubjectTeacher(Map<String, String> mapSubjectTeacher) {
+		this.mapSubjectTeacher = mapSubjectTeacher;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -70,6 +92,12 @@ public class Class {
 		} else if (!classID.equals(other.classID))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return grade  + section + " [" + courseID
+				+ "]";
 	}
 	
 	

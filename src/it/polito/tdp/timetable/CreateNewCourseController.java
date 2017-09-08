@@ -28,8 +28,6 @@ import javafx.scene.layout.VBox;
 public class CreateNewCourseController {
 	
 	private Model model;
-	private Course course;
-	private List<Subject> subjectList;
 	private Map<String, Integer> mapSubject;
 	private int numHoursAssigned;
 
@@ -188,7 +186,6 @@ public class CreateNewCourseController {
     
     public void setModel(Model model, String nameCourse, int grade, List<Subject> subjectList) {
 		this.model = model ;
-		this.subjectList = subjectList;
 		this.mapSubject = new HashMap<>();
 		this.numHoursAssigned = 0;
 		

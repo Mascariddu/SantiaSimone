@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -536,6 +535,130 @@ public List<Class> getAllClasses(String schoolID) {
 		e.printStackTrace();
 		return null ;
 	}
+}
+
+public void addNewClass(Class c, String schoolID) {
+	Connection conn = DBConnect.getConnection();
+
+	String sql = "INSERT INTO class (schoolID ,classID, grade, section, courseID) VALUES (?, ?, ?, ?, ?);";
+
+	PreparedStatement st;
+	try {
+		st = conn.prepareStatement(sql);
+
+		st.setString(1, schoolID);
+		st.setString(2, c.getClassID());
+		st.setInt(3, c.getGrade());
+		st.setString(4, c.getSection());
+		st.setString(5, c.getCourseID());
+
+		st.executeUpdate();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+
+public void addSubjectsAndTeacherToClass(String schoolID, String classID, Map<String, String> listSubjectTeacher) {
+	Connection conn = DBConnect.getConnection(); 
+
+	for( String subjectID : listSubjectTeacher.keySet() ) {
+		String sql = "INSERT INTO role (schoolID, classID, subjectID, teacherID) VALUES (?, ?, ?, ?);";
+	
+		PreparedStatement st;
+		try {
+			st = conn.prepareStatement(sql);
+			
+			st.setString(1, schoolID);
+			st.setString(2, classID);
+			st.setString(3, subjectID);
+			st.setString(4, listSubjectTeacher.get(subjectID));
+	
+			st.executeUpdate();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+}
+
+public Map<String, String> getAllSubjectTeacherByClass(String schoolID, String classID) {
+	String sql = "SELECT subjectID, teacherID FROM role WHERE schoolID = '" + schoolID + "' AND classID = '" + classID + "'" ;
+	
+	try {
+		Connection conn = DBConnect.getConnection() ;
+
+		PreparedStatement st = conn.prepareStatement(sql) ;
+		
+		ResultSet rs = st.executeQuery() ;
+		
+		Map<String, String> map = new HashMap<>() ;
+		while(rs.next()) {
+			map.put(rs.getString("subjectID"), rs.getString("teacherID"));
+		}
+		
+		conn.close();
+		return map ;
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return null ;
+	}
+	
+}
+
+public void updateClass(Class c, String schoolID) {
+	Connection conn = DBConnect.getConnection();
+
+	String sql = "UPDATE `timetable`.`class` SET `grade`= ?, `section`= ?, `courseID`= ? WHERE  `classID`= ? AND `schoolID`= ?";
+
+	PreparedStatement st;
+	try {
+		st = conn.prepareStatement(sql);
+
+		st.setInt(1, c.getGrade());
+		st.setString(2, c.getSection());
+		st.setString(3, c.getCourseID());
+		st.setString(4, c.getClassID());
+		st.setString(5, schoolID);
+
+
+		st.executeUpdate();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+
+public void removeSubjectAndTeacherToClass(String schoolID, String classID, Map<String, String> mapSubjectTeacher) {
+	Connection conn = DBConnect.getConnection();
+
+	for(String subjectID : mapSubjectTeacher.keySet()) {
+		String sql = "DELETE FROM `timetable`.`role` "
+				+ "WHERE `subjectID`= ? AND `classID`= ? AND `schoolID`= ?;";
+	
+		PreparedStatement st;
+		try {
+			st = conn.prepareStatement(sql);
+	
+			st.setString(1, subjectID);
+			st.setString(2, classID);
+			st.setString(3, schoolID);
+	
+			st.executeUpdate();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }
 
 }

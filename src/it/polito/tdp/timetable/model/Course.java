@@ -25,6 +25,10 @@ public class Course {
 		this.grade = grade;
 		this.mapSubject = mapSubject;
 	}
+	
+	public Course(String courseID) {
+		this.courseID = courseID;
+	}
 
 	public String getCourseID() {
 		return courseID;
@@ -89,7 +93,7 @@ public class Course {
 
 	@Override
 	public String toString() {
-		return grade + " - " + name;
+		return courseID + " - " + name;
 	}
 	
 	

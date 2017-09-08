@@ -5,7 +5,6 @@
 package it.polito.tdp.timetable;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -34,7 +33,10 @@ public class PanelCourseController {
     private URL location;
 
     @FXML // fx:id="cmbCourse"
-    private ComboBox<Course> cmbCourse; // Value injected by FXMLLoader
+    private ComboBox<Course> cmbCourse; // Value injected by FXMLLoader  
+
+    @FXML // fx:id="cmbGradeSelect"
+    private ComboBox<Integer> cmbGradeSelect; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtIdCourse"
     private TextField txtIdCourse; // Value injected by FXMLLoader
@@ -112,7 +114,8 @@ public class PanelCourseController {
 
     @FXML
     void doUpdateCourse(ActionEvent event) {
-    	Launcher.openUpdateCourse(cmbCourse.getSelectionModel().getSelectedItem(), listSubCourseCheck.getItems());
+    	Launcher.openUpdateCourse(new Course(txtIdCourse.getText(), cmbGrade.getSelectionModel().getSelectedItem(), txtNameCourse.getText(),cmbCourse.getSelectionModel().getSelectedItem().getMapSubject()), 
+    			listSubCourseCheck.getItems());
     }
 
     @FXML
@@ -198,12 +201,31 @@ public class PanelCourseController {
     	btnUpdateCourse.setDisable(false);
     	btnNewCourse.setDisable(true);
     }
+    
+    @FXML
+    void viewCoursesByGrade(ActionEvent event) {
+    	if(cmbGradeSelect.getSelectionModel().isEmpty())
+    		return;
+    	
+    	cmbCourse.getItems().clear();
+    	
+    	for(Course c : model.getAllCourses())
+    		if(c.getGrade() == cmbGradeSelect.getSelectionModel().getSelectedItem())
+    			cmbCourse.getItems().add(c);
+
+    	if(!cmbCourse.getItems().isEmpty())
+    		cmbCourse.setDisable(false);
+    	else 
+    		cmbCourse.setDisable(true);
+    }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert bpCourse != null : "fx:id=\"bpCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
+        assert cmbGradeSelect != null : "fx:id=\"cmbGradeSelect\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert cmbCourse != null : "fx:id=\"cmbCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert txtIdCourse != null : "fx:id=\"txtIdCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
+        assert cmbGrade != null : "fx:id=\"cmbGrade\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert txtNameCourse != null : "fx:id=\"txtNameCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert txtSubjectCount != null : "fx:id=\"txtSubjectCount\" was not injected: check your FXML file 'PanelCourse.fxml'.";
         assert hbxAllertCourse != null : "fx:id=\"hbxAllertCourse\" was not injected: check your FXML file 'PanelCourse.fxml'.";
@@ -220,8 +242,9 @@ public class PanelCourseController {
 		this.subjectsList = model.getAllSubjects();
 		
 		listSubCourse.getItems().addAll(subjectsList);
-		cmbCourse.getItems().addAll(model.getAllCourses());
+		cmbCourse.setDisable(true);
 		cmbGrade.getItems().addAll(1,2,3,4,5,6,7);
+		cmbGradeSelect.getItems().addAll(1,2,3,4,5,6,7);
 		
 		numSubjectSelected = 0;
 		txtSubjectCount.setText(String.valueOf(numSubjectSelected));;

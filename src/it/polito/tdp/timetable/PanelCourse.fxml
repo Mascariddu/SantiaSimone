@@ -24,7 +24,7 @@
    <left>
       <VBox alignment="TOP_CENTER" cacheShape="false" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#openTabGeneral" prefHeight="50.0" prefWidth="160.0" style="-fx-border-radius: 150px;" text="Generali">
+            <Button mnemonicParsing="false" onAction="#openTabGeneral" prefHeight="100.0" prefWidth="150.0" text="Generali">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -32,35 +32,32 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabSubject" prefHeight="50.0" prefWidth="160.0" text="Materie">
+            <Button mnemonicParsing="false" onAction="#openTabSubject" prefHeight="100.0" prefWidth="150.0" text="Materie">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Indirizzi Scolastici">
+            <Button disable="true" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Indirizzi Scolastici">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="50.0" prefWidth="160.0" text="Professori">
+            <Button mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="100.0" prefWidth="150.0" text="Professori">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabClass" prefHeight="50.0" prefWidth="160.0" text="Classi">
+            <Button mnemonicParsing="false" onAction="#openTabClass" prefHeight="100.0" prefWidth="150.0" text="Classi">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabLab" prefHeight="50.0" prefWidth="160.0" text="Laboratori">
+            <Button mnemonicParsing="false" onAction="#openTabLab" prefHeight="100.0" prefWidth="150.0" text="Laboratori">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
          </children>
-         <padding>
-            <Insets bottom="5.0" top="5.0" />
-         </padding>
       </VBox>
    </left>
    <center>
@@ -73,7 +70,12 @@
                         <Insets right="15.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="cmbCourse" minWidth="350.0" onAction="#viewCourse" />
+                  <ComboBox fx:id="cmbGradeSelect" minWidth="30.0" onAction="#viewCoursesByGrade">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <ComboBox fx:id="cmbCourse" minWidth="380.0" onAction="#viewCourse" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />

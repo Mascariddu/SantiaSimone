@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import it.polito.tdp.timetable.db.TimetableDAO;
-import javafx.collections.ObservableList;
 
 public class Model {
 
@@ -159,6 +158,9 @@ public class Model {
 	public List<Class> getAllClasses() {
 		this.dao = new TimetableDAO();
 		this.classes = dao.getAllClasses(school.getSchoolID());
+		
+		for(Class c : classes)
+			c.setMapSubjectTeacher(dao.getAllSubjectTeacherByClass(school.getSchoolID(),c.getClassID()));
 		return classes;
 	}
 
@@ -186,6 +188,36 @@ public class Model {
 		
 		teachers.remove(old);
 		teachers.add(c);
+		
+	}
+
+	public Class addNewClass(Integer grade, String section, String courseID,
+			Map<String, String> mapSubjectTeacher) {
+		this.dao = new TimetableDAO();
+		
+		Class c = new Class("CLS"+grade+section, grade, section, courseID, mapSubjectTeacher);
+		dao.addNewClass(c,school.getSchoolID());
+		dao.addSubjectsAndTeacherToClass(school.getSchoolID(),c.getClassID(),c.getMapSubjectTeacher());
+		
+		for(Teacher t : teachers)
+			if(c.getMapSubjectTeacher().containsValue(t.getTeacherID()))
+				for(String subjectID : c.getMapSubjectTeacher().keySet())
+					if(c.getMapSubjectTeacher().get(subjectID).equals(t.getTeacherID()))
+						t.setHoursWork(t.getHoursWork() + courses.get(courses.indexOf(new Course(courseID))).getMapSubject().get(subjectID));
+				
+		classes.add(c);
+		return c;
+	}
+
+	public void updateClass(Class c, Class old) {
+		this.dao = new TimetableDAO();
+		dao.updateClass(c, school.getSchoolID());
+		
+		dao.removeSubjectAndTeacherToClass(school.getSchoolID(),old.getClassID(),old.getMapSubjectTeacher());
+		dao.addSubjectsAndTeacherToClass(school.getSchoolID(), c.getClassID(), c.getMapSubjectTeacher());
+		
+		classes.remove(old);
+		classes.add(c);
 		
 	}
 

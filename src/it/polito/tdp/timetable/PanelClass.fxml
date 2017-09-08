@@ -24,7 +24,7 @@
    <left>
       <VBox alignment="TOP_CENTER" cacheShape="false" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#openTabGeneral" prefHeight="50.0" prefWidth="160.0" style="-fx-border-radius: 150px;" text="Generali">
+            <Button mnemonicParsing="false" onAction="#openTabGeneral" prefHeight="100.0" prefWidth="150.0" style="-fx-border-radius: 150px;" text="Generali">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -32,35 +32,32 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabSubject" prefHeight="50.0" prefWidth="160.0" text="Materie">
+            <Button mnemonicParsing="false" onAction="#openTabSubject" prefHeight="100.0" prefWidth="150.0" text="Materie">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabCourse" prefHeight="50.0" prefWidth="160.0" text="Indirizzi Scolastici">
+            <Button mnemonicParsing="false" onAction="#openTabCourse" prefHeight="100.0" prefWidth="150.0" text="Indirizzi Scolastici">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="50.0" prefWidth="160.0" text="Professori">
+            <Button mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="100.0" prefWidth="150.0" text="Professori">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" text="Classi">
+            <Button disable="true" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Classi">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabLab" prefHeight="50.0" prefWidth="160.0" text="Laboratori">
+            <Button mnemonicParsing="false" onAction="#openTabLab" prefHeight="100.0" prefWidth="150.0" text="Laboratori">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
          </children>
-         <padding>
-            <Insets bottom="5.0" top="5.0" />
-         </padding>
       </VBox>
    </left>
    <center>
@@ -96,13 +93,13 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <ComboBox prefWidth="30.0">
+                              <ComboBox fx:id="cmbGrade" onAction="#viewCourseByGrade" prefWidth="30.0">
                                  <HBox.margin>
                                     <Insets right="15.0" />
                                  </HBox.margin>
                               </ComboBox>
                               <Label text="Sez" />
-                              <ComboBox fx:id="cmbCourseClass" minWidth="30.0">
+                              <ComboBox fx:id="cmbSez" minWidth="30.0">
                                  <HBox.margin>
                                     <Insets left="10.0" right="15.0" />
                                  </HBox.margin></ComboBox>
@@ -111,7 +108,7 @@
                                     <Insets right="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <ComboBox prefWidth="150.0" />
+                              <ComboBox fx:id="cmbCourse" onAction="#showSubjects" prefWidth="150.0" />
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" />
@@ -198,7 +195,7 @@
                <children>
                   <VBox>
                      <children>
-                        <ListView fx:id="listSubClass" onMouseClicked="#viewSubClass" />
+                        <ListView fx:id="listSubjects" onMouseClicked="#viewSubClass" />
                      </children>
                      <HBox.margin>
                         <Insets right="20.0" />

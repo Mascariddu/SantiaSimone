@@ -1,6 +1,5 @@
 package it.polito.tdp.timetable.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Teacher {
@@ -32,6 +31,10 @@ public class Teacher {
 		this.hoursWeek = hoursWeek;
 		this.hoursWork = 0;
 		this.freeDay = freeDay;
+	}
+	
+	public Teacher(String teacherID) {
+		this.teacherID = teacherID;
 	}
 
 	public String getTeacherID() {
