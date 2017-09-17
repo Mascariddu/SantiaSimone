@@ -200,6 +200,7 @@ public class PanelTeacherController {
     	listSubTeacher.getItems().clear();
     	listSub.getItems().clear();
     	listSub.getItems().addAll(subjectsList);
+    	
     	for(String subjectID : t.getEnablingSub()) {
     		listSubTeacher.getItems().add(subjectsList.get(subjectsList.indexOf(new Subject(subjectID))));
     		listSub.getItems().remove(new Subject(subjectID));

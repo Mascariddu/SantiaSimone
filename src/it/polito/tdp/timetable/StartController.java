@@ -13,8 +13,6 @@ import javafx.scene.control.ComboBox;
 
 
 public class StartController {
-	
-	private Model model;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -48,7 +46,6 @@ public class StartController {
     }
 	
 	public void setModel(Model model) {
-		this.model = model ;
 		List<School> schools = model.getAllSchools();
 		
 		if(schools.isEmpty()) 

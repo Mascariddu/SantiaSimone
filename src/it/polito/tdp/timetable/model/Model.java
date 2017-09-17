@@ -11,6 +11,7 @@ public class Model {
 	private TimetableDAO dao;
 	private School school;
 	private int hoursWeekSchool;
+	private int hoursDaySchool;
 	private List<Subject> subjects;
 	private List<Course> courses;
 	private List<Lab> labs;
@@ -75,12 +76,18 @@ public class Model {
 	
 	public void setSchool(School school) {
 		this.school = school;
-		this.hoursWeekSchool = (school.getEndLessons() - school.getStartLessons())*school.getWorkDays();
+		this.hoursDaySchool = (school.getEndLessons() - school.getStartLessons());
+		this.hoursWeekSchool = hoursDaySchool*school.getWorkDays();
 	}
 	
 	public int getHoursWeekSchool() {
 		return this.hoursWeekSchool;
 	}
+	
+	public int getHoursDaySchool() {
+		return this.hoursDaySchool;
+	}
+	
 	public School getSchool() {
 		return this.school;
 	}
@@ -172,7 +179,7 @@ public class Model {
 		for(Subject s : items)
 			subjectIDList.add(s.getSubjectID());
 		
-		Teacher t = new Teacher("THC00"+num, name, surname, hoursWeek, 0, subjectIDList);
+		Teacher t = new Teacher("THC00"+num, name, surname, hoursWeek, freeDay, subjectIDList);
 		dao.addNewTeacher(t,school.getSchoolID());
 		dao.addSubjectsToTeacher(school.getSchoolID(),t.getTeacherID(),subjectIDList);
 		teachers.add(t);

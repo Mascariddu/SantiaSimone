@@ -8,6 +8,7 @@ import it.polito.tdp.timetable.model.School;
 import it.polito.tdp.timetable.model.Subject;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -76,6 +77,7 @@ public class Launcher {
 			
 			stage = new Stage();
 			stage.setTitle("Timetable School Creator - " + school.getName());
+			stage.getIcons().add(new Image(Launcher.class.getResourceAsStream("icon.png")));
 			stage.setScene(scene);
 			stage.show();
     	} catch(Exception e) {
@@ -236,6 +238,26 @@ public class Launcher {
 			popup = new Stage();
 			popup.setScene(scene);
 			popup.setTitle("Assegnazione ore per ogni materia - " + c.getName());
+			popup.show();
+    	} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void openTimetable() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Timetable.fxml")) ;
+			BorderPane root = (BorderPane)loader.load();
+			
+			Timetable controller = loader.getController() ;
+			
+			controller.setModel(model);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
+			
+			popup = new Stage();
+			popup.setScene(scene);
 			popup.show();
     	} catch(Exception e) {
 			e.printStackTrace();

@@ -5,10 +5,14 @@
 package it.polito.tdp.timetable;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.timetable.model.Course;
 import it.polito.tdp.timetable.model.Model;
 import it.polito.tdp.timetable.model.School;
+import it.polito.tdp.timetable.model.TimetableGenerator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -120,16 +124,21 @@ public class PanelGeneralController {
 
     @FXML
     void viewTimetableClass(ActionEvent event) {
-
+    	
     }
 
     @FXML
     void viewTimetableLab(ActionEvent event) {
+    	Launcher.openTimetable();
 
     }
 
     @FXML
     void viewTimetableTeacher(ActionEvent event) {
+    	TimetableGenerator t = new TimetableGenerator(model.getAllClasses(), model.getAllTeachers(), 
+				model.getAllCourses(), model.getHoursWeekSchool(), model.getHoursDaySchool());
+		t.generateTimetable();
+		t.stamp();
 
     }
 
@@ -173,9 +182,32 @@ public class PanelGeneralController {
 		txtNumClasses.setText(String.valueOf(model.getAllClasses().size()));
 		txtNumLabs.setText(String.valueOf(model.getAllLab().size()));
 		txtNumSubjects.setText(String.valueOf(model.getAllSubjects().size()));
-		txtNumCourses.setText(String.valueOf(model.getAllCourses().size()));
+		
+		List<String> nameCourses = new ArrayList<>();
+		for(Course c : model.getAllCourses())
+			if(!nameCourses.contains(c.getName()))
+				nameCourses.add(c.getName());
+		
+		txtNumCourses.setText(String.valueOf(nameCourses.size()));
 		txtNumTeachers.setText(String.valueOf(model.getAllTeachers().size()));
 		
+		if(Integer.valueOf(txtNumClasses.getText()) > 0)
+			pgbCompleteDB.setProgress(1);
+		else if( Integer.valueOf(txtNumCourses.getText()) > 0)
+			pgbCompleteDB.setProgress(0.7);
+		else if( Integer.valueOf(txtNumTeachers.getText()) > (Integer.valueOf(txtNumTeachers.getText())/2))
+			pgbCompleteDB.setProgress(0.5);
+		else if( Integer.valueOf(txtNumSubjects.getText()) > 0)
+			pgbCompleteDB.setProgress(0.25);
+		else
+			pgbCompleteDB.setProgress(0);
+		
+		txtPercDB.setText(String.valueOf(pgbCompleteDB.getProgress()*100)+"%");
+		
+		if(pgbCompleteDB.getProgress() == 1)
+			hbxAllertTimetable.setVisible(false);
+		
+		btnViewTimetable.setDisable(false);
 	}
 }
 

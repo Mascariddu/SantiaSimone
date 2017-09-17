@@ -227,6 +227,11 @@
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="SOMETIMES">
                      <children>
+                        <Button cancelButton="true" mnemonicParsing="false" onAction="#returnBack" text="Annulla">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="btnAddNewCourse" defaultButton="true" mnemonicParsing="false" onAction="#addNewSub" text="Aggiungi nuovo indirizzo">
                            <HBox.margin>
                               <Insets right="10.0" />

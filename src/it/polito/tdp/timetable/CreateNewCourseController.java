@@ -82,10 +82,10 @@ public class CreateNewCourseController {
     @FXML
     void addNewSub(ActionEvent event) {
     
-    	Course c = model.addNewCourse(txtCourseSub.getText().toUpperCase(),
+    model.addNewCourse(txtCourseSub.getText().toUpperCase(),
     			Integer.valueOf(txtGrade.getText()),
-    			mapSubject);
-    	
+    			mapSubject);	
+   	
     	Launcher.openTabCourse();
     	
     /*
@@ -103,6 +103,11 @@ public class CreateNewCourseController {
     	
     */
     }
+    
+    @FXML
+    void returnBack(ActionEvent event) {
+    	Launcher.openTabCourse();
+    }
 
     @FXML
     void doVisibleLab(ActionEvent event) {
@@ -114,16 +119,16 @@ public class CreateNewCourseController {
     
     @FXML
     void updateMap(KeyEvent event) {
-    	if(txtIdSub.getText().isEmpty())
+    	if(txtIdSub.getText().isEmpty() || txtHoursSub.getText().isEmpty())
     		return;
     	
     	if(mapSubject.containsKey(txtIdSub.getText()))
     		numHoursAssigned -= mapSubject.get(txtIdSub.getText());
     		
-    	mapSubject.put(txtIdSub.getText(), Integer.valueOf(txtHoursSub.getText()));
     	numHoursAssigned += Integer.valueOf(txtHoursSub.getText());
+    	txtHoursAssigned.setText(String.valueOf(numHoursAssigned));    	
     	
-    	txtHoursAssigned.setText(String.valueOf(numHoursAssigned));
+    	mapSubject.put(txtIdSub.getText(), Integer.valueOf(txtHoursSub.getText()));
     	
     	if(numHoursAssigned == model.getHoursWeekSchool()  && mapSubject.size() == listSubjectChecked.getItems().size())
     		btnAddNewCourse.setDisable(false);
@@ -134,6 +139,7 @@ public class CreateNewCourseController {
     		listSubjectChecked.setDisable(true);
     	else
     		listSubjectChecked.setDisable(false);
+    	
     }
 
     @FXML

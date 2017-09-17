@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.timetable.model.Lab;
 import it.polito.tdp.timetable.model.Model;
-import it.polito.tdp.timetable.model.Subject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

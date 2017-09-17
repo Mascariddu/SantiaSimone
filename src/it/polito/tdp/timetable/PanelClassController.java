@@ -178,13 +178,16 @@ public class PanelClassController {
     @FXML
     void selectTeacherToSubject(ActionEvent event) {
     	
+    	if(cmbTeacherSubClass.getSelectionModel().isEmpty())
+    		return;
+    	
     	if(!mapSubjectTeacher.containsKey(txtIdSubClass.getText()) && !cmbTeacherSubClass.getSelectionModel().isEmpty()) {
     		numSubjectUnemployed--;
     		txtNumSubUnemployed.setText(String.valueOf(numSubjectUnemployed));
     	}
     	
     	mapSubjectTeacher.put(txtIdSubClass.getText(), 
-    			cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID());
+    							cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID());
 
     	
     }
@@ -216,9 +219,11 @@ public class PanelClassController {
     	Class c = cmbClass.getSelectionModel().getSelectedItem();
     	
     	txtIdClass.setText(c.getClassID());
-    	cmbGrade.getSelectionModel().select(c.getGrade());
+    	cmbGrade.getSelectionModel().select(c.getGrade()-1);
     	cmbSez.getSelectionModel().select(c.getSection());
     	cmbCourse.getSelectionModel().select(model.getAllCourses().get(model.getAllCourses().indexOf(new Course(c.getCourseID()))));
+    	
+    	listSubjects.getItems().clear();
     	
     	for(String subjectID : c.getMapSubjectTeacher().keySet())
     		listSubjects.getItems().add(model.getAllSubjects().get(model.getAllSubjects().indexOf(new Subject(subjectID))));
