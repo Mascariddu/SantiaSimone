@@ -2,7 +2,7 @@
  * Sample Skeleton for 'PanelCourse.fxml' Controller Class
  */
 
-package it.polito.tdp.timetable;
+package it.polito.tdp.timetable.panel;
 
 import java.net.URL;
 import java.util.List;
@@ -20,7 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-public class PanelCourseController {
+public class CourseController {
 	
 	private Model model;
 	private List<Subject> subjectsList;

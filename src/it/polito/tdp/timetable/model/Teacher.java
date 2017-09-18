@@ -8,7 +8,7 @@ public class Teacher {
 	private String name;
 	private String surname;
 	private int hoursWeek;
-	private int hoursWork;
+	private int hoursNotUsed;
 	private int freeDay;
 	private List<String> enablingSub;
 	
@@ -19,7 +19,7 @@ public class Teacher {
 		this.name = name;
 		this.surname = surname;
 		this.hoursWeek = hoursWeek;
-		this.hoursWork = 0;
+		this.hoursNotUsed = hoursWeek;
 		this.freeDay = freeDay;
 		this.enablingSub = enablingSub;
 	}
@@ -29,7 +29,7 @@ public class Teacher {
 		this.name = name;
 		this.surname = surname;
 		this.hoursWeek = hoursWeek;
-		this.hoursWork = 0;
+		this.hoursNotUsed = hoursWeek;
 		this.freeDay = freeDay;
 	}
 	
@@ -70,11 +70,11 @@ public class Teacher {
 	}
 	
 	public int getHoursWork() {
-		return hoursWork;
+		return hoursNotUsed;
 	}
 
 	public void setHoursWork(int hoursWork) {
-		this.hoursWork = hoursWork;
+		this.hoursNotUsed = this.hoursNotUsed + hoursWork;
 	}
 
 	public int getFreeDay() {

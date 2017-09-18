@@ -14,7 +14,9 @@ public class TimetableGenerator {
 	private int numHoursDay;
 	private boolean trovato;
 	private int countNotSatisfied;
+	
 	private String[][] timetableSubject;
+	private String[][] timetableTeacher;
 	
 	public TimetableGenerator(List<Class> classes, List<Teacher> teachers, List<Course> courses,
 			int numHoursWeek, int numHoursDays) {
@@ -42,7 +44,6 @@ public class TimetableGenerator {
 		int countBusy = 0;
 		
 		while(listKey.iterator().hasNext()) {
-			
 			if(trovato || countBusy>(listKey.size()*2))
 				break;
 			
@@ -67,9 +68,7 @@ public class TimetableGenerator {
 						listKey.remove(sbj);
 						listKey.add(sbj);
 						countBusy++;
-					} else {
-						countNotSatisfied++;
-					}
+					} else countNotSatisfied++;
 				}
 					
 				
@@ -91,7 +90,8 @@ public class TimetableGenerator {
 					
 					if(classes.isEmpty()) {
 						trovato = true;
-						this.timetableSubject = tmT;
+						this.timetableSubject = tmS;
+						this.timetableTeacher = tmT;
 						classes.add(c);
 						break;
 					}

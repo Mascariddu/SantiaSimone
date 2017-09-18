@@ -13,11 +13,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bpCourse" minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.PanelCourseController">
+<BorderPane fx:id="bpCourse" minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.panel.CourseController">
    <right>
       <ImageView fitHeight="600.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../../../../../image/panel.jpg" />
+            <Image url="@../../../../../../image/panel.jpg" />
          </image>
       </ImageView>
    </right>
@@ -150,7 +150,7 @@
                <children>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../image/error.png" />
+                        <Image url="@../../../../../../image/error.png" />
                      </image>
                      <HBox.margin>
                         <Insets right="5.0" />

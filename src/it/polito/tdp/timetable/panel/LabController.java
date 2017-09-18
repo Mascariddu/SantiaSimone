@@ -2,7 +2,7 @@
  * Sample Skeleton for 'PanelLab.fxml' Controller Class
  */
 
-package it.polito.tdp.timetable;
+package it.polito.tdp.timetable.panel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-public class PanelLabController {
+public class LabController {
 
 	private Model model;
 	

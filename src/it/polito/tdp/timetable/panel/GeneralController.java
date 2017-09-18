@@ -2,7 +2,7 @@
  * Sample Skeleton for 'PanelGeneral.fxml' Controller Class
  */
 
-package it.polito.tdp.timetable;
+package it.polito.tdp.timetable.panel;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class PanelGeneralController {
+public class GeneralController {
 	
 	private Model model;
 	private School school;
@@ -178,8 +178,8 @@ public class PanelGeneralController {
 		txtStartSchool.setText(school.getStartLessons() + ":00");
 		txtEndSchool.setText(school.getEndLessons() + ":00");
 		txtDaysSchool.setText(String.valueOf(school.getWorkDays()));
-		
-		txtNumClasses.setText(String.valueOf(model.getAllClasses().size()));
+
+		txtNumTeachers.setText(String.valueOf(model.getAllTeachers().size()));
 		txtNumLabs.setText(String.valueOf(model.getAllLab().size()));
 		txtNumSubjects.setText(String.valueOf(model.getAllSubjects().size()));
 		
@@ -187,9 +187,9 @@ public class PanelGeneralController {
 		for(Course c : model.getAllCourses())
 			if(!nameCourses.contains(c.getName()))
 				nameCourses.add(c.getName());
-		
+
+		txtNumClasses.setText(String.valueOf(model.getAllClasses().size()));
 		txtNumCourses.setText(String.valueOf(nameCourses.size()));
-		txtNumTeachers.setText(String.valueOf(model.getAllTeachers().size()));
 		
 		if(Integer.valueOf(txtNumClasses.getText()) > 0)
 			pgbCompleteDB.setProgress(1);

@@ -2,7 +2,7 @@
  * Sample Skeleton for 'CreateNewCourse.fxml' Controller Class
  */
 
-package it.polito.tdp.timetable;
+package it.polito.tdp.timetable.panel;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import it.polito.tdp.timetable.model.Course;
 import it.polito.tdp.timetable.model.Model;
 import it.polito.tdp.timetable.model.Subject;
 import javafx.event.ActionEvent;

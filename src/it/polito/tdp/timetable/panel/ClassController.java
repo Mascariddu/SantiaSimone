@@ -2,7 +2,7 @@
  * Sample Skeleton for 'PanelClass.fxml' Controller Class
  */
 
-package it.polito.tdp.timetable;
+package it.polito.tdp.timetable.panel;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -23,10 +23,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-public class PanelClassController {
+public class ClassController {
 	
 	private Model model;
 	private Map<String, String> mapSubjectTeacher;
+	private Map<String, Integer> mapChange;
 	private int numSubject;
 	private int numSubjectUnemployed;
 
@@ -53,6 +54,9 @@ public class PanelClassController {
 
     @FXML // fx:id="txtGradeCourse"
     private TextField txtGradeCourse; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="txtHoursWeek"
+    private TextField txtHoursWeek; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtNumSubCourse"
     private TextField txtNumSubCourse; // Value injected by FXMLLoader
@@ -118,6 +122,7 @@ public class PanelClassController {
     	
     	txtIdSubClass.clear();
     	txtNameSubClass.clear();
+    	txtHoursWeek.clear();
     	cmbTeacherSubClass.getItems().clear();
     	
     	numSubject = 0;
@@ -135,7 +140,7 @@ public class PanelClassController {
 
     @FXML
     void doUpdateClass(ActionEvent event) {
-    	if(numSubjectUnemployed != 0 || cmbSez.getSelectionModel().isEmpty()) {
+    	if(numSubjectUnemployed != 0) {
     		hbxAllertClass.setVisible(true);
     		return;
     	}
@@ -177,18 +182,38 @@ public class PanelClassController {
 
     @FXML
     void selectTeacherToSubject(ActionEvent event) {
-    	
-    	if(cmbTeacherSubClass.getSelectionModel().isEmpty())
+    	    	
+    	if(cmbTeacherSubClass.getSelectionModel().isEmpty()  )
     		return;
     	
-    	if(!mapSubjectTeacher.containsKey(txtIdSubClass.getText()) && !cmbTeacherSubClass.getSelectionModel().isEmpty()) {
+    	if( mapSubjectTeacher.get(txtIdSubClass.getText()).compareTo(
+    			cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID() ) == 0)
+    		return;
+    	
+    	if(!mapSubjectTeacher.containsKey(txtIdSubClass.getText())) {
     		numSubjectUnemployed--;
     		txtNumSubUnemployed.setText(String.valueOf(numSubjectUnemployed));
     	}
     	
+    	if(mapChange.containsKey(mapSubjectTeacher.get(txtIdSubClass.getText())))
+    		mapChange.put(mapSubjectTeacher.get(txtIdSubClass.getText()), 
+    				mapChange.get(mapSubjectTeacher.get(txtIdSubClass.getText())) + Integer.valueOf(txtHoursWeek.getText()));
+    	else
+    		mapChange.put(mapSubjectTeacher.get(txtIdSubClass.getText()), 
+    				+Integer.valueOf(txtHoursWeek.getText()));
+    	
+    	if(mapChange.containsKey(cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID()))
+    		mapChange.put(cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID(), 
+    				mapChange.get(cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID()) - Integer.valueOf(txtHoursWeek.getText()));
+    	else
+    		mapChange.put(cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID(), 
+    				-Integer.valueOf(txtHoursWeek.getText()));
+    	
+    	// model.getAllTeachers().get(model.getAllTeachers().indexOf(new Teacher(
+		//		mapSubjectTeacher.get(txtIdSubClass.getText())))).setHoursWork(+Integer.valueOf(txtHoursWeek.getText()));
+		// cmbTeacherSubClass.getSelectionModel().getSelectedItem().setHoursWork(-Integer.valueOf(txtHoursWeek.getText()));
     	mapSubjectTeacher.put(txtIdSubClass.getText(), 
     							cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID());
-
     	
     }
     
@@ -216,6 +241,7 @@ public class PanelClassController {
     	if(cmbClass.getItems().isEmpty() || cmbClass.getSelectionModel().isEmpty())
     		return;
     	    	
+    	this.mapChange = new HashMap<>();
     	Class c = cmbClass.getSelectionModel().getSelectedItem();
     	
     	txtIdClass.setText(c.getClassID());
@@ -249,10 +275,11 @@ public class PanelClassController {
     	Subject s = (Subject) listSubjects.getSelectionModel().getSelectedItem();
     	txtIdSubClass.setText(s.getSubjectID());
     	txtNameSubClass.setText(s.getName());
+    	txtHoursWeek.setText(String.valueOf(cmbCourse.getSelectionModel().getSelectedItem().getMapSubject().get(s.getSubjectID())));
     	
     	cmbTeacherSubClass.getItems().clear();
     	for(Teacher t : model.getAllTeachers())
-    		if(t.getEnablingSub().contains(s.getSubjectID()))
+    		if(t.getEnablingSub().contains(s.getSubjectID()) && t.getHoursWork()>= Integer.valueOf(txtHoursWeek.getText()))
     			cmbTeacherSubClass.getItems().add(t);
 
     	if(mapSubjectTeacher.containsKey(s.getSubjectID()))
@@ -296,6 +323,7 @@ public class PanelClassController {
         assert txtNumSubUnemployed != null : "fx:id=\"txtNumSubUnemployed\" was not injected: check your FXML file 'PanelClass.fxml'.";
         assert hbxAllertClass != null : "fx:id=\"hbxAllertClass\" was not injected: check your FXML file 'PanelClass.fxml'.";
         assert listSubjects != null : "fx:id=\"listSubClass\" was not injected: check your FXML file 'PanelClass.fxml'.";
+        assert txtHoursWeek != null : "fx:id=\"txtHoursWeek\" was not injected: check your FXML file 'Class.fxml'.";
         assert txtIdSubClass != null : "fx:id=\"txtIdSubClass\" was not injected: check your FXML file 'PanelClass.fxml'.";
         assert txtNameSubClass != null : "fx:id=\"txtNameSubClass\" was not injected: check your FXML file 'PanelClass.fxml'.";
         assert cmbTeacherSubClass != null : "fx:id=\"cmbTeacherSubClass\" was not injected: check your FXML file 'PanelClass.fxml'.";

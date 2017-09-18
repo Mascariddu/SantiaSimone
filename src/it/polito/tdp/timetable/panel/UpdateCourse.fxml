@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.CreateNewCourseController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.panel.UpdateCourseController">
    <center>
       <HBox BorderPane.alignment="CENTER">
          <children>
@@ -200,7 +200,7 @@
                      <children>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../image/error.png" />
+                              <Image url="@../../../../../../image/error.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="5.0" />
@@ -227,12 +227,7 @@
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="SOMETIMES">
                      <children>
-                        <Button cancelButton="true" mnemonicParsing="false" onAction="#returnBack" text="Annulla">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="btnAddNewCourse" defaultButton="true" mnemonicParsing="false" onAction="#addNewSub" text="Aggiungi nuovo indirizzo">
+                        <Button fx:id="btnAddNewCourse" defaultButton="true" mnemonicParsing="false" onAction="#doUpdateCourse" text="Aggiorna indirizzo">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
@@ -256,7 +251,7 @@
    <left>
       <ImageView fitHeight="400.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../../../../../image/newCourse.jpg" />
+            <Image url="@../../../../../../image/newCourse.jpg" />
          </image>
       </ImageView>
    </left>

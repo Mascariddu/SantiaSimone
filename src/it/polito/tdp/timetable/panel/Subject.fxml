@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -13,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.PanelTeacherController">
+<BorderPane minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.panel.SubjectController">
    <right>
       <ImageView fitHeight="600.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../../../../../image/panel.jpg" />
+            <Image url="@../../../../../../image/panel.jpg" />
          </image>
       </ImageView>
    </right>
@@ -32,7 +31,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabSubject" prefHeight="100.0" prefWidth="150.0" text="Materie">
+            <Button disable="true" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Materie">
                <font>
                   <Font size="14.0" />
                </font>
@@ -42,7 +41,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Professori">
+            <Button mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="100.0" prefWidth="150.0" text="Professori">
                <font>
                   <Font size="14.0" />
                </font>
@@ -65,7 +64,7 @@
          <children>
             <VBox>
                <children>
-                  <Label text="Professori">
+                  <Label text="Materie">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </VBox.margin>
@@ -73,16 +72,16 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <ListView fx:id="listTeachers" minHeight="523.0" onMouseClicked="#viewTeacher" />
+                  <ListView fx:id="listSubject" minHeight="523.0" onMouseClicked="#viewSubject" />
                </children>
             </VBox>
             <VBox>
                <children>
-                  <HBox fx:id="hbxAllertTeacher" visible="false">
+                  <HBox fx:id="hbxAllertSub" visible="false">
                      <children>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../image/error.png" />
+                              <Image url="@../../../../../../image/error.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="5.0" />
@@ -102,7 +101,7 @@
                      <children>
                         <VBox>
                            <children>
-                              <Label text="Matricola">
+                              <Label text="Codice Materia">
                                  <VBox.margin>
                                     <Insets bottom="20.0" top="5.0" />
                                  </VBox.margin>
@@ -112,101 +111,51 @@
                                     <Insets bottom="25.0" />
                                  </VBox.margin>
                               </Label>
-                              <Label text="Cognome">
-                                 <VBox.margin>
-                                    <Insets bottom="25.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Ore contrattuali">
-                                 <VBox.margin>
-                                    <Insets bottom="20.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Giorno libero" />
                            </children>
                         </VBox>
                         <VBox>
                            <children>
-                              <TextField fx:id="txtIdTeacher" disable="true" maxWidth="70.0">
+                              <TextField fx:id="txtIdSub" disable="true" maxWidth="70.0">
                                  <VBox.margin>
                                     <Insets bottom="15.0" left="15.0" />
                                  </VBox.margin>
                               </TextField>
-                              <TextField fx:id="txtNameTeacher" minWidth="265.0">
+                              <TextField fx:id="txtNameSub" minWidth="265.0">
                                  <VBox.margin>
                                     <Insets bottom="15.0" left="15.0" right="5.0" />
                                  </VBox.margin>
                               </TextField>
-                              <TextField fx:id="txtSurnameTeacher" minWidth="265.0">
-                                 <VBox.margin>
-                                    <Insets bottom="15.0" left="15.0" right="5.0" />
-                                 </VBox.margin>
-                              </TextField>
-                              <TextField fx:id="txtHoursTeacher" maxWidth="50.0">
-                                 <VBox.margin>
-                                    <Insets bottom="15.0" left="15.0" />
-                                 </VBox.margin>
-                              </TextField>
-                              <ComboBox fx:id="cmdFreeDayTeacher" prefWidth="150.0">
-                                 <VBox.margin>
-                                    <Insets bottom="15.0" left="15.0" />
-                                 </VBox.margin>
-                              </ComboBox>
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <Label text="Materie abilitato ">
+                  <Label text="Professori abilitati per insegnare questa materia">
                      <VBox.margin>
-                        <Insets left="10.0" top="15.0" />
+                        <Insets bottom="5.0" top="30.0" />
                      </VBox.margin>
                   </Label>
-                  <ListView fx:id="listSubTeacher" maxHeight="125.0" />
-                  <HBox alignment="CENTER">
-                     <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#moveUpSub" prefHeight="10.0" prefWidth="125.0" text="^">
-                           <font>
-                              <Font name="System Bold" size="10.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#moveSubDown" prefHeight="10.0" prefWidth="125.0" text="v">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
-                           </padding>
-                        </Button>
-                     </children>
+                  <ListView fx:id="listTeachersSub" maxHeight="150.0">
                      <VBox.margin>
-                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                        <Insets right="5.0" />
                      </VBox.margin>
-                  </HBox>
-                  <ListView fx:id="listSub" maxHeight="125.0" />
-                  <Label maxWidth="1.7976931348623157E308" text="Materie disponibili">
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </Label>
+                  </ListView>
                   <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="SOMETIMES">
                      <children>
-                        <Button fx:id="btnUpdateTeacher" disable="true" mnemonicParsing="false" onAction="#doUpdateTeacher" text="Modifica">
+                        <Button fx:id="btnUpdateSub" disable="true" mnemonicParsing="false" onAction="#doUpdateSub" text="Modifica">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnClearTeacher" cancelButton="true" mnemonicParsing="false" onAction="#doClearTeacher" text="Pulisci">
+                        <Button fx:id="btnClearSub" cancelButton="true" mnemonicParsing="false" onAction="#clearSub" text="Pulisci">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnAddNewTeacher" mnemonicParsing="false" onAction="#addNewTeacher" text="Aggiungi Professore" />
+                        <Button fx:id="btnAddNewSub" mnemonicParsing="false" onAction="#addNewSub" text="Aggiungi Materia">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -216,9 +165,6 @@
                <padding>
                   <Insets left="15.0" top="10.0" />
                </padding>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
             </VBox>
          </children>
          <padding>

@@ -2,7 +2,7 @@
  * Sample Skeleton for 'PanelTeacher.fxml' Controller Class
  */
 
-package it.polito.tdp.timetable;
+package it.polito.tdp.timetable.panel;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-public class PanelTeacherController {
+public class TeacherController {
 	
 	private Model model;
 	private List<Subject> subjectsList;

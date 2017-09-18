@@ -153,21 +153,29 @@ public class Model {
 	}
 
 	public List<Teacher> getAllTeachers() {
-		this.dao = new TimetableDAO();
-		this.teachers = dao.getAllTeachers(school.getSchoolID());
-		
-		for(Teacher t : teachers)
-			t.setEnablingSub(dao.getAllSubjectByTeacher(school.getSchoolID(),t.getTeacherID()));
-		
+		if(teachers.isEmpty()) {
+			this.dao = new TimetableDAO();
+			this.teachers = dao.getAllTeachers(school.getSchoolID());
+			
+			for(Teacher t : teachers)
+				t.setEnablingSub(dao.getAllSubjectByTeacher(school.getSchoolID(),t.getTeacherID()));
+		}
 		return teachers;
 	}
 
 	public List<Class> getAllClasses() {
-		this.dao = new TimetableDAO();
-		this.classes = dao.getAllClasses(school.getSchoolID());
+		if(classes.isEmpty()) {
+			this.dao = new TimetableDAO();
+			this.classes = dao.getAllClasses(school.getSchoolID());
 		
-		for(Class c : classes)
-			c.setMapSubjectTeacher(dao.getAllSubjectTeacherByClass(school.getSchoolID(),c.getClassID()));
+			for(Class c : classes) {
+				c.setMapSubjectTeacher(dao.getAllSubjectTeacherByClass(school.getSchoolID(),c.getClassID()));
+				for(String s : c.getMapSubjectTeacher().keySet())
+					teachers.get(teachers.indexOf(new Teacher(c.getMapSubjectTeacher().get(s)))).setHoursWork(
+							-courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject().get(s));
+			}
+			
+		}
 		return classes;
 	}
 

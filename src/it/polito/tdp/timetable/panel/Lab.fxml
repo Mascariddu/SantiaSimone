@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.PanelSubjectController">
+<BorderPane minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.panel.LabController">
    <right>
       <ImageView fitHeight="600.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../../../../../image/panel.jpg" />
+            <Image url="@../../../../../../image/panel.jpg" />
          </image>
       </ImageView>
    </right>
@@ -31,30 +31,45 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button disable="true" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Materie">
+            <Button mnemonicParsing="false" onAction="#openTabSubject" prefHeight="100.0" prefWidth="150.0" text="Materie">
                <font>
                   <Font size="14.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#openTabCourse" prefHeight="100.0" prefWidth="150.0" text="Indirizzi Scolastici">
                <font>
                   <Font size="14.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#openTabTeacher" prefHeight="100.0" prefWidth="150.0" text="Professori">
                <font>
                   <Font size="14.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#openTabClass" prefHeight="100.0" prefWidth="150.0" text="Classi">
                <font>
                   <Font size="14.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openTabLab" prefHeight="100.0" prefWidth="150.0" text="Laboratori">
+            <Button disable="true" mnemonicParsing="false" prefHeight="100.0" prefWidth="150.0" text="Laboratori">
                <font>
                   <Font size="14.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Button>
          </children>
       </VBox>
@@ -64,7 +79,7 @@
          <children>
             <VBox>
                <children>
-                  <Label text="Materie">
+                  <Label text="Laboratori">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </VBox.margin>
@@ -72,16 +87,16 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <ListView fx:id="listSubject" minHeight="523.0" onMouseClicked="#viewSubject" />
+                  <ListView fx:id="listLab" minHeight="523.0" onMouseClicked="#viewLab" />
                </children>
             </VBox>
             <VBox>
                <children>
-                  <HBox fx:id="hbxAllertSub" visible="false">
+                  <HBox fx:id="hbxAllertLab" visible="false">
                      <children>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../image/error.png" />
+                              <Image url="@../../../../../../image/error.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="5.0" />
@@ -101,7 +116,7 @@
                      <children>
                         <VBox>
                            <children>
-                              <Label text="Codice Materia">
+                              <Label text="Identificativo">
                                  <VBox.margin>
                                     <Insets bottom="20.0" top="5.0" />
                                  </VBox.margin>
@@ -111,16 +126,26 @@
                                     <Insets bottom="25.0" />
                                  </VBox.margin>
                               </Label>
+                              <Label text="Tipo">
+                                 <VBox.margin>
+                                    <Insets bottom="25.0" />
+                                 </VBox.margin>
+                              </Label>
                            </children>
                         </VBox>
                         <VBox>
                            <children>
-                              <TextField fx:id="txtIdSub" disable="true" maxWidth="70.0">
+                              <TextField fx:id="txtIdLab" disable="true" maxWidth="70.0">
                                  <VBox.margin>
                                     <Insets bottom="15.0" left="15.0" />
                                  </VBox.margin>
                               </TextField>
-                              <TextField fx:id="txtNameSub" minWidth="265.0">
+                              <TextField fx:id="txtNameLab" minWidth="265.0">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="5.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="txtTypeLab" minWidth="265.0">
                                  <VBox.margin>
                                     <Insets bottom="15.0" left="15.0" right="5.0" />
                                  </VBox.margin>
@@ -129,29 +154,19 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Label text="Professori abilitati per insegnare questa materia">
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="30.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ListView fx:id="listTeachersSub" maxHeight="150.0">
-                     <VBox.margin>
-                        <Insets right="5.0" />
-                     </VBox.margin>
-                  </ListView>
                   <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="SOMETIMES">
                      <children>
-                        <Button fx:id="btnUpdateSub" disable="true" mnemonicParsing="false" onAction="#doUpdateSub" text="Modifica">
+                        <Button fx:id="btnUpdateLab" disable="true" mnemonicParsing="false" onAction="#doUpdateLab" text="Modifica">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnClearSub" cancelButton="true" mnemonicParsing="false" onAction="#clearSub" text="Pulisci">
+                        <Button fx:id="btnCleanLab" cancelButton="true" mnemonicParsing="false" onAction="#doCleanLab" text="Pulisci">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnAddNewSub" mnemonicParsing="false" onAction="#addNewSub" text="Aggiungi Materia">
+                        <Button fx:id="btnAddNewLab" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#addNewLab" text="Aggiungi Laboratorio">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>

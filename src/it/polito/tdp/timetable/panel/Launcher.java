@@ -1,7 +1,9 @@
-package it.polito.tdp.timetable;
+package it.polito.tdp.timetable.panel;
 
 import java.util.List;
 
+import it.polito.tdp.timetable.CreateSchoolController;
+import it.polito.tdp.timetable.StartController;
 import it.polito.tdp.timetable.model.Course;
 import it.polito.tdp.timetable.model.Model;
 import it.polito.tdp.timetable.model.School;
@@ -25,7 +27,7 @@ public class Launcher {
 
     public static final void doNewSchool() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("CreateSchool.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("../CreateSchool.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
 			CreateSchoolController controller = loader.getController() ;
@@ -63,10 +65,10 @@ public class Launcher {
     
     public static final void openDB(School school) {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelGeneral.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("General.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelGeneralController controller = loader.getController() ;
+			GeneralController controller = loader.getController() ;
 			model = new Model();
 			model.setSchool(school);
 			controller.setModel(model);
@@ -77,7 +79,7 @@ public class Launcher {
 			
 			stage = new Stage();
 			stage.setTitle("Timetable School Creator - " + school.getName());
-			stage.getIcons().add(new Image(Launcher.class.getResourceAsStream("icon.png")));
+			stage.getIcons().add(new Image(Launcher.class.getResourceAsStream("../icon.png")));
 			stage.setScene(scene);
 			stage.show();
     	} catch(Exception e) {
@@ -87,10 +89,10 @@ public class Launcher {
     
     public static final void openTabSubject() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelSubject.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Subject.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelSubjectController controller = loader.getController() ;
+			SubjectController controller = loader.getController() ;
 			
 			controller.setModel(model);
 			
@@ -106,10 +108,10 @@ public class Launcher {
     
     public static final void openTabTeacher() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelTeacher.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Teacher.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelTeacherController controller = loader.getController() ;
+			TeacherController controller = loader.getController() ;
 			
 			controller.setModel(model);
 			
@@ -125,10 +127,10 @@ public class Launcher {
     
     public static final void openTabClass() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelClass.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Class.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelClassController controller = loader.getController() ;
+			ClassController controller = loader.getController() ;
 			
 			controller.setModel(model);
 			
@@ -144,10 +146,10 @@ public class Launcher {
     
     public static final void openTabCourse() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelCourse.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Course.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelCourseController controller = loader.getController() ;
+			CourseController controller = loader.getController() ;
 			
 			controller.setModel(model);
 			
@@ -166,10 +168,10 @@ public class Launcher {
     
     public static final void openTabLab() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelLab.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Lab.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelLabController controller = loader.getController() ;
+			LabController controller = loader.getController() ;
 			
 			controller.setModel(model);
 			
@@ -185,10 +187,10 @@ public class Launcher {
     
     public static final void openTabGeneral() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("PanelGeneral.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("General.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
-			PanelGeneralController controller = loader.getController() ;
+			GeneralController controller = loader.getController() ;
 			
 			controller.setModel(model);
 			
