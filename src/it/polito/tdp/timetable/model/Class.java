@@ -28,7 +28,10 @@ public class Class {
 		this.courseID = courseID;
 		this.mapSubjectTeacher = new HashMap<>();
 	}
-
+	public Class(String classID) {
+		this.classID = classID;
+	}
+	
 	public String getClassID() {
 		return classID;
 	}

@@ -153,13 +153,11 @@ public class Model {
 	}
 
 	public List<Teacher> getAllTeachers() {
-		if(teachers.isEmpty()) {
 			this.dao = new TimetableDAO();
 			this.teachers = dao.getAllTeachers(school.getSchoolID());
 			
 			for(Teacher t : teachers)
 				t.setEnablingSub(dao.getAllSubjectByTeacher(school.getSchoolID(),t.getTeacherID()));
-		}
 		return teachers;
 	}
 

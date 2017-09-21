@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
@@ -256,113 +257,150 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
+                  <HBox fx:id="hbxAllertTimetable">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../image/error.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="3.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label text="ATTENZIONE! Al momento non è possibile generare il Timetable. Completare la creazione del database.">
+                           <HBox.margin>
+                              <Insets top="7.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
                   <Label text="Genera Timetable">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <HBox style="-fx-border-right-color: black;" VBox.vgrow="SOMETIMES">
+                  <VBox alignment="CENTER">
                      <children>
-                        <VBox alignment="CENTER" HBox.hgrow="SOMETIMES">
+                        <HBox fx:id="hbTimetable" disable="true">
                            <children>
-                              <HBox fx:id="hbxAllertTimetable">
+                              <VBox>
                                  <children>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../../../image/error.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="3.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label text="ATTENZIONE! Al momento non è possibile generare il Timetable. Completare la creazione del database.">
-                                       <HBox.margin>
-                                          <Insets top="7.0" />
-                                       </HBox.margin>
+                                    <Label text="Ricerca">
                                        <font>
-                                          <Font size="13.0" />
+                                          <Font name="System Bold" size="16.0" />
                                        </font>
+                                       <padding>
+                                          <Insets left="15.0" />
+                                       </padding>
                                     </Label>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <VBox>
+                                    <HBox style="-fx-border-color: black;">
                                        <children>
-                                          <HBox alignment="CENTER" disable="true" VBox.vgrow="SOMETIMES">
+                                          <VBox>
                                              <children>
-                                                <VBox>
-                                                   <children>
-                                                      <Label text="Tempo impiegato">
-                                                         <padding>
-                                                            <Insets bottom="10.0" />
-                                                         </padding>
-                                                      </Label>
-                                                      <Label text="Richieste soddisfatte" />
-                                                   </children>
-                                                </VBox>
-                                                <VBox>
-                                                   <children>
-                                                      <Label fx:id="txtTimeProcess">
-                                                         <padding>
-                                                            <Insets bottom="10.0" />
-                                                         </padding>
-                                                      </Label>
-                                                      <Label fx:id="txtPercSuccess" />
-                                                   </children>
-                                                   <HBox.margin>
-                                                      <Insets left="50.0" />
-                                                   </HBox.margin>
-                                                </VBox>
+                                                <Label text="Classe">
+                                                   <VBox.margin>
+                                                      <Insets bottom="25.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label text="Professore">
+                                                   <VBox.margin>
+                                                      <Insets bottom="25.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label text="Laboratorio">
+                                                   <VBox.margin>
+                                                      <Insets bottom="25.0" />
+                                                   </VBox.margin>
+                                                </Label>
                                              </children>
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                    <VBox fx:id="btnViewTimetable" alignment="TOP_RIGHT" disable="true" HBox.hgrow="SOMETIMES">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#viewTimetableClass" prefWidth="170.0" text="Visualizza per Classe">
-                                             <VBox.margin>
-                                                <Insets bottom="10.0" />
-                                             </VBox.margin>
-                                          </Button>
-                                          <Button mnemonicParsing="false" onAction="#viewTimetableTeacher" prefWidth="170.0" text="Visualizza per Professore">
-                                             <VBox.margin>
-                                                <Insets bottom="10.0" />
-                                             </VBox.margin>
-                                          </Button>
-                                          <Button mnemonicParsing="false" onAction="#viewTimetableLab" prefWidth="170.0" text="Visualizza per Laboratorio" />
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                          <VBox>
+                                             <children>
+                                                <ComboBox fx:id="cmbClass" onAction="#viewTimeClass" prefWidth="200.0">
+                                                   <VBox.margin>
+                                                      <Insets bottom="15.0" />
+                                                   </VBox.margin>
+                                                </ComboBox>
+                                                <ComboBox fx:id="cmbTeacher" onAction="#viewTimeTeacher" prefWidth="200.0">
+                                                   <VBox.margin>
+                                                      <Insets bottom="15.0" />
+                                                   </VBox.margin>
+                                                </ComboBox>
+                                                <ComboBox fx:id="cmbLab" onAction="#viewTimeLab" prefWidth="200.0">
+                                                   <VBox.margin>
+                                                      <Insets bottom="15.0" />
+                                                   </VBox.margin>
+                                                </ComboBox>
+                                             </children>
+                                          </VBox>
                                        </children>
                                        <padding>
-                                          <Insets right="10.0" />
+                                          <Insets left="15.0" right="15.0" top="15.0" />
                                        </padding>
-                                    </VBox>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <HBox alignment="BOTTOM_CENTER" VBox.vgrow="SOMETIMES">
+                              </VBox>
+                              <VBox>
                                  <children>
-                                    <Button fx:id="btnGenera" alignment="CENTER" contentDisplay="CENTER" minWidth="500.0" mnemonicParsing="false" onAction="#doGeneraTimetable" text="Genera Timetable" visible="false">
-                                       <HBox.margin>
-                                          <Insets top="25.0" />
-                                       </HBox.margin>
+                                    <Button fx:id="btnGenera" mnemonicParsing="false" onAction="#doGeneraTimetable" prefHeight="75.0" prefWidth="225.0" text="Genera">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
                                     </Button>
+                                    <HBox>
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Label text="Tempo impiegato">
+                                                   <padding>
+                                                      <Insets bottom="10.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label text="Richieste soddisfatte" />
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="25.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                          <VBox>
+                                             <children>
+                                                <Label fx:id="txtTimeProcess">
+                                                   <padding>
+                                                      <Insets bottom="10.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="txtPercSuccess" />
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="50.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                    </HBox>
                                  </children>
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </HBox>
+                                 <HBox.margin>
+                                    <Insets left="35.0" top="25.0" />
+                                 </HBox.margin>
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
                      </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </VBox>
                   <HBox fx:id="hbxProgressTime" alignment="BOTTOM_LEFT" visible="false" VBox.vgrow="SOMETIMES">
                      <children>
                         <ProgressBar fx:id="prgCreateTime" prefWidth="100.0" progress="0.0">

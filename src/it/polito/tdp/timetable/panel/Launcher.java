@@ -219,6 +219,7 @@ public class Launcher {
 			popup = new Stage();
 			popup.setScene(scene);
 			popup.setTitle("Assegnazione ore per ogni materia - " + nameCourse);
+			popup.getIcons().add(new Image(Launcher.class.getResourceAsStream("../icon.png")));
 			popup.show();
     	} catch(Exception e) {
 			e.printStackTrace();
@@ -240,26 +241,28 @@ public class Launcher {
 			popup = new Stage();
 			popup.setScene(scene);
 			popup.setTitle("Assegnazione ore per ogni materia - " + c.getName());
+			popup.getIcons().add(new Image(Launcher.class.getResourceAsStream("../icon.png")));
 			popup.show();
     	} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static void openTimetable() {
+	public static void openTimetable(String[][] timetable) {
     	try {
     		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Timetable.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
 			Timetable controller = loader.getController() ;
 			
-			controller.setModel(model);
+			controller.setModel(model, timetable);
 			
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
 			
 			popup = new Stage();
 			popup.setScene(scene);
+			popup.getIcons().add(new Image(Launcher.class.getResourceAsStream("../icon.png")));
 			popup.show();
     	} catch(Exception e) {
 			e.printStackTrace();

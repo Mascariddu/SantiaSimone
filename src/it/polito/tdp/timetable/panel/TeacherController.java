@@ -128,7 +128,7 @@ public class TeacherController {
     					Integer.valueOf(txtHoursTeacher.getText()), 
     					cmdFreeDayTeacher.getSelectionModel().getSelectedIndex(),
     					subjectIDList);
-    		
+    	c.setHoursWork(listTeachers.getSelectionModel().getSelectedItem().getHoursWork() - c.getHoursWeek());
     	model.updateTeacher(c, listTeachers.getSelectionModel().getSelectedItem());
     	
     	listTeachers.getItems().clear();

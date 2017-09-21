@@ -27,7 +27,7 @@ public class ClassController {
 	
 	private Model model;
 	private Map<String, String> mapSubjectTeacher;
-	private Map<String, Integer> mapChange;
+	// private Map<String, Integer> mapChange;
 	private int numSubject;
 	private int numSubjectUnemployed;
 
@@ -194,7 +194,7 @@ public class ClassController {
     		numSubjectUnemployed--;
     		txtNumSubUnemployed.setText(String.valueOf(numSubjectUnemployed));
     	}
-    	
+    	 /*
     	if(mapChange.containsKey(mapSubjectTeacher.get(txtIdSubClass.getText())))
     		mapChange.put(mapSubjectTeacher.get(txtIdSubClass.getText()), 
     				mapChange.get(mapSubjectTeacher.get(txtIdSubClass.getText())) + Integer.valueOf(txtHoursWeek.getText()));
@@ -208,6 +208,7 @@ public class ClassController {
     	else
     		mapChange.put(cmbTeacherSubClass.getSelectionModel().getSelectedItem().getTeacherID(), 
     				-Integer.valueOf(txtHoursWeek.getText()));
+    	*/
     	
     	// model.getAllTeachers().get(model.getAllTeachers().indexOf(new Teacher(
 		//		mapSubjectTeacher.get(txtIdSubClass.getText())))).setHoursWork(+Integer.valueOf(txtHoursWeek.getText()));
@@ -241,7 +242,7 @@ public class ClassController {
     	if(cmbClass.getItems().isEmpty() || cmbClass.getSelectionModel().isEmpty())
     		return;
     	    	
-    	this.mapChange = new HashMap<>();
+    	// this.mapChange = new HashMap<>();
     	Class c = cmbClass.getSelectionModel().getSelectedItem();
     	
     	txtIdClass.setText(c.getClassID());
