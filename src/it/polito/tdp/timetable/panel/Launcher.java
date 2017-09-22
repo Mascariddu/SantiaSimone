@@ -46,7 +46,7 @@ public class Launcher {
     
     public static final void returnStart() {
     	try {
-    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Start.fxml")) ;
+    		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("../Start.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
 			
 			StartController controller = loader.getController() ;
@@ -248,7 +248,7 @@ public class Launcher {
 		}
 	}
 	
-	public static void openTimetable(String[][] timetable) {
+	public static void openTimetable(String info, String[][] timetable) {
     	try {
     		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("Timetable.fxml")) ;
 			BorderPane root = (BorderPane)loader.load();
@@ -262,6 +262,7 @@ public class Launcher {
 			
 			popup = new Stage();
 			popup.setScene(scene);
+			popup.setTitle("Timetable - " + info);
 			popup.getIcons().add(new Image(Launcher.class.getResourceAsStream("../icon.png")));
 			popup.show();
     	} catch(Exception e) {

@@ -1,129 +1,206 @@
 package it.polito.tdp.timetable.model;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TimetableGenerator {
 	
 	private List<Class> classes;
 	private List<Teacher> teachers;
 	private List<Course> courses;
+	private List<Subject> subjects;
+	private Model model;
 	private int numHoursWeek;
 	private int numHoursDay;
 	private int numDays;
 	private boolean trovato;
 	private int countNotSatisfied;
+	private int returnedBack;
+	private int loops;
 	private long timeProcess;
 	
 	private String[][] timetableSubject;
 	private String[][] timetableTeacher;
 	
-	public TimetableGenerator(List<Class> classes, List<Teacher> teachers, List<Course> courses,
-			int numHoursWeek, int numHoursDays, int numDays) {
+	public TimetableGenerator(Model model) {
 		super();
-		this.classes = classes;
-		this.teachers = teachers;
-		this.courses = courses;
-		this.numHoursWeek = numHoursWeek;
-		this.numHoursDay = numHoursDays;
-		this.numDays = numDays;
+		this.model = model;
+		this.classes = model.getAllClasses();
+		this.teachers = model.getAllTeachers();
+		this.courses = model.getAllCourses();
+		this.subjects = model.getAllSubjects();
+		this.numHoursWeek = model.getHoursWeekSchool();
+		this.numHoursDay = model.getHoursDaySchool();
+		this.numDays = model.getSchool().getWorkDays();
 	}
-	
-
 	
 	public void generateTimetable() {
 		String[][]tmS = new String[classes.size()][numHoursWeek];
 		String[][]tmT = new String[classes.size()][numHoursWeek];
-		Class c = classes.iterator().next();
-		Map<String, Integer> cs = new HashMap<>(courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject());
-		
 		this.trovato = false;
 		this.countNotSatisfied = 0;
+		this.returnedBack = 10;
+		this.loops = 0;
+		
+		Class c = classes.iterator().next();
+		Map<String, Integer> cs = new HashMap<>(courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject());
+		List<String> listKey = new ArrayList<String>(c.getMapSubjectTeacher().keySet());
 		
 		long start = System.currentTimeMillis();
-		recursive(tmS, tmT, c, cs, 0, 0);
+		recursive(tmS, tmT, c, listKey, cs, 0, 0);
 		long end = System.currentTimeMillis();
 		
+		classes.clear();
+		this.classes = model.getAllClasses();
 		this.timeProcess = end - start;
 	}
 	
-	public void recursive(String [][] tmS, String [][] tmT, Class c, Map<String, Integer> cs, int x, int y) {	
-		List<String> listKey = new ArrayList<String>(c.getMapSubjectTeacher().keySet());
-		int countBusy = 0;
+	public void recursive(String [][] tmS, String [][] tmT, Class c, List<String> listSub, Map<String, Integer> subHours, int x, int y) {	
 		
-		while(listKey.iterator().hasNext()) {
-			if(trovato || countBusy>(listKey.size()*2))
-				break;
+		int countBusy = 0;
+		int tried = 0;
+		
+		while(listSub.iterator().hasNext()) {
 			
-			String sbj = listKey.iterator().next();
+			if(trovato || countBusy>(listSub.size()*2) || tried > listSub.size() + 2)
+				return;
+			
+			String sbj = listSub.iterator().next();
 			Teacher tch = teachers.get(teachers.indexOf(new Teacher(c.getMapSubjectTeacher().get(sbj))));
 			Boolean busy = false;
 				
-			if(cs.get(sbj) > 0) {			
+			if(subHours.get(sbj) > 0) {			
 				
 				for(int i = y; i >= 0 ; i--)
 					if(tmT[i][x] != null)
-						if(tmT[i][x].compareTo(tch.getTeacherID()) == 0 ) {
+						if(tmT[i][x].compareTo(tch.getTeacherID()) == 0 ) 
 							busy = true;
-							listKey.remove(sbj);
-							listKey.add(sbj);
-							countBusy++;
-						}
 				
-				if ((x >= tch.getFreeDay()*numHoursDay && x <= tch.getFreeDay()*(numHoursDay+1))) {
-					if(countBusy < listKey.size()) {
+				if(x>1 && !busy) 
+					if(tmS[y][x-2].compareTo(sbj) == 0) 
 						busy = true;
-						listKey.remove(sbj);
-						listKey.add(sbj);
-						countBusy++;
-					} else countNotSatisfied++;
-				}
+				
+				if ((x >= tch.getFreeDay()*numHoursDay && x <= tch.getFreeDay()*(numHoursDay+1)) && !busy) 
+					if(countBusy < listSub.size()) 
+						busy = true;
 					
 				
-				if(!busy) {
+				if(busy) {
+					listSub.remove(sbj);
+					listSub.add(sbj);
+					countBusy++;
+				} else {
+					
 					tmS[y][x] = sbj;
 					tmT[y][x] = tch.getTeacherID();
 					
-					cs.put(sbj, cs.get(sbj)-1);
-					recursive(tmS, tmT, c, cs, x+1, y);
-					cs.put(sbj, cs.get(sbj)+1);
+					subHours.put(sbj, subHours.get(sbj)-1);
+					
+					recursive(tmS, tmT, c, listSub, subHours, x+1, y);										
+					
+					subHours.put(sbj, subHours.get(sbj)+1);
+					listSub.remove(sbj);
+					listSub.add(sbj);
+					
+					if(loops > 50)
+						if(returnedBack>0) {
+							returnedBack--;
+							return;
+						} else {
+							returnedBack = 15;
+							loops = 0;
+						}	
+					
+					tried++;
+					loops++;
 				}
 				
-			} else {
-				
-				listKey.remove(sbj);
-				
-				if(listKey.isEmpty()) {
-					classes.remove(c);
-					
-					if(classes.isEmpty()) {
-						trovato = true;
-						this.timetableSubject = tmS;
-						this.timetableTeacher = tmT;
-						classes.add(c);
-						break;
-					}
-					
-					Class nw = classes.iterator().next();
-					cs = new HashMap<>(courses.get(courses.indexOf(new Course(nw.getCourseID()))).getMapSubject());
-					recursive(tmS, tmT, nw, cs, 0, y+1);
-					classes.add(c);
+			} else listSub.remove(sbj);
+			
+		}
+		
+		if(listSub.isEmpty()) {
+			classes.remove(c);
+			
+			if(classes.isEmpty()) {
+				trovato = true;
+				this.timetableSubject = tmS;
+				this.timetableTeacher = tmT;
+				return;
+			}
+			
+			Class nw = classes.iterator().next();
+			
+			recursive(tmS, tmT, nw, 
+					new ArrayList<String>(nw.getMapSubjectTeacher().keySet()), 
+					new HashMap<>(courses.get(courses.indexOf(new Course(nw.getCourseID()))).getMapSubject()), 
+					0, y+1);
+			
+			classes.add(c);
+		}
+		
+	}
+
+	public String[][] getTimetableByClass(String classID) {
+
+		String[][] t = new String[numHoursDay][numDays];
+		int s = 0;
+		int p = classes.indexOf(new Class(classID));	
+		
+		for(int d = 0; d<numDays; d++) {
+			for(int h = 0; h < numHoursDay; h++) {
+				t[h][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[p][s]))).getName() + "\n" 
+						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getName() + " " 
+						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getSurname();
+				s++;
+			}	
+		}
+		
+		return t;
+	}
+	
+	public String[][] getTimetableByTeacher(String teacherID) {
+
+		String[][] t = new String[numHoursDay][numDays];	
+		
+		for(int d = 0; d<numDays; d++) {
+			int r = 0;
+			for(int h = numHoursDay*d; h < numHoursDay*(d+1); h++) {
+				for(int c = 0; c<classes.size(); c++) { 
+					if(timetableTeacher[c][h].compareTo(teacherID) == 0)
+						t[r][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[c][h]))).getName() + "\n" 
+							+ classes.get(c).getGrade() + " " + classes.get(c).getSection();
 				}
+				r++;
 			}
 		}
 		
+		return t;
+	}
+	
+	public int getCountNotSatisfied() {
+		for(Teacher t : teachers) {
+			Boolean work = false;
+			for(int d = 0; d<numDays && !work; d++) 
+				for(int c = 0; c<classes.size() && !work; c++)  
+					for(int h = numHoursDay*d; h < numHoursDay*(d+1); h++) {
+						if(timetableTeacher[c][h].compareTo(t.getTeacherID())==0 && d==t.getFreeDay()) {
+							work = true;
+							break;
+						}
+					}
+			
+			if(work)
+				countNotSatisfied++;
+		}
+						
+		return countNotSatisfied;
+	}
+	
+	public long getTimeProcess() {
+		return timeProcess/1000;
 	}
 	
 	public void stamp() {
@@ -136,117 +213,4 @@ public class TimetableGenerator {
 		System.out.println("Numero professori non soddisfatti " + countNotSatisfied);
 	}
 	
-	public int getCountNotSatisfied() {
-		return countNotSatisfied;
-	}
-	
-	public long getTimeProcess() {
-		return timeProcess/1000;
-	}
-
-	public String[][] getTimetableByClass(String classID) {
-
-		String[][] t = new String[numHoursDay][numDays];
-		int s = 0;
-		int p = classes.indexOf(new Class(classID));	
-		
-		for(int d = 0; d<numDays; d++) {
-			for(int h = 0; h < numHoursDay; h++) {
-				t[h][d] = timetableSubject[p][s];
-				s++;
-			}	
-		}
-		
-		return t;
-	}
-	
-/*
-	public TableView<Line> getTimetableBySubject() {
-		TableView<Line> tv = newTableView();
-		ObservableList<Line> lineData = FXCollections.observableArrayList();
-
-		for(int h = 0; h < numHoursDay; h++) {
-			String[] s;
-			s[0] = String.valueOf(h);
-			for(int d = 0; d < numDays; d++ )
-				s[d+1] = timetableSubject[0][h*d];
-						
-			lineData.add(new Line(s[0], s[1], s[2], s[3], s[4], s[5], s[6]));
-		}
-		
-		for(int i = 0; i<tv.getColumns().size(); i++)
-			tv.getColumns().get(i).setCellValueFactory(new PropertyValueFactory<Line, String>("mon"));
-		
-		return tv;
-	}
-	
-	private TableView<Line> newTableView() {
-		List<TableColumn<Line, String>> c = new LinkedList<>();
-		TableView<Line> tv = new TableView<Line>();
-		
-		c.add(new TableColumn<>("Lunedì"));
-		c.add(new TableColumn<>("Martedì"));
-		c.add(new TableColumn<>("Mercoledì"));
-		c.add(new TableColumn<>("Giovedì"));
-		c.add(new TableColumn<>("Venerdì"));
-		c.add(new TableColumn<>("Sabato"));
-		
-		for(int i = 0; i < numDays; i++)
-			tv.getColumns().add(c.get(i));
-		
-		return tv;
-	}
-	
-	public class Line {
-		private String h;
-		private final StringProperty mon;
-		private String tue;
-		private String wen;
-		private String thu;
-		private String fri;
-		private String sat;
-		
-		public Line(String h, String mon, String tue, String wen, String thu, String fri, String sat) {
-			super();
-			this.h = h;
-			this.mon = new SimpleStringProperty(mon);
-			this.tue = tue;
-			this.wen = wen;
-			this.thu = thu;
-			this.fri = fri;
-			this.sat = sat;
-		}
-
-		public String getH() {
-			return h;
-		}
-
-		public StringProperty getMon() {
-			return mon;
-		}
-
-		public String getTue() {
-			return tue;
-		}
-
-		public String getWen() {
-			return wen;
-		}
-
-		public String getThu() {
-			return thu;
-		}
-
-		public String getFri() {
-			return fri;
-		}
-
-		public String getSat() {
-			return sat;
-		}
-		
-		
-		
-	}
-*/
 }

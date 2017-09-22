@@ -299,7 +299,7 @@
                                           <Insets left="15.0" />
                                        </padding>
                                     </Label>
-                                    <HBox style="-fx-border-color: black;">
+                                    <HBox fx:id="hbSearch" disable="true" onDragDetected="#doGeneraTimetable" style="-fx-border-color: black;">
                                        <children>
                                           <VBox>
                                              <children>

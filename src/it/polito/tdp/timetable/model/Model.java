@@ -38,6 +38,7 @@ public class Model {
 	public List<Course> getAllCourses() {
 			this.dao = new TimetableDAO();
 			this.courses = dao.getAllCourses(school.getSchoolID());
+		
 			for(Course c : courses)
 				c.setMapSubject(dao.getAllSubjectByCourse(school.getSchoolID(),c.getCourseID()));
 			
@@ -153,16 +154,19 @@ public class Model {
 	}
 
 	public List<Teacher> getAllTeachers() {
+	//	if(teachers.isEmpty())	{
 			this.dao = new TimetableDAO();
 			this.teachers = dao.getAllTeachers(school.getSchoolID());
 			
 			for(Teacher t : teachers)
 				t.setEnablingSub(dao.getAllSubjectByTeacher(school.getSchoolID(),t.getTeacherID()));
+	//	}
+		
 		return teachers;
 	}
 
 	public List<Class> getAllClasses() {
-		if(classes.isEmpty()) {
+//		if(classes.isEmpty()) {
 			this.dao = new TimetableDAO();
 			this.classes = dao.getAllClasses(school.getSchoolID());
 		
@@ -172,8 +176,7 @@ public class Model {
 					teachers.get(teachers.indexOf(new Teacher(c.getMapSubjectTeacher().get(s)))).setHoursWork(
 							-courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject().get(s));
 			}
-			
-		}
+//		}
 		return classes;
 	}
 

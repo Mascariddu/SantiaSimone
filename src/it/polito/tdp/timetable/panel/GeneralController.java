@@ -104,19 +104,22 @@ public class GeneralController {
 
     @FXML // fx:id="hbxProgressTime"
     private HBox hbxProgressTime; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="hvSearch"
+    private HBox hbSearch; // Value injected by FXMLLoader
 
     @FXML // fx:id="prgCreateTime"
     private ProgressBar prgCreateTime; // Value injected by FXMLLoader
 
     @FXML
     void doGeneraTimetable(ActionEvent event) {
-    	this.timetable = new TimetableGenerator(model.getAllClasses(), model.getAllTeachers(), 
-				model.getAllCourses(), model.getHoursWeekSchool(), model.getHoursDaySchool(), school.getWorkDays());
+    	this.timetable = new TimetableGenerator(model);
     	
 		cmbClass.getItems().addAll(classes);
 		cmbLab.getItems().addAll(labs);
 		cmbTeacher.getItems().addAll(teachers);
-		btnGenera.setDisable(true);		
+		btnGenera.setDisable(true);	
+		hbSearch.setDisable(false);
 		
 		this.timetable.generateTimetable();
 		
@@ -154,7 +157,8 @@ public class GeneralController {
     	if(cmbClass.getSelectionModel().isEmpty())
     		return;
     	
-    	Launcher.openTimetable(this.timetable.getTimetableByClass(cmbClass.getSelectionModel().getSelectedItem().getClassID()));
+    	Class c = cmbClass.getSelectionModel().getSelectedItem();
+    	Launcher.openTimetable(c.toString(), this.timetable.getTimetableByClass(c.getClassID()));
     }
 
     @FXML
@@ -162,7 +166,6 @@ public class GeneralController {
     	if(cmbLab.getSelectionModel().isEmpty())
     		return;
     	
-    //	Launcher.openTimetable(this.timetable);
     }
 
     @FXML
@@ -170,7 +173,8 @@ public class GeneralController {
     	if(cmbTeacher.getSelectionModel().isEmpty())
     		return;
     	
-    //	Launcher.openTimetable(cmbTeacher.getSelectionModel().getSelectedItem().getTeacherID(), this.timetable);
+    	Teacher t = cmbTeacher.getSelectionModel().getSelectedItem();
+    	Launcher.openTimetable(t.toString(), this.timetable.getTimetableByTeacher(t.getTeacherID()));
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -190,6 +194,7 @@ public class GeneralController {
         assert pgbCompleteDB != null : "fx:id=\"pgbCompleteDB\" was not injected: check your FXML file 'General.fxml'.";
         assert hbxAllertTimetable != null : "fx:id=\"hbxAllertTimetable\" was not injected: check your FXML file 'General.fxml'.";
         assert hbTimetable != null : "fx:id=\"hbTimetable\" was not injected: check your FXML file 'General.fxml'.";
+        assert hbSearch != null : "fx:id=\"hvSearch\" was not injected: check your FXML file 'General.fxml'.";
         assert cmbClass != null : "fx:id=\"cmbClass\" was not injected: check your FXML file 'General.fxml'.";
         assert cmbTeacher != null : "fx:id=\"cmbTeacher\" was not injected: check your FXML file 'General.fxml'.";
         assert cmbLab != null : "fx:id=\"cmbLab\" was not injected: check your FXML file 'General.fxml'.";
