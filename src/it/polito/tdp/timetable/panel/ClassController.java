@@ -101,6 +101,12 @@ public class ClassController {
     			cmbCourse.getSelectionModel().getSelectedItem().getCourseID(),
     			mapSubjectTeacher);
     	
+    	model.getAllTeachers().clear();
+    	model.getAllTeachers();
+    	
+    	model.getAllClasses().clear();
+    	model.getAllClasses();
+    	
     	cmbClass.getItems().clear();
     	cmbClass.getItems().addAll(model.getAllClasses());
     	
@@ -152,6 +158,12 @@ public class ClassController {
     			mapSubjectTeacher);
     	
     	model.updateClass(c, cmbClass.getSelectionModel().getSelectedItem());
+    	
+    	model.getAllTeachers().clear();
+    	model.getAllTeachers();
+    	
+    	model.getAllClasses().clear();
+    	model.getAllClasses();
 
     }
 
@@ -224,6 +236,7 @@ public class ClassController {
     		return;
     	
     	Course c = cmbCourse.getSelectionModel().getSelectedItem();
+    	this.mapChange = new HashMap<>();
     	
     	this.mapSubjectTeacher = new HashMap<>();
     	numSubject = c.getListSubject().size();
@@ -242,7 +255,6 @@ public class ClassController {
     	if(cmbClass.getItems().isEmpty() || cmbClass.getSelectionModel().isEmpty())
     		return;
     	    	
-    	this.mapChange = new HashMap<>();
     	Class c = cmbClass.getSelectionModel().getSelectedItem();
     	
     	txtIdClass.setText(c.getClassID());
@@ -276,7 +288,7 @@ public class ClassController {
     	Subject s = (Subject) listSubjects.getSelectionModel().getSelectedItem();
     	txtIdSubClass.setText(s.getSubjectID());
     	txtNameSubClass.setText(s.getName());
-    	txtHoursWeek.setText(String.valueOf(cmbCourse.getSelectionModel().getSelectedItem().getMapSubject().get(s.getSubjectID())));
+    	txtHoursWeek.setText(String.valueOf(cmbCourse.getSelectionModel().getSelectedItem().getMapSubject().get(s.getSubjectID())[0]));
     	
     	cmbTeacherSubClass.getItems().clear();
     	for(Teacher t : model.getAllTeachers())

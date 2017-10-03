@@ -12,6 +12,7 @@ import it.polito.tdp.timetable.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -39,8 +40,8 @@ public class LabController {
     @FXML // fx:id="txtNameLab"
     private TextField txtNameLab; // Value injected by FXMLLoader
 
-    @FXML // fx:id="txtTypeLab"
-    private TextField txtTypeLab; // Value injected by FXMLLoader
+    @FXML // fx:id="cmbTypeLab"
+    private ComboBox<String> cmbTypeLab; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnUpdateLab"
     private Button btnUpdateLab; // Value injected by FXMLLoader
@@ -53,12 +54,12 @@ public class LabController {
 
     @FXML
     void addNewLab(ActionEvent event) {
-    	if(txtNameLab.getText().isEmpty() || txtTypeLab.getText().isEmpty()) {
+    	if(txtNameLab.getText().isEmpty() || cmbTypeLab.getSelectionModel().isEmpty()) {
     		hbxAllertLab.setVisible(true);
     		return;
     	}
     	
-    	Lab l = model.addNewLab(txtNameLab.getText(),  txtTypeLab.getText());
+    	Lab l = model.addNewLab(txtNameLab.getText(),  cmbTypeLab.getSelectionModel().getSelectedIndex());
     	listLab.getItems().add(l);
     	
     	txtIdLab.setText(l.getName());
@@ -70,7 +71,7 @@ public class LabController {
     void doCleanLab(ActionEvent event) {
     	txtIdLab.clear();
     	txtNameLab.clear();
-    	txtTypeLab.clear();
+    	cmbTypeLab.getSelectionModel().clearSelection();
     	
     	hbxAllertLab.setVisible(false);
     	
@@ -80,14 +81,14 @@ public class LabController {
 
     @FXML
     void doUpdateLab(ActionEvent event) {
-    	if(txtNameLab.getText().isEmpty() || txtTypeLab.getText().isEmpty()) {
+    	if(txtNameLab.getText().isEmpty() || cmbTypeLab.getSelectionModel().isEmpty()) {
     		hbxAllertLab.setVisible(true);
     		return;
     	}
     	
     	Lab l = new Lab(txtIdLab.getText(), 
     					txtNameLab.getText(), 
-    					txtTypeLab.getText());
+    					cmbTypeLab.getSelectionModel().getSelectedIndex());
     		
     	model.updateLab(l);
     	
@@ -130,7 +131,7 @@ public class LabController {
     	Lab l = listLab.getSelectionModel().getSelectedItem();
     	txtIdLab.setText(l.getLabID());
     	txtNameLab.setText(l.getName());
-    	txtTypeLab.setText(l.getType());
+    	cmbTypeLab.getSelectionModel().clearAndSelect(l.getType());
     	
     	btnUpdateLab.setDisable(false);
     	btnAddNewLab.setDisable(true);
@@ -143,7 +144,7 @@ public class LabController {
         assert hbxAllertLab != null : "fx:id=\"hbxAllertLab\" was not injected: check your FXML file 'PanelLab.fxml'.";
         assert txtIdLab != null : "fx:id=\"txtIdLab\" was not injected: check your FXML file 'PanelLab.fxml'.";
         assert txtNameLab != null : "fx:id=\"txtNameLab\" was not injected: check your FXML file 'PanelLab.fxml'.";
-        assert txtTypeLab != null : "fx:id=\"txtTypeLab\" was not injected: check your FXML file 'PanelLab.fxml'.";
+        assert cmbTypeLab != null : "fx:id=\"cmbTypeLab\" was not injected: check your FXML file 'Lab.fxml'.";
         assert btnUpdateLab != null : "fx:id=\"btnUpdateLab\" was not injected: check your FXML file 'PanelLab.fxml'.";
         assert btnCleanLab != null : "fx:id=\"btnCleanLab\" was not injected: check your FXML file 'PanelLab.fxml'.";
         assert btnAddNewLab != null : "fx:id=\"btnAddNewLab\" was not injected: check your FXML file 'PanelLab.fxml'.";
@@ -154,6 +155,7 @@ public class LabController {
 		this.model = model ;
 		
 		listLab.getItems().addAll(model.getAllLab());
+		cmbTypeLab.getItems().addAll(model.getAllTypeLaib());
 		
     }
 }

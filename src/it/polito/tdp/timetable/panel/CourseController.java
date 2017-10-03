@@ -114,7 +114,10 @@ public class CourseController {
 
     @FXML
     void doUpdateCourse(ActionEvent event) {
-    	Launcher.openUpdateCourse(new Course(txtIdCourse.getText(), cmbGrade.getSelectionModel().getSelectedItem(), txtNameCourse.getText(),cmbCourse.getSelectionModel().getSelectedItem().getMapSubject()), 
+    	Launcher.openUpdateCourse(new Course(txtIdCourse.getText(), 
+    			cmbGrade.getSelectionModel().getSelectedItem(), 
+    			txtNameCourse.getText(),
+    			cmbCourse.getSelectionModel().getSelectedItem().getMapSubject()), 
     			listSubCourseCheck.getItems());
     }
 

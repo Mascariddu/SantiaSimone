@@ -9,7 +9,7 @@ public class Course {
 	private String courseID;
 	private String name;
 	private int grade;
-	private Map<String, Integer> mapSubject;
+	private Map<String, Integer[]> mapSubject;
 	
 	public Course(String courseID, int grade, String name) {
 		super();
@@ -18,7 +18,7 @@ public class Course {
 		this.name = name;
 	}
 
-	public Course(String courseID, int grade, String name, Map<String, Integer> mapSubject) {
+	public Course(String courseID, int grade, String name, Map<String, Integer[]> mapSubject) {
 		super();
 		this.courseID = courseID;
 		this.name = name;
@@ -54,11 +54,11 @@ public class Course {
 		this.grade = grade;
 	}
 
-	public Map<String, Integer> getMapSubject() {
+	public Map<String, Integer[]> getMapSubject() {
 		return mapSubject;
 	}
 
-	public void setMapSubject(Map<String, Integer> mapSubject) {
+	public void setMapSubject(Map<String, Integer[]> mapSubject) {
 		this.mapSubject = mapSubject;
 	}
 

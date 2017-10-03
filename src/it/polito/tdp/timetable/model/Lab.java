@@ -4,9 +4,9 @@ public class Lab {
 	
 	private String labID;
 	private String name;
-	private String type;
+	private int type;
 	
-	public Lab(String labID, String name, String type) {
+	public Lab(String labID, String name, int type) {
 		super();
 		this.labID = labID;
 		this.name = name;
@@ -29,11 +29,11 @@ public class Lab {
 		this.name = name;
 	}
 
-	public String getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 

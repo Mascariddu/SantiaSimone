@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
 public class CreateNewCourseController {
 	
 	private Model model;
-	private Map<String, Integer> mapSubject;
+	private Map<String, Integer[]> mapHSubject;
 	private int numHoursAssigned;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -83,24 +83,9 @@ public class CreateNewCourseController {
     
     model.addNewCourse(txtCourseSub.getText().toUpperCase(),
     			Integer.valueOf(txtGrade.getText()),
-    			mapSubject);	
+    			mapHSubject);	
    	
     	Launcher.openTabCourse();
-    	
-    /*
-    	Subject s;
-    	if(checkLab.isSelected())
-    		s = model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), Integer.valueOf(txtHoursLab.getText()), cmbLabSub.getValue());
-    	else {
-    		s = model.addNewSubject(txtNameSub.getText(), Integer.valueOf(txtHoursSub.getText()), 0, null);
-    		cmbLabSub.getSelectionModel().clearSelection();
-    		txtHoursLab.clear();
-    	}
-    	listSubjectChecked.getItems().add(s);
-    	
-    	txtIdSub.setText(s.getSubjectID());
-    	
-    */
     }
     
     @FXML
@@ -110,10 +95,15 @@ public class CreateNewCourseController {
 
     @FXML
     void doVisibleLab(ActionEvent event) {
-    	if(checkLab.isSelected())
+    	if(checkLab.isSelected()) {
     		vbxLab.setDisable(false);
-    	else 
+    		txtHoursLab.clear();
+    		cmbLabSub.getSelectionModel().clearSelection();
+    	} else {
     		vbxLab.setDisable(true);
+    		if(mapHSubject.containsKey(txtIdSub.getText()))
+    			mapHSubject.put(txtIdSub.getText(), new Integer[] {Integer.valueOf(txtHoursSub.getText()), null, null});
+    	}
     }
     
     @FXML
@@ -121,15 +111,15 @@ public class CreateNewCourseController {
     	if(txtIdSub.getText().isEmpty() || txtHoursSub.getText().isEmpty())
     		return;
     	
-    	if(mapSubject.containsKey(txtIdSub.getText()))
-    		numHoursAssigned -= mapSubject.get(txtIdSub.getText());
+    	if(mapHSubject.containsKey(txtIdSub.getText()))
+    		numHoursAssigned -= mapHSubject.get(txtIdSub.getText())[0];
     		
     	numHoursAssigned += Integer.valueOf(txtHoursSub.getText());
     	txtHoursAssigned.setText(String.valueOf(numHoursAssigned));    	
     	
-    	mapSubject.put(txtIdSub.getText(), Integer.valueOf(txtHoursSub.getText()));
+    	mapHSubject.put(txtIdSub.getText(), new Integer[] {Integer.valueOf(txtHoursSub.getText()), 0, 0});
     	
-    	if(numHoursAssigned == model.getHoursWeekSchool()  && mapSubject.size() == listSubjectChecked.getItems().size())
+    	if(numHoursAssigned == model.getHoursWeekSchool()  && mapHSubject.size() == listSubjectChecked.getItems().size())
     		btnAddNewCourse.setDisable(false);
     	else 
     		btnAddNewCourse.setDisable(true);
@@ -138,6 +128,21 @@ public class CreateNewCourseController {
     		listSubjectChecked.setDisable(true);
     	else
     		listSubjectChecked.setDisable(false);
+    	
+    }
+    
+    @FXML
+    void updateMapLab(ActionEvent event) {
+    	if(txtIdSub.getText().isEmpty() || txtHoursSub.getText().isEmpty() || txtHoursLab.getText().isEmpty() || cmbLabSub.getSelectionModel().isEmpty())
+    		return;
+
+    	if(Integer.valueOf(txtHoursSub.getText()) >= Integer.valueOf(txtHoursLab.getText())) {
+    		listSubjectChecked.setDisable(false);	
+    		mapHSubject.put(txtIdSub.getText(), new Integer[] {Integer.valueOf(txtHoursSub.getText()), 
+    					Integer.valueOf(txtHoursLab.getText()), 
+    					Integer.valueOf(cmbLabSub.getSelectionModel().getSelectedIndex()) });
+    	} else
+    		listSubjectChecked.setDisable(true);			
     	
     }
 
@@ -150,24 +155,28 @@ public class CreateNewCourseController {
     	txtIdSub.setText(s.getSubjectID());
     	txtNameSub.setText(s.getName());
     	
-    	if(mapSubject.containsKey(s.getSubjectID()))
-    		txtHoursSub.setText(String.valueOf(mapSubject.get(s.getSubjectID())));
-    	else
-    		txtHoursSub.setText("0");;
-    	
-    	/*
-    	if(s.getHoursLab() != 0 ) {
-    		vbxLab.setDisable(false);
-    		checkLab.setSelected(true);
-    		txtHoursLab.setText(String.valueOf(s.getHoursLab()));
-    		cmbLabSub.setValue(s.getTypeLab());
+    	if(mapHSubject.containsKey(s.getSubjectID())) {
+    		txtHoursSub.setText(String.valueOf(mapHSubject.get(s.getSubjectID())[0]));
+    		
+    		if(mapHSubject.get(s.getSubjectID())[1] != 0) {
+    			vbxLab.setDisable(false);
+        		checkLab.setSelected(true);
+    			txtHoursLab.setText(String.valueOf(mapHSubject.get(s.getSubjectID())[1]));
+    			cmbLabSub.getSelectionModel().clearAndSelect(mapHSubject.get(s.getSubjectID())[2]);
+    		} else {
+    			vbxLab.setDisable(true);
+        		checkLab.setSelected(false);
+        		txtHoursLab.clear();
+        		cmbLabSub.getSelectionModel().clearSelection();
+    		}
+    		
     	} else {
+    		txtHoursSub.setText("0");
     		vbxLab.setDisable(true);
     		checkLab.setSelected(false);
     		txtHoursLab.clear();
     		cmbLabSub.getSelectionModel().clearSelection();
     	}
-    	*/
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -191,7 +200,7 @@ public class CreateNewCourseController {
     
     public void setModel(Model model, String nameCourse, int grade, List<Subject> subjectList) {
 		this.model = model ;
-		this.mapSubject = new HashMap<>();
+		this.mapHSubject = new HashMap<>();
 		this.numHoursAssigned = 0;
 		
 		btnAddNewCourse.setDisable(true);

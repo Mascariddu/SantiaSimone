@@ -16,8 +16,7 @@ public class Model {
 	private List<Course> courses;
 	private List<Lab> labs;
 	private List<Teacher> teachers;
-	private List<Class> classes;
-	
+	private List<Class> classes;	
 	
 	public Model() {
 		this.subjects = new ArrayList<>();
@@ -27,53 +26,9 @@ public class Model {
 		this.classes = new ArrayList<>();
 	}
 	
-	public List<Subject> getAllSubjects() {
-		if(subjects.isEmpty()) {
-			this.dao = new TimetableDAO();
-			this.subjects = dao.getAllSubjects(school.getSchoolID());
-		}
-		return subjects;
-	}
 	
-	public List<Course> getAllCourses() {
-			this.dao = new TimetableDAO();
-			this.courses = dao.getAllCourses(school.getSchoolID());
-		
-			for(Course c : courses)
-				c.setMapSubject(dao.getAllSubjectByCourse(school.getSchoolID(),c.getCourseID()));
-			
-		return courses;
-	}
 	
-	public Course addNewCourse(String name, int grade, Map<String, Integer> items) {
-		this.dao = new TimetableDAO();
-		int num = this.courses.size() + 1;
-		
-		Course c = new Course("CRS00"+num, grade, name, items);
-		dao.addNewCourse(c,school.getSchoolID());
-		dao.addSubjectsToCourse(school.getSchoolID(),c.getCourseID(),c.getMapSubject());
-		courses.add(c);
-		return c;
-
-	}
-	
-	public Subject addNewSubject(String name) {
-		this.dao = new TimetableDAO();
-		int num = this.subjects.size() + 1;
-		
-		Subject s = new Subject("SJB00"+num, name);
-		dao.addSubject(s,school.getSchoolID());
-		subjects.add(s);
-		return s;
-	}
-	
-	public void updateSubject(Subject s) {
-		this.dao = new TimetableDAO();
-		dao.updateSubject(s, school.getSchoolID());
-		
-		subjects.remove(s);
-		subjects.add(s);
-	}
+	/* SCHOOL */
 	
 	public void setSchool(School school) {
 		this.school = school;
@@ -104,6 +59,74 @@ public class Model {
 		School s = new School("SCH00"+num, name, address, startLessons, endLessons, workDays);
 		dao.addSchool(s);
 	}
+	
+	
+	
+	/* SUBJECT */
+	
+	public List<Subject> getAllSubjects() {
+		if(subjects.isEmpty()) {
+			this.dao = new TimetableDAO();
+			this.subjects = dao.getAllSubjects(school.getSchoolID());
+		}
+		return subjects;
+	}
+	
+	public Subject addNewSubject(String name) {
+		this.dao = new TimetableDAO();
+		int num = this.subjects.size() + 1;
+		
+		Subject s = new Subject("SJB00"+num, name);
+		dao.addSubject(s,school.getSchoolID());
+		subjects.add(s);
+		return s;
+	}
+	
+	public void updateSubject(Subject s) {
+		this.dao = new TimetableDAO();
+		dao.updateSubject(s, school.getSchoolID());
+		
+		subjects.remove(s);
+		subjects.add(s);
+	}
+	
+	
+	/* COURSE */
+	
+	public List<Course> getAllCourses() {
+			this.dao = new TimetableDAO();
+			this.courses = dao.getAllCourses(school.getSchoolID());
+		
+			for(Course c : courses)
+				c.setMapSubject(dao.getAllSubjectByCourse(school.getSchoolID(),c.getCourseID()));
+			
+		return courses;
+	}
+	
+	public Course addNewCourse(String name, int grade, Map<String, Integer[]> subH) {
+		this.dao = new TimetableDAO();
+		int num = this.courses.size() + 1;
+		
+		Course c = new Course("CRS00"+num, grade, name, subH);
+		dao.addNewCourse(c,school.getSchoolID());
+		dao.addSubjectsToCourse(school.getSchoolID(),c.getCourseID(),c.getMapSubject());
+		courses.add(c);
+		return c;
+
+	}
+	
+	public void updateCourse(Course c, Course old) {
+		this.dao = new TimetableDAO();
+		dao.updateCourse(c, school.getSchoolID());
+		
+		dao.removeSubjectsToCourse(school.getSchoolID(),old.getCourseID(),old.getListSubject());
+		dao.addSubjectsToCourse(school.getSchoolID(), c.getCourseID(), c.getMapSubject());
+		
+		courses.remove(old);
+		courses.add(c);
+	}
+	
+	/* LAB */
 
 	public List<Lab> getAllLab() {
 		if(labs.isEmpty()) {
@@ -113,7 +136,7 @@ public class Model {
 		return labs;
 	}
 
-	public Lab addNewLab(String name, String type) {
+	public Lab addNewLab(String name, int type) {
 		this.dao = new TimetableDAO();
 		int num = this.labs.size() + 1;
 		
@@ -126,22 +149,18 @@ public class Model {
 	public List<String> getAllTypeLaib() {
 		List<String> list = new ArrayList<>();
 		
-		for(Lab l : labs)
-			if(!list.contains(l.getType()))
-				list.add(l.getType());
-		
+		list.add("PALESTRA");
+		list.add("SALA MUSICA");
+		list.add("SALA VIDEO");
+		list.add("SALA LINGUE");
+		list.add("LABORATORIO");
+		list.add("LABORATORIO CHIMICA");
+		list.add("LABORATORIO FISICA");
+		list.add("LABORATORIO INFORMATICO");
+		list.add("BIBLIOTECA");
+		list.add("ALTRO");
+	
 		return list;
-	}
-
-	public void updateCourse(Course c, Course old) {
-		this.dao = new TimetableDAO();
-		dao.updateCourse(c, school.getSchoolID());
-		
-		dao.removeSubjectsToCourse(school.getSchoolID(),old.getCourseID(),old.getListSubject());
-		dao.addSubjectsToCourse(school.getSchoolID(), c.getCourseID(), c.getMapSubject());
-		
-		courses.remove(old);
-		courses.add(c);
 	}
 
 	public void updateLab(Lab l) {
@@ -152,34 +171,22 @@ public class Model {
 		labs.add(l);
 		
 	}
+	
+	
+	/* TEACHER */
 
 	public List<Teacher> getAllTeachers() {
-	//	if(teachers.isEmpty())	{
+		if(teachers.isEmpty())	{
 			this.dao = new TimetableDAO();
 			this.teachers = dao.getAllTeachers(school.getSchoolID());
 			
 			for(Teacher t : teachers)
 				t.setEnablingSub(dao.getAllSubjectByTeacher(school.getSchoolID(),t.getTeacherID()));
-	//	}
+		}
 		
 		return teachers;
 	}
-
-	public List<Class> getAllClasses() {
-//		if(classes.isEmpty()) {
-			this.dao = new TimetableDAO();
-			this.classes = dao.getAllClasses(school.getSchoolID());
-		
-			for(Class c : classes) {
-				c.setMapSubjectTeacher(dao.getAllSubjectTeacherByClass(school.getSchoolID(),c.getClassID()));
-				for(String s : c.getMapSubjectTeacher().keySet())
-					teachers.get(teachers.indexOf(new Teacher(c.getMapSubjectTeacher().get(s)))).setHoursWork(
-							-courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject().get(s));
-			}
-//		}
-		return classes;
-	}
-
+	
 	public Teacher addNewTeacher(String name, String surname, Integer hoursWeek, Integer freeDay, List<Subject> items) {
 		this.dao = new TimetableDAO();
 		int num = this.teachers.size() + 1;
@@ -206,6 +213,24 @@ public class Model {
 		teachers.add(c);
 		
 	}
+	
+	/* CLASSES */
+
+	public List<Class> getAllClasses() {
+		if(classes.isEmpty()) {
+			this.dao = new TimetableDAO();
+			this.classes = dao.getAllClasses(school.getSchoolID());
+			
+			for(Class c : classes) {
+				c.setMapSubjectTeacher(dao.getAllSubjectTeacherByClass(school.getSchoolID(),c.getClassID()));
+				
+				for(String s : c.getMapSubjectTeacher().keySet())
+					teachers.get(teachers.indexOf(new Teacher(c.getMapSubjectTeacher().get(s)))).setHoursWork(
+							-courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject().get(s)[0]);
+			}
+		}
+		return classes;
+	}
 
 	public Class addNewClass(Integer grade, String section, String courseID,
 			Map<String, String> mapSubjectTeacher) {
@@ -219,7 +244,7 @@ public class Model {
 			if(c.getMapSubjectTeacher().containsValue(t.getTeacherID()))
 				for(String subjectID : c.getMapSubjectTeacher().keySet())
 					if(c.getMapSubjectTeacher().get(subjectID).equals(t.getTeacherID()))
-						t.setHoursWork(t.getHoursWork() + courses.get(courses.indexOf(new Course(courseID))).getMapSubject().get(subjectID));
+						t.setHoursWork(t.getHoursWork() + courses.get(courses.indexOf(new Course(courseID))).getMapSubject().get(subjectID)[0]);
 				
 		classes.add(c);
 		return c;

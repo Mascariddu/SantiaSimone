@@ -124,7 +124,7 @@ public class GeneralController {
 		this.timetable.generateTimetable();
 		
 		txtTimeProcess.setText(String.valueOf(timetable.getTimeProcess())+ " s");
-		txtPercSuccess.setText(String.valueOf((this.timetable.getCountNotSatisfied() * 100) / teachers.size()) + "%");
+		txtPercSuccess.setText(String.valueOf(100 - (this.timetable.getCountNotSatisfied() * 100) / teachers.size()) + "%");
     }
 
     @FXML
@@ -165,6 +165,9 @@ public class GeneralController {
     void viewTimeLab(ActionEvent event) {
     	if(cmbLab.getSelectionModel().isEmpty())
     		return;
+    	
+    	Lab l = cmbLab.getSelectionModel().getSelectedItem();
+    	Launcher.openTimetable(l.toString(), this.timetable.getTimetableByLab(l.getLabID()));
     	
     }
 
@@ -237,7 +240,7 @@ public class GeneralController {
 			pgbCompleteDB.setProgress(1);
 		else if( Integer.valueOf(txtNumCourses.getText()) > 0)
 			pgbCompleteDB.setProgress(0.7);
-		else if( Integer.valueOf(txtNumTeachers.getText()) > (Integer.valueOf(txtNumTeachers.getText())/2))
+		else if( Integer.valueOf(txtNumTeachers.getText()) > (Integer.valueOf(txtNumSubjects.getText())/2))
 			pgbCompleteDB.setProgress(0.5);
 		else if( Integer.valueOf(txtNumSubjects.getText()) > 0)
 			pgbCompleteDB.setProgress(0.25);
@@ -249,6 +252,10 @@ public class GeneralController {
 		if(pgbCompleteDB.getProgress() == 1) {
 			hbxAllertTimetable.setVisible(false);
 			hbTimetable.setDisable(false);
+		}
+		
+		for(Teacher t : model.getAllTeachers()) {
+			System.out.println(t.getSurname() + " : " + t.getHoursWork());
 		}
 		
 	}
