@@ -23,6 +23,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class GeneralController {
 	
@@ -236,18 +237,61 @@ public class GeneralController {
 		txtNumClasses.setText(String.valueOf(classes.size()));
 		txtNumCourses.setText(String.valueOf(nameCourses.size()));
 		
-		if(Integer.valueOf(txtNumClasses.getText()) > 0)
-			pgbCompleteDB.setProgress(1);
-		else if( Integer.valueOf(txtNumCourses.getText()) > 0)
-			pgbCompleteDB.setProgress(0.7);
-		else if( Integer.valueOf(txtNumTeachers.getText()) > (Integer.valueOf(txtNumSubjects.getText())/2))
-			pgbCompleteDB.setProgress(0.5);
-		else if( Integer.valueOf(txtNumSubjects.getText()) > 0)
-			pgbCompleteDB.setProgress(0.25);
-		else
-			pgbCompleteDB.setProgress(0);
+		float progress = 0;
 		
-		txtPercDB.setText(String.valueOf(pgbCompleteDB.getProgress()*100)+"%");
+		
+		if(Integer.valueOf(txtNumClasses.getText()) > 0)
+			progress+= 0.20;
+		if( Integer.valueOf(txtNumCourses.getText()) > 0)
+			progress+= 0.20;
+		if( Integer.valueOf(txtNumTeachers.getText()) > (Integer.valueOf(txtNumSubjects.getText())/2))
+			progress+= 0.20;
+		 if( Integer.valueOf(txtNumSubjects.getText()) > 0)
+			progress+= 0.20;
+		
+		int ok = 0;
+		 
+		for(int l = 0; l<model.getAllTypeLaib().size(); l++) {
+			int sum = 0;
+			int numType = 0;
+			
+			for(Lab lb : labs)
+				if(lb.getType() == l)
+					numType++;
+			
+			for(Course c : model.getAllCourses()) {
+				int count = 0;
+				
+				for(Class cl : classes)
+					if(c.getCourseID().compareTo(cl.getCourseID()) == 0)
+						count++;
+				
+				int numH = 0;
+				
+				for(Integer[] i : c.getMapSubject().values())
+					if(i[2] == l)
+						numH += i[1];
+				
+				sum += numH * count;
+						
+			}
+			
+			
+			if(sum <= model.getHoursWeekSchool()*numType)
+				ok++;
+
+		}
+		
+		if(ok==model.getAllTypeLaib().size())
+			progress+=0.20;
+		else 
+			txtNumLabs.setTextFill(Color.RED);
+			
+		
+		pgbCompleteDB.setProgress(progress);
+		
+		
+		txtPercDB.setText(String.valueOf((int) (pgbCompleteDB.getProgress()*100))+".00%");
 		
 		if(pgbCompleteDB.getProgress() == 1) {
 			hbxAllertTimetable.setVisible(false);

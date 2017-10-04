@@ -14,7 +14,6 @@ import javafx.scene.layout.BorderPane;
 
 public class Timetable {
 	
-	private Model model;
 	private Label[][] labelMap = new Label[8][7];
 
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -320,7 +319,6 @@ public class Timetable {
     }
     
     public void setModel(Model model, String[][] timetable) {
-    	this.model = model;
     	
     	int start = model.getSchool().getStartLessons();
     	for(int r = 0; r <= model.getHoursDaySchool(); r++) {

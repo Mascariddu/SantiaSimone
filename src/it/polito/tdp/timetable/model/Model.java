@@ -109,7 +109,7 @@ public class Model {
 		
 		Course c = new Course("CRS00"+num, grade, name, subH);
 		dao.addNewCourse(c,school.getSchoolID());
-		dao.addSubjectsToCourse(school.getSchoolID(),c.getCourseID(),c.getMapSubject());
+		dao.addSubjectsToCourse(school.getSchoolID(),c.getCourseID(),c.getMapSubject()); /* Assegno al corso tutte le materie selezionate con le relative ore da effettuare settimanalmente */
 		courses.add(c);
 		return c;
 
@@ -224,7 +224,7 @@ public class Model {
 			for(Class c : classes) {
 				c.setMapSubjectTeacher(dao.getAllSubjectTeacherByClass(school.getSchoolID(),c.getClassID()));
 				
-				for(String s : c.getMapSubjectTeacher().keySet())
+				for(String s : c.getMapSubjectTeacher().keySet()) /* calcolo le ore totali di lavoro effettivo settimanale per ogni professore */
 					teachers.get(teachers.indexOf(new Teacher(c.getMapSubjectTeacher().get(s)))).setHoursWork(
 							-courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject().get(s)[0]);
 			}
@@ -240,7 +240,7 @@ public class Model {
 		dao.addNewClass(c,school.getSchoolID());
 		dao.addSubjectsAndTeacherToClass(school.getSchoolID(),c.getClassID(),c.getMapSubjectTeacher());
 		
-		for(Teacher t : teachers)
+		for(Teacher t : teachers) /* aggiorno le ore totali di lavoro effettivo settimanale per ogni professore */
 			if(c.getMapSubjectTeacher().containsValue(t.getTeacherID()))
 				for(String subjectID : c.getMapSubjectTeacher().keySet())
 					if(c.getMapSubjectTeacher().get(subjectID).equals(t.getTeacherID()))

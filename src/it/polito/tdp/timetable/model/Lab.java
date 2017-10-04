@@ -13,6 +13,10 @@ public class Lab {
 		this.type = type;
 	}
 
+	public Lab(String labID) {
+		this.labID = labID;
+	}
+
 	public String getLabID() {
 		return labID;
 	}

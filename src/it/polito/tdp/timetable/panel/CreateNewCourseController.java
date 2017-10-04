@@ -102,7 +102,7 @@ public class CreateNewCourseController {
     	} else {
     		vbxLab.setDisable(true);
     		if(mapHSubject.containsKey(txtIdSub.getText()))
-    			mapHSubject.put(txtIdSub.getText(), new Integer[] {Integer.valueOf(txtHoursSub.getText()), null, null});
+    			mapHSubject.put(txtIdSub.getText(), new Integer[] {Integer.valueOf(txtHoursSub.getText()), 0, 0});
     	}
     }
     

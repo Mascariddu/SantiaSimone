@@ -40,23 +40,23 @@ public class TimetableGenerator {
 	}
 	
 	public void generateTimetable() {
+		/* genero i timetable dove per righe ho le classi e per colonne le ore*/
 		this.timetableSubject = new String[classes.size()][numHoursWeek];
 		this.timetableTeacher = new String[classes.size()][numHoursWeek];
 		this.timetableLab = new String[classes.size()][numHoursWeek];
 		
 		this.trovato = false;
-		this.countNotSatisfied = 0;
-		this.returnedBack = 5;
+		this.countNotSatisfied = 0; /* conta i professori di cui non è stata rispettata la loro preferenza di giorno libero*/
+		this.returnedBack = 5; 
 		this.loops = 0;
 		
 		Class c = classes.iterator().next();
 		Map<String, Integer[]> cs = new HashMap<>(courses.get(courses.indexOf(new Course(c.getCourseID()))).getMapSubject());
 		List<String> listKey = new ArrayList<String>(c.getMapSubjectTeacher().keySet());
 		
+		/* inizio recursione */
 		long start = System.currentTimeMillis();
-		
 		recursive(timetableSubject, timetableTeacher, timetableLab, c, listKey, cs, 0, 0);
-		
 		long end = System.currentTimeMillis();
 		
 		this.classes.clear();
@@ -77,7 +77,7 @@ public class TimetableGenerator {
 		
 		while(listSub.iterator().hasNext()) {
 			
-			if(trovato || countBusy>(listSub.size()*2) || tried >= listSub.size()+1)
+			if(trovato || countBusy>(listSub.size()*2) || tried >= listSub.size()+1) /*check per uscire dal ciclo ed evitare loop*/
 				return;
 			
 			String sbj = listSub.iterator().next();
@@ -88,22 +88,26 @@ public class TimetableGenerator {
 				
 			if(subHours.get(sbj)[0] > 0) {			
 				
+				/* controllo se insegnate già occupato per quell'ora e giorno*/
 				for(int i = y; i >= 0 ; i--)
 					if(tmT[i][x] != null)
 						if(tmT[i][x].compareTo(tch.getTeacherID()) == 0 && i!=y) 
 							busy = true;
 				
+				/* controllo se il numero di ore consecutive della materia non sia superiore a 2 ore*/
 				if(x>1 && !busy) 
 					if(tmS[y][x-2].compareTo(sbj) == 0) 
 						busy = true;
 				
+				/* controllo se il giorno su cui si sta lavorando non corrisponde al giorno libero dell'insegnante */
 				if ((x >= tch.getFreeDay()*numHoursDay && x <= tch.getFreeDay()*(numHoursDay+1) ) && !busy) 
-					if(countBusy <= listSub.size())
+					if(countBusy <= listSub.size()) /* se ho provato tutte le materie e non ho trovato quella giusta "sacrifico" la preferenza dell'insegnante*/
 						busy = true;
 				
+				/* controllo se la materia necessita l'uso di un laboratorio e se è libero*/
 				if(subHours.get(sbj)[1] != 0 && !busy) {					
 					for(Lab l : labs) {						
-						if(l.getType() == subHours.get(sbj)[2]) {
+						if(l.getType() == subHours.get(sbj)[2]) { 
 							usedLab = true;
 							
 							for(int k = y; k >= 0 ; k--)
@@ -112,22 +116,22 @@ public class TimetableGenerator {
 										usedLab = false;
 						}
 						
-						if(usedLab) {
+						if(usedLab) { 
 							lab = l;
 							busy = false;
 							break;
-						} else if(subHours.get(sbj)[0] <= subHours.get(sbj)[1])
-							busy = true;
+						} else if(subHours.get(sbj)[0] <= subHours.get(sbj)[1]) 
+							busy = true; /* se devo necessariamente avere il laboratorio libero allora non posso assegnare la materia*/
 						
 					}
 				}
 					
-				if(busy) {
+				if(busy) { /* se materia non disponibile la posizione in fondo alla lista */
 					listSub.remove(sbj);
 					listSub.add(sbj);
 					countBusy++;
 				} else {
-					
+					/* se disponibile posiziono nei timetable di materia, insegnate ed eventualmente laboratorio*/
 					tmS[y][x] = sbj;
 					tmT[y][x] = tch.getTeacherID();
 					
@@ -149,7 +153,7 @@ public class TimetableGenerator {
 					listSub.remove(sbj);
 					listSub.add(sbj);
 					
-					if(loops > numHoursWeek)
+					if(loops > numHoursWeek) /* se ripeto per un certo numero di volte lo stesso percorso senza andare avanti (loop), torno indietro un certo numero di passi*/
 						if(returnedBack>0 && x>0) {
 							returnedBack--;
 							return;
@@ -166,10 +170,10 @@ public class TimetableGenerator {
 			
 		}
 		
-		if(listSub.isEmpty()) {
+		if(listSub.isEmpty()) { /* quando ho posizionato tutte le materie della classe passo alla classe successiva*/
 			classes.remove(c);
 			
-			if(classes.isEmpty() && !trovato) {
+			if(classes.isEmpty() && !trovato) { /* finite le classi copio i timetable in nuovi oggetti */
 				trovato = true;
 				this.timetableSubject = tmS;
 				this.timetableTeacher = copyTimetable(tmT);
@@ -189,6 +193,13 @@ public class TimetableGenerator {
 		}
 		
 	}
+	
+	/**
+	 * Metodo per ricopiare il timetable in un nuovo oggetto
+	 * @param matrix
+	 * @return copia matrice
+	 */
+	
 	
 	private String[][] copyTimetable(String[][] matrix) {
 		
@@ -229,6 +240,15 @@ public class TimetableGenerator {
 		return oneDay;
 	}
 	*/
+	
+	
+	
+	/**
+	 * Metodo per realizzare il timetable di una classe data
+	 * @param classID
+	 * @return timetable classe
+	 */
+	
 	public String[][] getTimetableByClass(String classID) {
 
 		String[][] t = new String[numHoursDay][numDays];
@@ -237,15 +257,27 @@ public class TimetableGenerator {
 		
 		for(int d = 0; d<numDays; d++) {
 			for(int h = 0; h < numHoursDay; h++) {
-				t[h][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[p][s]))).getName() + "\n" 
-						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getName() + " " 
-						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getSurname();
+				t[h][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[p][s]))).getName() + "\n	" 
+						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getSurname() + " " 
+						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getName();
+				
+				if(timetableLab[p][s] != null)
+					t[h][d] += "\n	" + labs.get(labs.indexOf(new Lab(timetableLab[p][s]))).getName();
+				
 				s++;
 			}	
 		}
 		
 		return t;
 	}
+	
+	
+	
+	/**
+	 * Metodo per realizzare il timetable di un insegnante dato
+	 * @param classID
+	 * @return timetable insegnante
+	 */
 	
 	public String[][] getTimetableByTeacher(String teacherID) {
 
@@ -266,6 +298,14 @@ public class TimetableGenerator {
 		return t;
 	}
 	
+	
+	
+	/**
+	 * Metodo per realizzare il timetable di un laboratorio dato
+	 * @param classID
+	 * @return timetable laboratorio
+	 */	
+	
 	public String[][] getTimetableByLab(String labID) {
 
 		String[][] t = new String[numHoursDay][numDays];	
@@ -285,6 +325,12 @@ public class TimetableGenerator {
 		
 		return t;
 	}
+	
+	
+	/**
+	 * Metodo per contare il numero di professori non soddisfatti nella loro preferenza di giorno libero
+	 * @return professori non soddisfatti
+	 */
 	
 	public int getCountNotSatisfied() {
 		this.countNotSatisfied = 0;
@@ -310,7 +356,7 @@ public class TimetableGenerator {
 		return timeProcess/1000;
 	}
 	
-	public void stamp() {
+/*	public void stamp() {
 		for(int i =0; i<classes.size(); i++) {
 			System.out.print(classes.get(classes.size()-(i+1)).getClassID() + " | ");
 			for(int k = 0; k<numHoursWeek; k++) 
@@ -319,5 +365,6 @@ public class TimetableGenerator {
 		}
 		System.out.println("Numero professori non soddisfatti " + countNotSatisfied);
 	}
+*/
 	
 }
