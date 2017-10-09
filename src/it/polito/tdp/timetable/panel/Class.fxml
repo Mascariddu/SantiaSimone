@@ -163,7 +163,7 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </HBox>
-            <Label text="Per ogni materia selezionare un professore abilitato all'insegnamento">
+            <Label text="Per ogni materia assegnare un professore abilitato ">
                <font>
                   <Font size="14.0" />
                </font>

@@ -153,7 +153,7 @@ public class Model {
 		list.add("SALA MUSICA");
 		list.add("SALA VIDEO");
 		list.add("SALA LINGUE");
-		list.add("LABORATORIO");
+		list.add("LABORATORIO DISEGNO");
 		list.add("LABORATORIO CHIMICA");
 		list.add("LABORATORIO FISICA");
 		list.add("LABORATORIO INFORMATICO");

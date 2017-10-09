@@ -282,7 +282,7 @@ public class ClassController {
     @FXML
     void viewSubClass(MouseEvent event) {
     	
-    	if(listSubjects.getItems().isEmpty())
+    	if(listSubjects.getItems().isEmpty() && txtIdSubClass.getText().isEmpty() )
     		return;
     	
     	Subject s = (Subject) listSubjects.getSelectionModel().getSelectedItem();

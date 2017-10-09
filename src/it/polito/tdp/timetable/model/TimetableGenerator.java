@@ -47,7 +47,7 @@ public class TimetableGenerator {
 		
 		this.trovato = false;
 		this.countNotSatisfied = 0; /* conta i professori di cui non è stata rispettata la loro preferenza di giorno libero*/
-		this.returnedBack = 5; 
+		this.returnedBack = (int) ((numHoursWeek*2)/3); 
 		this.loops = 0;
 		
 		Class c = classes.iterator().next();
@@ -149,16 +149,17 @@ public class TimetableGenerator {
 					} else 
 						subHours.put(sbj, new Integer[] {subHours.get(sbj)[0]+1, subHours.get(sbj)[1], subHours.get(sbj)[2]});
 					
+					tmS[y][x] = null;
 					tmT[y][x] = null;
 					listSub.remove(sbj);
 					listSub.add(sbj);
 					
-					if(loops > numHoursWeek) /* se ripeto per un certo numero di volte lo stesso percorso senza andare avanti (loop), torno indietro un certo numero di passi*/
-						if(returnedBack>0 && x>0) {
+					if(loops >= numHoursWeek) /* se ripeto per un certo numero di volte lo stesso percorso senza andare avanti (loop), torno indietro un certo numero di passi*/
+						if(returnedBack>0) {
 							returnedBack--;
 							return;
 						} else {
-							returnedBack = (int) (y*x*Math.random());
+							returnedBack = (int) (numHoursWeek*Math.random());
 							loops = 0;
 						}	
 					
@@ -175,7 +176,7 @@ public class TimetableGenerator {
 			
 			if(classes.isEmpty() && !trovato) { /* finite le classi copio i timetable in nuovi oggetti */
 				trovato = true;
-				this.timetableSubject = tmS;
+				this.timetableSubject = copyTimetable(tmS);
 				this.timetableTeacher = copyTimetable(tmT);
 				this.timetableLab = copyTimetable(tmL);
 				
@@ -257,7 +258,7 @@ public class TimetableGenerator {
 		
 		for(int d = 0; d<numDays; d++) {
 			for(int h = 0; h < numHoursDay; h++) {
-				t[h][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[p][s]))).getName() + "\n	" 
+				t[h][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[p][s]))).getName().toUpperCase() + "\n	"
 						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getSurname() + " " 
 						+ teachers.get(teachers.indexOf(new Teacher(timetableTeacher[p][s]))).getName();
 				
@@ -287,9 +288,13 @@ public class TimetableGenerator {
 			int r = 0;
 			for(int h = numHoursDay*d; h < numHoursDay*(d+1); h++) {
 				for(int c = 0; c<classes.size(); c++) { 
-					if(timetableTeacher[c][h].compareTo(teacherID) == 0)
-						t[r][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[c][h]))).getName() + "\n" 
+					if(timetableTeacher[c][h].compareTo(teacherID) == 0) {
+						t[r][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[c][h]))).getName().toUpperCase() + "\n" 
 							+ classes.get(c).getGrade() + " " + classes.get(c).getSection();
+						
+						if(timetableLab[c][h] != null)
+							t[r][d] += " - " + labs.get(labs.indexOf(new Lab(timetableLab[c][h]))).getName();
+					}
 				}
 				r++;
 			}
@@ -316,7 +321,7 @@ public class TimetableGenerator {
 					for(int c = 0; c<classes.size(); c++) { 
 						if(timetableLab[c][h] != null)
 							if(timetableLab[c][h].compareTo(labID) == 0)
-								t[r][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[c][h]))).getName() + "\n" 
+								t[r][d] = subjects.get(subjects.indexOf(new Subject(timetableSubject[c][h]))).getName().toUpperCase() + "\n" 
 									+ classes.get(c).getGrade() + " " + classes.get(c).getSection();
 					}
 					r++;

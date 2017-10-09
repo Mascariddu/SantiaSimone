@@ -16,7 +16,10 @@ import it.polito.tdp.timetable.model.Model;
 import it.polito.tdp.timetable.model.School;
 import it.polito.tdp.timetable.model.Teacher;
 import it.polito.tdp.timetable.model.TimetableGenerator;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -111,21 +114,52 @@ public class GeneralController {
 
     @FXML // fx:id="prgCreateTime"
     private ProgressBar prgCreateTime; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="txtInfoCreation"
+    private Label txtInfoCreation; // Value injected by FXMLLoader
 
     @FXML
     void doGeneraTimetable(ActionEvent event) {
     	this.timetable = new TimetableGenerator(model);
     	
-		cmbClass.getItems().addAll(classes);
-		cmbLab.getItems().addAll(labs);
-		cmbTeacher.getItems().addAll(teachers);
-		btnGenera.setDisable(true);	
-		hbSearch.setDisable(false);
-		
-		this.timetable.generateTimetable();
-		
-		txtTimeProcess.setText(String.valueOf(timetable.getTimeProcess())+ " s");
-		txtPercSuccess.setText(String.valueOf(100 - (this.timetable.getCountNotSatisfied() * 100) / teachers.size()) + "%");
+    	Task<TimetableGenerator> task = new Task<TimetableGenerator>() {
+    		
+			@Override
+			protected TimetableGenerator call() throws Exception {
+				
+		    	updateProgress(-1, -1);
+				btnGenera.setDisable(true);	
+				hbxProgressTime.setVisible(true);
+		    	timetable.generateTimetable();
+		    	updateProgress(1, 1);
+		    		    		
+		    	return timetable;
+			}
+    	} ;
+    	
+    	task.setOnSucceeded( new EventHandler<WorkerStateEvent>() {
+			
+			@Override
+			public void handle(WorkerStateEvent event) {
+				
+				cmbClass.getItems().addAll(classes);
+				cmbLab.getItems().addAll(labs);
+				cmbTeacher.getItems().addAll(teachers);
+				hbSearch.setDisable(false);
+				txtInfoCreation.setText("Creazione Completata!");
+				
+				txtTimeProcess.setText(String.valueOf(timetable.getTimeProcess())+ " s");
+				txtPercSuccess.setText(String.valueOf(100 - (timetable.getCountNotSatisfied() * 100) / teachers.size()) + "%");
+				
+			}
+		} );
+    	
+    	prgCreateTime.progressProperty().bind(task.progressProperty());
+       	
+    	Thread th = new Thread(task) ;
+    	th.setDaemon(true);
+    	th.start();
+
     }
 
     @FXML
@@ -207,6 +241,7 @@ public class GeneralController {
         assert txtPercSuccess != null : "fx:id=\"txtPercSuccess\" was not injected: check your FXML file 'General.fxml'.";
         assert hbxProgressTime != null : "fx:id=\"hbxProgressTime\" was not injected: check your FXML file 'General.fxml'.";
         assert prgCreateTime != null : "fx:id=\"prgCreateTime\" was not injected: check your FXML file 'General.fxml'.";
+        assert txtInfoCreation != null : "fx:id=\"txtInfoCreation\" was not injected: check your FXML file 'General.fxml'.";
 
     }
 
@@ -244,64 +279,59 @@ public class GeneralController {
 			progress+= 0.20;
 		if( Integer.valueOf(txtNumCourses.getText()) > 0)
 			progress+= 0.20;
-		if( Integer.valueOf(txtNumTeachers.getText()) > (Integer.valueOf(txtNumSubjects.getText())/2))
+		if( Integer.valueOf(txtNumTeachers.getText()) > 0)
 			progress+= 0.20;
 		 if( Integer.valueOf(txtNumSubjects.getText()) > 0)
 			progress+= 0.20;
 		
+		/* controllo se i laboratori sono sufficienti*/
 		int ok = 0;
-		 
 		for(int l = 0; l<model.getAllTypeLaib().size(); l++) {
 			int sum = 0;
-			int numType = 0;
 			
+			int numType = 0;
 			for(Lab lb : labs)
 				if(lb.getType() == l)
 					numType++;
 			
 			for(Course c : model.getAllCourses()) {
 				int count = 0;
-				
 				for(Class cl : classes)
 					if(c.getCourseID().compareTo(cl.getCourseID()) == 0)
 						count++;
 				
 				int numH = 0;
-				
 				for(Integer[] i : c.getMapSubject().values())
 					if(i[2] == l)
 						numH += i[1];
 				
 				sum += numH * count;
-						
 			}
-			
 			
 			if(sum <= model.getHoursWeekSchool()*numType)
 				ok++;
 
 		}
 		
-		if(ok==model.getAllTypeLaib().size())
+		if(ok==model.getAllTypeLaib().size() && model.getAllLab().size() > 0)
 			progress+=0.20;
 		else 
 			txtNumLabs.setTextFill(Color.RED);
 			
-		
-		pgbCompleteDB.setProgress(progress);
-		
-		
+		pgbCompleteDB.setProgress(progress);		
 		txtPercDB.setText(String.valueOf((int) (pgbCompleteDB.getProgress()*100))+".00%");
+		
 		
 		if(pgbCompleteDB.getProgress() == 1) {
 			hbxAllertTimetable.setVisible(false);
 			hbTimetable.setDisable(false);
 		}
 		
+		/*
 		for(Teacher t : model.getAllTeachers()) {
 			System.out.println(t.getSurname() + " : " + t.getHoursWork());
 		}
-		
+		*/
 	}
 }
 

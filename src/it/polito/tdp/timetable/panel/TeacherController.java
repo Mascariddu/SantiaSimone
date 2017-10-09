@@ -49,6 +49,9 @@ public class TeacherController {
 
     @FXML // fx:id="txtHoursTeacher"
     private TextField txtHoursTeacher; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="txtHoursRealTeacher"
+    private TextField txtHoursRealTeacher; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmdFreeDayTeacher"
     private ComboBox<String> cmdFreeDayTeacher; // Value injected by FXMLLoader
@@ -81,7 +84,9 @@ public class TeacherController {
     			Integer.valueOf(txtHoursTeacher.getText()),cmdFreeDayTeacher.getSelectionModel().getSelectedIndex(), listSubTeacher.getItems());
     	listTeachers.getItems().clear();
     	listTeachers.getItems().addAll(model.getAllTeachers());
+    	listTeachers.getSelectionModel().selectLast();
     	txtIdTeacher.setText(t.getTeacherID());
+    	txtHoursRealTeacher.setText(String.valueOf(t.getHoursWeek()-t.getHoursWork()));
     	
     	btnUpdateTeacher.setDisable(false);
     	btnAddNewTeacher.setDisable(true);
@@ -96,6 +101,7 @@ public class TeacherController {
     	txtNameTeacher.clear();
     	txtSurnameTeacher.clear();
     	txtHoursTeacher.clear();
+    	txtHoursRealTeacher.clear();
     	
     	listSubTeacher.getItems().clear();
     	listSub.getItems().clear();
@@ -117,6 +123,7 @@ public class TeacherController {
     		return;
     	}
     	
+    	
     	List<String> subjectIDList = new ArrayList<>();
     	
     	for(Subject s : listSubTeacher.getItems())
@@ -133,6 +140,7 @@ public class TeacherController {
     	
     	listTeachers.getItems().clear();
     	listTeachers.getItems().addAll(model.getAllTeachers());
+    	listTeachers.getSelectionModel().selectLast();
 
     }
 
@@ -195,6 +203,7 @@ public class TeacherController {
     	txtNameTeacher.setText(t.getName());
     	txtSurnameTeacher.setText(t.getSurname());
     	txtHoursTeacher.setText(String.valueOf(t.getHoursWeek()));
+    	txtHoursRealTeacher.setText(String.valueOf(t.getHoursWeek()-t.getHoursWork()));
     	cmdFreeDayTeacher.getSelectionModel().select(t.getFreeDay());
     	
     	listSubTeacher.getItems().clear();
@@ -219,6 +228,7 @@ public class TeacherController {
         assert txtNameTeacher != null : "fx:id=\"txtNameTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert txtSurnameTeacher != null : "fx:id=\"txtSurnameTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert txtHoursTeacher != null : "fx:id=\"txtHoursTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
+        assert txtHoursRealTeacher != null : "fx:id=\"txtHoursRealTeacher\" was not injected: check your FXML file 'Teacher.fxml'.";
         assert cmdFreeDayTeacher != null : "fx:id=\"cmdFreeDayTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert listSubTeacher != null : "fx:id=\"listSubTeacher\" was not injected: check your FXML file 'PanelTeacher.fxml'.";
         assert listSub != null : "fx:id=\"listSub\" was not injected: check your FXML file 'PanelTeacher.fxml'.";

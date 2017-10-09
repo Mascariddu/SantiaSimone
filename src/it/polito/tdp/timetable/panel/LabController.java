@@ -62,7 +62,7 @@ public class LabController {
     	Lab l = model.addNewLab(txtNameLab.getText(),  cmbTypeLab.getSelectionModel().getSelectedIndex());
     	listLab.getItems().add(l);
     	
-    	txtIdLab.setText(l.getName());
+    	txtIdLab.setText(l.getLabID());
     	btnAddNewLab.setDisable(true);
     	btnUpdateLab.setDisable(false);
     }

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="600.0" minWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.panel.GeneralController">
+<BorderPane prefHeight="600.0" prefWidth="970.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.timetable.panel.GeneralController">
    <right>
       <ImageView fitHeight="600.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
@@ -60,7 +60,7 @@
       </VBox>
    </left>
    <center>
-      <HBox style="-: ;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" style="-: ;" BorderPane.alignment="CENTER">
          <children>
             <VBox>
                <children>
@@ -408,7 +408,7 @@
                               <Insets right="5.0" />
                            </HBox.margin>
                         </ProgressBar>
-                        <Label text="Creazione del timetable. Attendere..." />
+                        <Label fx:id="txtInfoCreation" text="Creazione del timetable. Attendere..." />
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />

@@ -142,11 +142,24 @@
                                     <Insets bottom="15.0" left="15.0" right="5.0" />
                                  </VBox.margin>
                               </TextField>
-                              <TextField fx:id="txtHoursTeacher" maxWidth="50.0">
+                              <HBox>
+                                 <children>
+                                    <TextField fx:id="txtHoursTeacher" maxWidth="50.0" />
+                                    <Label text="Ore lavoro effettivo">
+                                       <HBox.margin>
+                                          <Insets left="20.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="txtHoursRealTeacher" editable="false" maxWidth="50.0">
+                                       <HBox.margin>
+                                          <Insets left="15.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
                                  <VBox.margin>
                                     <Insets bottom="15.0" left="15.0" />
                                  </VBox.margin>
-                              </TextField>
+                              </HBox>
                               <ComboBox fx:id="cmdFreeDayTeacher" prefWidth="150.0">
                                  <VBox.margin>
                                     <Insets bottom="15.0" left="15.0" />
