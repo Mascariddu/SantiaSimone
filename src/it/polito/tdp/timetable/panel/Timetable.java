@@ -4,17 +4,29 @@
 
 package it.polito.tdp.timetable.panel;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import it.polito.tdp.timetable.model.Model;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class Timetable {
 	
 	private Label[][] labelMap = new Label[8][7];
+	private Stage stage;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -192,6 +204,22 @@ public class Timetable {
 
     @FXML // fx:id="lbl85"
     private Label lbl85; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="txtTitle"
+    private Label txtTitle; // Value injected by FXMLLoader
+    
+    @FXML
+    void makeScreenshot(MouseEvent event) {
+    	
+    	 WritableImage writableImage = stage.getScene().snapshot(null);
+         File file = new File("save/" + stage.getTitle() + ".png"); 
+         try {
+             ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", file);
+             JOptionPane.showMessageDialog(null, "L'orario è stato salvato in " + file.getAbsolutePath());
+         } catch (IOException ex) {
+             Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -252,6 +280,7 @@ public class Timetable {
         assert lbl65 != null : "fx:id=\"lbl65\" was not injected: check your FXML file 'Timetable.fxml'.";
         assert lbl75 != null : "fx:id=\"lbl75\" was not injected: check your FXML file 'Timetable.fxml'.";
         assert lbl85 != null : "fx:id=\"lbl85\" was not injected: check your FXML file 'Timetable.fxml'.";
+        assert txtTitle != null : "fx:id=\"txtTitle\" was not injected: check your FXML file 'Timetable.fxml'.";
         
         labelMap[0][0] = lbl1;
         labelMap[1][0] = lbl2;
@@ -318,7 +347,9 @@ public class Timetable {
 
     }
     
-    public void setModel(Model model, String[][] timetable) {
+    public void setModel(Model model, String[][] timetable, Stage stage) {
+    	
+    	this.stage = stage;
     	
     	int start = model.getSchool().getStartLessons();
     	for(int r = 0; r <= model.getHoursDaySchool(); r++) {
@@ -332,8 +363,8 @@ public class Timetable {
     			labelMap[r][c+1].setText(timetable[r][c]);
     	}
     	
-    	
-    	
+    	txtTitle.setText(stage.getTitle());
+    	   	
     }
     
     

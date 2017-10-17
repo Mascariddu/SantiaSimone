@@ -255,16 +255,16 @@ public class Launcher {
 			
 			Timetable controller = loader.getController() ;
 			
-			controller.setModel(model, timetable);
-			
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(Launcher.class.getResource("application.css").toExternalForm());
-			
+						
 			popup = new Stage();
 			popup.setScene(scene);
 			popup.setTitle("Timetable - " + info);
 			popup.getIcons().add(new Image(Launcher.class.getResourceAsStream("../icon.png")));
 			popup.show();
+			
+			controller.setModel(model, timetable, popup);
     	} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -92,8 +92,11 @@ INSERT INTO `class` (`schoolID`, `classID`, `grade`, `section`, `courseID`) VALU
 	('SCH002', 'CLS5C', 5, 'C', 'CRS0010'),
 	('SCH002', 'CLS5D', 5, 'D', 'CRS0010'),
 	('SCH003', 'CLS1A', 1, 'A', 'CRS001'),
+	('SCH003', 'CLS1B', 1, 'B', 'CRS001'),
 	('SCH003', 'CLS2A', 2, 'A', 'CRS002'),
-	('SCH003', 'CLS3A', 3, 'A', 'CRS003');
+	('SCH003', 'CLS2B', 2, 'B', 'CRS002'),
+	('SCH003', 'CLS3A', 3, 'A', 'CRS003'),
+	('SCH003', 'CLS3B', 3, 'B', 'CRS003');
 /*!40000 ALTER TABLE `class` ENABLE KEYS */;
 
 -- Dump della struttura di tabella timetable.course
@@ -106,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   CONSTRAINT `FK_course_school` FOREIGN KEY (`schoolID`) REFERENCES `school` (`schoolID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.course: ~28 rows (circa)
+-- Dump dei dati della tabella timetable.course: ~25 rows (circa)
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
 INSERT INTO `course` (`schoolID`, `courseID`, `grade`, `name`) VALUES
 	('SCH001', 'CRS001', 1, 'AMMINISTRAZIONE FINANZA E MARKETING'),
@@ -152,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `enabling` (
   CONSTRAINT `FK_enabling_teacher` FOREIGN KEY (`teacherID`) REFERENCES `teacher` (`teacherID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.enabling: ~242 rows (circa)
+-- Dump dei dati della tabella timetable.enabling: ~232 rows (circa)
 /*!40000 ALTER TABLE `enabling` DISABLE KEYS */;
 INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB001', 'THC001'),
@@ -178,6 +181,7 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB001', 'THC0049'),
 	('SCH001', 'SJB001', 'THC0057'),
 	('SCH001', 'SJB001', 'THC0059'),
+	('SCH003', 'SJB001', 'THC007'),
 	('SCH002', 'SJB001', 'THC009'),
 	('SCH001', 'SJB0010', 'THC0015'),
 	('SCH002', 'SJB0010', 'THC0021'),
@@ -197,10 +201,12 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH003', 'SJB0011', 'THC006'),
 	('SCH002', 'SJB0011', 'THC007'),
 	('SCH001', 'SJB0011', 'THC009'),
+	('SCH003', 'SJB0011', 'THC009'),
 	('SCH001', 'SJB0012', 'THC0010'),
 	('SCH001', 'SJB0012', 'THC0035'),
 	('SCH003', 'SJB0012', 'THC005'),
 	('SCH002', 'SJB0012', 'THC008'),
+	('SCH003', 'SJB0012', 'THC009'),
 	('SCH001', 'SJB0013', 'THC0012'),
 	('SCH001', 'SJB0013', 'THC0017'),
 	('SCH002', 'SJB0013', 'THC0017'),
@@ -288,6 +294,7 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB0022', 'THC0027'),
 	('SCH001', 'SJB0022', 'THC0036'),
 	('SCH001', 'SJB0022', 'THC0056'),
+	('SCH003', 'SJB003', 'THC0010'),
 	('SCH002', 'SJB003', 'THC0015'),
 	('SCH001', 'SJB003', 'THC0016'),
 	('SCH001', 'SJB003', 'THC0019'),
@@ -322,6 +329,7 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB004', 'THC0048'),
 	('SCH001', 'SJB004', 'THC0055'),
 	('SCH001', 'SJB004', 'THC0058'),
+	('SCH003', 'SJB004', 'THC007'),
 	('SCH002', 'SJB004', 'THC009'),
 	('SCH002', 'SJB005', 'THC001'),
 	('SCH002', 'SJB005', 'THC0011'),
@@ -337,6 +345,7 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB005', 'THC0031'),
 	('SCH001', 'SJB005', 'THC0045'),
 	('SCH001', 'SJB005', 'THC0052'),
+	('SCH003', 'SJB005', 'THC008'),
 	('SCH002', 'SJB005', 'THC009'),
 	('SCH002', 'SJB006', 'THC0013'),
 	('SCH001', 'SJB006', 'THC0014'),
@@ -353,6 +362,7 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB006', 'THC0040'),
 	('SCH001', 'SJB006', 'THC0048'),
 	('SCH001', 'SJB006', 'THC0058'),
+	('SCH003', 'SJB006', 'THC008'),
 	('SCH002', 'SJB007', 'THC0012'),
 	('SCH002', 'SJB007', 'THC0017'),
 	('SCH002', 'SJB007', 'THC0022'),
@@ -371,6 +381,7 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB007', 'THC005'),
 	('SCH001', 'SJB007', 'THC0057'),
 	('SCH001', 'SJB007', 'THC0059'),
+	('SCH003', 'SJB007', 'THC008'),
 	('SCH002', 'SJB008', 'THC0010'),
 	('SCH002', 'SJB008', 'THC0014'),
 	('SCH002', 'SJB008', 'THC0018'),
@@ -383,6 +394,7 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH003', 'SJB008', 'THC005'),
 	('SCH001', 'SJB008', 'THC0053'),
 	('SCH001', 'SJB008', 'THC006'),
+	('SCH003', 'SJB008', 'THC009'),
 	('SCH003', 'SJB009', 'THC001'),
 	('SCH002', 'SJB009', 'THC0010'),
 	('SCH002', 'SJB009', 'THC0014'),
@@ -396,7 +408,8 @@ INSERT INTO `enabling` (`schoolID`, `subjectID`, `teacherID`) VALUES
 	('SCH001', 'SJB009', 'THC0044'),
 	('SCH002', 'SJB009', 'THC005'),
 	('SCH001', 'SJB009', 'THC0056'),
-	('SCH001', 'SJB009', 'THC007');
+	('SCH001', 'SJB009', 'THC007'),
+	('SCH003', 'SJB009', 'THC007');
 /*!40000 ALTER TABLE `enabling` ENABLE KEYS */;
 
 -- Dump della struttura di tabella timetable.lab
@@ -409,7 +422,7 @@ CREATE TABLE IF NOT EXISTS `lab` (
   CONSTRAINT `FK_Lab_school` FOREIGN KEY (`schoolID`) REFERENCES `school` (`schoolID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.lab: ~27 rows (circa)
+-- Dump dei dati della tabella timetable.lab: ~29 rows (circa)
 /*!40000 ALTER TABLE `lab` DISABLE KEYS */;
 INSERT INTO `lab` (`schoolID`, `labID`, `name`, `type`) VALUES
 	('SCH001', 'LAB001', 'Laib INF 1', 7),
@@ -439,7 +452,12 @@ INSERT INTO `lab` (`schoolID`, `labID`, `name`, `type`) VALUES
 	('SCH002', 'LAB009', 'Lab Chimica B', 5),
 	('SCH003', 'LAB001', 'Teatro T1', 0),
 	('SCH003', 'LAB002', 'Videoteca V1', 2),
-	('SCH003', 'LAB003', 'Teatro T2', 0);
+	('SCH003', 'LAB003', 'Teatro T2', 0),
+	('SCH003', 'LAB004', 'Biblioteca', 8),
+	('SCH003', 'LAB005', 'Audioteca', 1),
+	('SCH003', 'LAB006', 'Sala Prove P1', 0),
+	('SCH003', 'LAB007', 'Sala Prove P2', 0),
+	('SCH003', 'LAB008', 'Videoteca V2', 2);
 /*!40000 ALTER TABLE `lab` ENABLE KEYS */;
 
 -- Dump della struttura di tabella timetable.role
@@ -456,7 +474,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   CONSTRAINT `FK__teacher` FOREIGN KEY (`TeacherID`) REFERENCES `teacher` (`teacherID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.role: ~685 rows (circa)
+-- Dump dei dati della tabella timetable.role: ~683 rows (circa)
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
 INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH001', 'CLS3A', 'SJB001', 'THC001'),
@@ -476,6 +494,7 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS3A', 'SJB002', 'THC001'),
 	('SCH003', 'CLS1A', 'SJB001', 'THC001'),
 	('SCH003', 'CLS1A', 'SJB004', 'THC001'),
+	('SCH003', 'CLS1B', 'SJB001', 'THC001'),
 	('SCH003', 'CLS2A', 'SJB009', 'THC001'),
 	('SCH001', 'CLS1A', 'SJB0012', 'THC0010'),
 	('SCH001', 'CLS1B', 'SJB0012', 'THC0010'),
@@ -506,6 +525,7 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS4A', 'SJB008', 'THC0010'),
 	('SCH002', 'CLS5A', 'SJB008', 'THC0010'),
 	('SCH002', 'CLS5A', 'SJB009', 'THC0010'),
+	('SCH003', 'CLS1B', 'SJB003', 'THC0010'),
 	('SCH001', 'CLS1A', 'SJB001', 'THC0011'),
 	('SCH001', 'CLS2A', 'SJB001', 'THC0011'),
 	('SCH001', 'CLS3B', 'SJB001', 'THC0011'),
@@ -647,6 +667,7 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS5A', 'SJB003', 'THC002'),
 	('SCH003', 'CLS1A', 'SJB002', 'THC002'),
 	('SCH003', 'CLS1A', 'SJB003', 'THC002'),
+	('SCH003', 'CLS1B', 'SJB002', 'THC002'),
 	('SCH001', 'CLS2D', 'SJB002', 'THC0020'),
 	('SCH001', 'CLS3C', 'SJB002', 'THC0020'),
 	('SCH001', 'CLS3D', 'SJB002', 'THC0020'),
@@ -916,6 +937,7 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS4A', 'SJB007', 'THC004'),
 	('SCH002', 'CLS5A', 'SJB007', 'THC004'),
 	('SCH003', 'CLS3A', 'SJB0013', 'THC004'),
+	('SCH003', 'CLS3B', 'SJB0013', 'THC004'),
 	('SCH001', 'CLS1F', 'SJB004', 'THC0040'),
 	('SCH001', 'CLS1G', 'SJB006', 'THC0040'),
 	('SCH001', 'CLS2F', 'SJB004', 'THC0040'),
@@ -1080,6 +1102,7 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS5A', 'SJB0010', 'THC006'),
 	('SCH002', 'CLS5B', 'SJB0010', 'THC006'),
 	('SCH003', 'CLS3A', 'SJB0010', 'THC006'),
+	('SCH003', 'CLS3B', 'SJB0010', 'THC006'),
 	('SCH001', 'CLS5H', 'SJB0010', 'THC0060'),
 	('SCH001', 'CLS1A', 'SJB009', 'THC007'),
 	('SCH001', 'CLS1B', 'SJB009', 'THC007'),
@@ -1099,6 +1122,8 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS4B', 'SJB0011', 'THC007'),
 	('SCH002', 'CLS5A', 'SJB0011', 'THC007'),
 	('SCH002', 'CLS5B', 'SJB0011', 'THC007'),
+	('SCH003', 'CLS1B', 'SJB004', 'THC007'),
+	('SCH003', 'CLS2B', 'SJB009', 'THC007'),
 	('SCH001', 'CLS1A', 'SJB0010', 'THC008'),
 	('SCH001', 'CLS2A', 'SJB0010', 'THC008'),
 	('SCH001', 'CLS3A', 'SJB0010', 'THC008'),
@@ -1125,6 +1150,9 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS5B', 'SJB0012', 'THC008'),
 	('SCH002', 'CLS5C', 'SJB0012', 'THC008'),
 	('SCH002', 'CLS5D', 'SJB0012', 'THC008'),
+	('SCH003', 'CLS1B', 'SJB005', 'THC008'),
+	('SCH003', 'CLS2B', 'SJB006', 'THC008'),
+	('SCH003', 'CLS2B', 'SJB007', 'THC008'),
 	('SCH001', 'CLS1A', 'SJB0011', 'THC009'),
 	('SCH001', 'CLS1B', 'SJB0011', 'THC009'),
 	('SCH001', 'CLS2A', 'SJB0011', 'THC009'),
@@ -1143,7 +1171,10 @@ INSERT INTO `role` (`schoolID`, `classID`, `subjectID`, `TeacherID`) VALUES
 	('SCH002', 'CLS4A', 'SJB002', 'THC009'),
 	('SCH002', 'CLS4A', 'SJB005', 'THC009'),
 	('SCH002', 'CLS5A', 'SJB002', 'THC009'),
-	('SCH002', 'CLS5A', 'SJB005', 'THC009');
+	('SCH002', 'CLS5A', 'SJB005', 'THC009'),
+	('SCH003', 'CLS2B', 'SJB008', 'THC009'),
+	('SCH003', 'CLS3B', 'SJB0011', 'THC009'),
+	('SCH003', 'CLS3B', 'SJB0012', 'THC009');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 -- Dump della struttura di tabella timetable.school
@@ -1157,10 +1188,10 @@ CREATE TABLE IF NOT EXISTS `school` (
   PRIMARY KEY (`schoolID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.school: ~2 rows (circa)
+-- Dump dei dati della tabella timetable.school: ~1 rows (circa)
 /*!40000 ALTER TABLE `school` DISABLE KEYS */;
 INSERT INTO `school` (`schoolID`, `name`, `address`, `startLessons`, `endLessons`, `workDays`) VALUES
-	('SCH001', 'ITC Paolo Savi', 'VIA DIAZ, 10 - VITERBO', 8, 13, 6),
+	('SCH001', 'ISTITUTO TECNICO ECONOMICO ', 'VIA DIAZ, 10 - VITERBO', 8, 13, 6),
 	('SCH002', 'LICEO SCIENTIFICO GALILEI', 'VIA ROMA 10 - TORINO', 8, 14, 5),
 	('SCH003', 'ACCADEMIA DI TEATRO', 'VIA DEL FIUME, 2 - ROMA ', 9, 13, 4);
 /*!40000 ALTER TABLE `school` ENABLE KEYS */;
@@ -1179,12 +1210,12 @@ CREATE TABLE IF NOT EXISTS `study_plan` (
   CONSTRAINT `FK_study_plan_subject` FOREIGN KEY (`subjectID`) REFERENCES `subject` (`subjectID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.study_plan: ~275 rows (circa)
+-- Dump dei dati della tabella timetable.study_plan: ~299 rows (circa)
 /*!40000 ALTER TABLE `study_plan` DISABLE KEYS */;
 INSERT INTO `study_plan` (`subjectID`, `courseID`, `schoolID`, `hoursweek`, `hoursLab`, `typeLab`) VALUES
 	('SJB001', 'CRS001', 'SCH001', 4, 1, 8),
 	('SJB001', 'CRS001', 'SCH002', 4, 1, 8),
-	('SJB001', 'CRS001', 'SCH003', 2, 0, 0),
+	('SJB001', 'CRS001', 'SCH003', 2, 2, 0),
 	('SJB001', 'CRS0010', 'SCH001', 4, 1, 8),
 	('SJB001', 'CRS0010', 'SCH002', 4, 0, 0),
 	('SJB001', 'CRS0011', 'SCH001', 4, 1, 8),
@@ -1247,7 +1278,7 @@ INSERT INTO `study_plan` (`subjectID`, `courseID`, `schoolID`, `hoursweek`, `hou
 	('SJB0011', 'CRS002', 'SCH002', 2, 2, 0),
 	('SJB0011', 'CRS003', 'SCH001', 2, 2, 0),
 	('SJB0011', 'CRS003', 'SCH002', 2, 2, 0),
-	('SJB0011', 'CRS003', 'SCH003', 5, 0, 0),
+	('SJB0011', 'CRS003', 'SCH003', 5, 5, 0),
 	('SJB0011', 'CRS004', 'SCH001', 2, 2, 0),
 	('SJB0011', 'CRS004', 'SCH002', 2, 2, 0),
 	('SJB0011', 'CRS005', 'SCH001', 2, 2, 0),
@@ -1274,7 +1305,7 @@ INSERT INTO `study_plan` (`subjectID`, `courseID`, `schoolID`, `hoursweek`, `hou
 	('SJB0012', 'CRS002', 'SCH002', 1, 0, 0),
 	('SJB0012', 'CRS003', 'SCH001', 1, 0, 0),
 	('SJB0012', 'CRS003', 'SCH002', 1, 0, 0),
-	('SJB0012', 'CRS003', 'SCH003', 2, 0, 0),
+	('SJB0012', 'CRS003', 'SCH003', 2, 2, 8),
 	('SJB0012', 'CRS004', 'SCH001', 1, 0, 0),
 	('SJB0012', 'CRS004', 'SCH002', 1, 0, 0),
 	('SJB0012', 'CRS005', 'SCH001', 1, 0, 0),
@@ -1381,7 +1412,7 @@ INSERT INTO `study_plan` (`subjectID`, `courseID`, `schoolID`, `hoursweek`, `hou
 	('SJB003', 'CRS009', 'SCH001', 2, 0, 0),
 	('SJB004', 'CRS001', 'SCH001', 4, 0, 0),
 	('SJB004', 'CRS001', 'SCH002', 3, 0, 0),
-	('SJB004', 'CRS001', 'SCH003', 3, 0, 0),
+	('SJB004', 'CRS001', 'SCH003', 3, 3, 2),
 	('SJB004', 'CRS0010', 'SCH001', 3, 0, 0),
 	('SJB004', 'CRS0011', 'SCH001', 3, 0, 0),
 	('SJB004', 'CRS0012', 'SCH001', 3, 0, 0),
@@ -1401,7 +1432,7 @@ INSERT INTO `study_plan` (`subjectID`, `courseID`, `schoolID`, `hoursweek`, `hou
 	('SJB004', 'CRS008', 'SCH001', 4, 0, 0),
 	('SJB004', 'CRS009', 'SCH001', 3, 0, 0),
 	('SJB005', 'CRS001', 'SCH001', 2, 0, 0),
-	('SJB005', 'CRS001', 'SCH003', 3, 0, 0),
+	('SJB005', 'CRS001', 'SCH003', 3, 3, 0),
 	('SJB005', 'CRS0010', 'SCH002', 2, 0, 0),
 	('SJB005', 'CRS002', 'SCH001', 2, 0, 0),
 	('SJB005', 'CRS003', 'SCH002', 2, 0, 0),
@@ -1495,7 +1526,7 @@ CREATE TABLE IF NOT EXISTS `subject` (
   CONSTRAINT `FK_subject_school` FOREIGN KEY (`schoolID`) REFERENCES `school` (`schoolID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.subject: ~49 rows (circa)
+-- Dump dei dati della tabella timetable.subject: ~47 rows (circa)
 /*!40000 ALTER TABLE `subject` DISABLE KEYS */;
 INSERT INTO `subject` (`schoolID`, `subjectID`, `name`) VALUES
 	('SCH001', 'SJB001', 'Lingua e letteratura italiana'),
@@ -1562,7 +1593,7 @@ CREATE TABLE IF NOT EXISTS `teacher` (
   CONSTRAINT `FK_teacher_school` FOREIGN KEY (`schoolID`) REFERENCES `school` (`schoolID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella timetable.teacher: ~96 rows (circa)
+-- Dump dei dati della tabella timetable.teacher: ~93 rows (circa)
 /*!40000 ALTER TABLE `teacher` DISABLE KEYS */;
 INSERT INTO `teacher` (`teacherID`, `schoolID`, `name`, `surname`, `hoursWeek`, `freeDay`) VALUES
 	('THC001', 'SCH001', 'Mario', 'Rossi', 22, 0),
@@ -1570,6 +1601,7 @@ INSERT INTO `teacher` (`teacherID`, `schoolID`, `name`, `surname`, `hoursWeek`, 
 	('THC001', 'SCH003', 'Giovanni', 'Verdi', 12, 0),
 	('THC0010', 'SCH001', 'Marina', 'Chiesa', 22, 0),
 	('THC0010', 'SCH002', 'Elisa', 'Gatti', 22, 0),
+	('THC0010', 'SCH003', 'Paolo', 'Caino', 8, 1),
 	('THC0011', 'SCH001', 'Pino', 'Franco', 22, 5),
 	('THC0011', 'SCH002', 'Maria', 'Parri', 22, 2),
 	('THC0012', 'SCH001', 'Franca', 'Pane', 22, 4),
@@ -1657,10 +1689,13 @@ INSERT INTO `teacher` (`teacherID`, `schoolID`, `name`, `surname`, `hoursWeek`, 
 	('THC0060', 'SCH001', 'Anna', 'Ghini', 22, 4),
 	('THC007', 'SCH001', 'Anna', 'Franchi', 22, 1),
 	('THC007', 'SCH002', 'Pino', 'Segna', 22, 2),
+	('THC007', 'SCH003', 'Federico', 'Satira', 16, 1),
 	('THC008', 'SCH001', 'Maria', 'Sassi', 22, 1),
 	('THC008', 'SCH002', 'Maria', 'Croce', 22, 3),
+	('THC008', 'SCH003', 'Elisa', 'Gatti', 12, 3),
 	('THC009', 'SCH001', 'Giulia', 'Gentile', 22, 5),
-	('THC009', 'SCH002', 'Giorgia', 'Barra', 22, 4);
+	('THC009', 'SCH002', 'Giorgia', 'Barra', 22, 4),
+	('THC009', 'SCH003', 'Giulio', 'Ferrini', 12, 0);
 /*!40000 ALTER TABLE `teacher` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

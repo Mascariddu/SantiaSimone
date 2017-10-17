@@ -1,9 +1,15 @@
 package it.polito.tdp.timetable.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
 
 public class TimetableGenerator {
 	
@@ -56,18 +62,23 @@ public class TimetableGenerator {
 		
 		/* inizio recursione */
 		long start = System.currentTimeMillis();
-		recursive(timetableSubject, timetableTeacher, timetableLab, c, listKey, cs, 0, 0);
-		long end = System.currentTimeMillis();
+		while(!trovato) {
+			timeProcess = System.currentTimeMillis();
+			recursive(timetableSubject, timetableTeacher, timetableLab, c, listKey, cs, 0, 0);
+		}
 		
 		this.classes.clear();
 		this.teachers.clear();
 		
 		this.teachers = model.getAllTeachers();
 		this.classes = model.getAllClasses();
-		this.timeProcess = end - start;
+		this.timeProcess = System.currentTimeMillis() - start;
 	}
 	
 	public void recursive(String [][] timetableS, String [][] timetableT, String[][] timetableL, Class c, List<String> listSub, Map<String, Integer[]> subHours, int x, int y) {	
+		
+		if((System.currentTimeMillis() - this.timeProcess) > 180000) // se impiega più di tre minuti ricomincia da capo
+			return;
 		
 		int countBusy = 0;
 		int tried = 0;
@@ -154,12 +165,12 @@ public class TimetableGenerator {
 					listSub.remove(sbj);
 					listSub.add(sbj);
 					
-					if(loops >= numHoursWeek) /* se ripeto per un certo numero di volte lo stesso percorso senza andare avanti (loop), torno indietro un certo numero di passi*/
-						if(returnedBack>0) {
+					if(loops > numHoursWeek/4) /* se ripeto per un certo numero di volte lo stesso percorso senza andare avanti (loop), torno indietro un certo numero di passi*/
+						if(returnedBack>0 ) {
 							returnedBack--;
 							return;
 						} else {
-							returnedBack = (int) (numHoursWeek*Math.random());
+							returnedBack = (int)(numHoursWeek*Math.random());
 							loops = 0;
 						}	
 					
@@ -212,36 +223,6 @@ public class TimetableGenerator {
 		
 		return timetable;
 	}
-/*
-	private boolean almostOneFreeDay(String teacherID, String[][] timetable, int x, int y) {
-		boolean oneDay = false;
-		
-		for(int d = 0; d<numDays; d++) {
-			oneDay = true;
-			
-			for(int c = 0; c<classes.size(); c++) {				
-				for(int h = numHoursDay*d; h < numHoursDay*(d+1); h++) {		
-					
-					if((x< numHoursDay*d || x>=numHoursDay*(d+1)) && timetable[c][h] != null) {
-						if(timetable[c][h].compareTo(teacherID)==0) {
-							oneDay = false;
-							break;
-						} 
-					}
-				}
-				
-				if(!oneDay)
-					break;
-			}
-			
-			if(oneDay)
-				break;
-		}
-		
-		return oneDay;
-	}
-	*/
-	
 	
 	
 	/**
@@ -361,15 +342,89 @@ public class TimetableGenerator {
 		return timeProcess/1000;
 	}
 	
-/*	public void stamp() {
-		for(int i =0; i<classes.size(); i++) {
-			System.out.print(classes.get(classes.size()-(i+1)).getClassID() + " | ");
-			for(int k = 0; k<numHoursWeek; k++) 
-				System.out.print(timetableSubject[i][k] + " ");
-			System.out.println();
+	public void saveTimetable() {
+        PrintStream printStream;
+		try {
+			File file = new File("save/"+ model.getSchool().getName() +".txt");
+			printStream = new PrintStream(new FileOutputStream(file));
+	        System.setOut(printStream);
+	        System.out.print("CLASS	|");
+	        
+	        for(int d = 1; d<=numDays; d++) {
+	        	for(int h = 1; h<=numHoursDay; h++)
+	        		 System.out.print("	" + h);
+	        	System.out.print("	|");
+	        
+	        }
+	        
+	        System.out.println();
+	        
+	        for(int c = 0 ; c< classes.size(); c++) {
+	        	System.out.print(classes.get(c).getClassID() + "	|");
+				for(int d = 0; d<numDays; d++) {
+					for(int h = numHoursDay*d; h < numHoursDay*(d+1); h++) {
+						 System.out.print("	" + timetableSubject[c][h]);
+					}
+					System.out.print("	|");
+				}
+				System.out.println();
+	        }
+	        
+	        System.out.println();
+	        System.out.println("TEACHER");
+	        System.out.println();
+	        
+	        for(Teacher t : teachers) {
+	        	System.out.print(t.getTeacherID() + "	|");
+	        	for(int d = 0; d<numDays; d++) {
+	    			for(int h = numHoursDay*d; h < numHoursDay*(d+1); h++) {
+	    				Boolean work = false;
+	    				for(int c = 0; c<classes.size(); c++) { 
+	    					if(timetableTeacher[c][h].compareTo(t.getTeacherID()) == 0) {
+	    						 System.out.print("	" + classes.get(c).getClassID());
+	    						 work = true;
+	    					} 
+	    				}
+	    				if(!work)
+	    					System.out.print("	#####");
+	    			}
+	    			System.out.print("	|");
+	    		}
+				System.out.println();
+	        }
+	        
+	        System.out.println();
+	        System.out.println("LAB");
+	        System.out.println();
+	        
+	        for(Lab l : labs) {
+	        	System.out.print(l.getLabID() + "	|");
+	        	for(int d = 0; d<numDays; d++) {
+	    			for(int h = numHoursDay*d; h < numHoursDay*(d+1); h++) {
+	    				Boolean work = false;
+	    				for(int c = 0; c<classes.size(); c++) { 
+	    					if(timetableLab[c][h] != null) 
+		    					if(timetableLab[c][h].compareTo(l.getLabID()) == 0) {
+		    						 System.out.print("	" + classes.get(c).getClassID());
+		    						 work = true;
+		    					} 
+	    				}
+	    				if(!work)
+	    					System.out.print("	#####");
+	    			}
+	    			System.out.print("	|");
+	    		}
+				System.out.println();
+	        }
+	        
+	        JOptionPane.showMessageDialog(null, "L'orario completo è stato salvato in " + file.getAbsolutePath());
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.println("Numero professori non soddisfatti " + countNotSatisfied);
+		
+		
 	}
-*/
 	
 }

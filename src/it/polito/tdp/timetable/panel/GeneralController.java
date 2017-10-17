@@ -151,6 +151,7 @@ public class GeneralController {
 				txtTimeProcess.setText(String.valueOf(timetable.getTimeProcess())+ " s");
 				txtPercSuccess.setText(String.valueOf(100 - (timetable.getCountNotSatisfied() * 100) / teachers.size()) + "%");
 				
+				timetable.saveTimetable();
 			}
 		} );
     	
